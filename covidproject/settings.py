@@ -94,6 +94,7 @@ DATABASES = {
 'NAME': 'Covid_Swab',
 'ENGINE': 'sql_server.pyodbc',
 'HOST': 'cowar-db-app02.public.ab8984e16a93.database.windows.net',
+'PORT': '3342',
 'USER': 'CowarAdmin',
 'PASSWORD': 'covidwar.kar.gov.in@143',
 'OPTIONS': {
