@@ -96,6 +96,9 @@ DATABASES = {
 'HOST': 'cowar-db-app02.public.ab8984e16a93.database.windows.net',
 'USER': 'CowarAdmin',
 'PASSWORD': 'covidwar.kar.gov.in@143',
+'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
 }
 }
 
