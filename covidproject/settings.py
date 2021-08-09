@@ -42,12 +42,12 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'import_export',
-    'whitenoise.runserver_nostatic',
+    # 'whitenoise.runserver_nostatic',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -146,11 +146,17 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
+
 STATICFILES_DIRS = [
         '/home/site/dist'
-    ]  
+    ]
 
-STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
+# STATICFILES_DIRS = os.path.join(PROJECT_DIR, '/home/site/')
+
+
+
+
+# STATICFILES_STORAGE = ('whitenoise.storage.CompressedManifestStaticFilesStorage')
 
 MEDIA_URL = '/media/'
 
