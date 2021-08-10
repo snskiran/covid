@@ -2359,7 +2359,8 @@ class GetPHCUseraddedPatients(APIView):
                 # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
                 # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
                 # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 1) & Q(package_sampling_id__isnull = True)).values()
-                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
                 for i in patient_details:
                     
                     patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
