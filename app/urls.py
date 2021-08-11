@@ -153,6 +153,7 @@ urlpatterns = [
     path('delete-phc-test-kits/', DeletePHCTestKit.as_view()),
     # path('get-phc-test-kits/', GetPhcTestKit.as_view()),
     path('get-phc-all-test-kits/', TestingKitBarcode.as_view()),
+    path('get-mo-available-test-kits/', GetAvailableMOTestKits.as_view()),
 
 
 
@@ -196,6 +197,8 @@ urlpatterns = [
     path('ssu-total-samples-collected/', SSUTotalSampleCollected.as_view()),
     path('ssu-get-lab-wise-delay-report/', SSUGetLabwiseDelayReport.as_view()),
     path('ssu-get-overall-lab-delay-report/', SSUGetOverallLabDelayD4.as_view()),
+    path('ssu-get-sysc-asysc-report/', SSUGetMasterSysAsym.as_view()),
+    path('ssu-get-rat-rtpcr-positivity-report/', SSUGetMasterRatRtpcrPositivityReport.as_view()),
 
 
 

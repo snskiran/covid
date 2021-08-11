@@ -24,7 +24,7 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView
 import requests
 from datetime import datetime as asdatetime
 from datetime import datetime, timedelta
-# import datetime
+import datetime as dttm
 from datetime import date as dt
 import json
 import os
@@ -1972,6 +1972,13 @@ class PHCUseStatusFilter(APIView):
                         pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
                         pd['test_type_name']= patient_test_type_data.test_type_name
 
+                        check_tkb = Testing_Kit_Barcode.objects.filter(id= pd['testing_kit_barcode_id'])
+                        if check_tkb:
+                            check_tkb_get = Testing_Kit_Barcode.objects.get(id= pd['testing_kit_barcode_id'])
+                            pd['test_kit_name'] = check_tkb_get.testing_kit_barcode_name
+                        else:
+                            pd['test_kit_name'] = 21
+
                         check_test_status = Patient_Testing.objects.filter(patient_id= pd['id'])
                         if check_test_status:
                             check_test_status_get = Patient_Testing.objects.get(patient_id= pd['id'])
@@ -1993,6 +2000,13 @@ class PHCUseStatusFilter(APIView):
                     i['patient_type_name'] = patient_type_data.patient_type_name
                     i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
                     i['test_type_name']= patient_test_type_data.test_type_name
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id'])
+                    if check_tkb:
+                        check_tkb_get = Testing_Kit_Barcode.objects.get(id= i['testing_kit_barcode_id'])
+                        i['test_kit_name'] = check_tkb_get.testing_kit_barcode_name
+                    else:
+                        i['test_kit_name'] = 21
 
                     check_test_status = Patient_Testing.objects.filter(patient_id= i['id'])
                     if check_test_status:
@@ -2917,6 +2931,20 @@ class GetPHCUserLocationDetails(APIView):
             check_block_id = []
             check_pan_id = []
             check_vill_id = []
+            check_zone_id = []
+            check_ward_id = []
+
+            rural_flag = True
+            urban_flag = False
+            bbmp_flag = False
+
+            # if master_data.phc_type == 'R':
+            #     rural_flag = True
+            # if master_data.phc_type == 'U':
+            #     urban_flag = True
+            # if master_data.phc_type == 'B':
+            #     bbmp_flag = True
+
 
             dist_details = Master_PHC.objects.filter(phc_code= master_data.phc_code).values('district_code').distinct()
             locat_phc_dist_details = []
@@ -2936,10 +2964,18 @@ class GetPHCUserLocationDetails(APIView):
                 if i['village_code'] not in check_vill_id:
                     check_vill_id.append(i['village_code'])
 
+                if i['zone_code'] not in check_zone_id:
+                    check_zone_id.append(i['zone_code'])
+
+                if i['ward_code'] not in check_ward_id:
+                    check_ward_id.append(i['ward_code'])
+
             phc_dist_details = []
             phc_block_details = []
             phc_pan_details = []
             phc_vill_details = []
+            phc_zone_details = []
+            phc_ward_details = []
 
             print(master_data.phc_code)
 
@@ -2948,42 +2984,62 @@ class GetPHCUserLocationDetails(APIView):
                 get_phc_dist_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(district_code= i)).values('district_code', 'district_name_eng').distinct()
                 print(get_phc_dist_details)
                 print(len(get_phc_dist_details))
-                if get_phc_dist_details:
-                    for j in get_phc_dist_details:
-                        phc_dist_details.append(j)
+                # if get_phc_dist_details:
+                for j in get_phc_dist_details:
+                    phc_dist_details.append(j)
 
             for i in check_block_id:
                 print(i)
                 get_phc_block_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(block_code= i)).values('block_name_eng', 'block_code').distinct()
                 print(get_phc_block_details)
                 print(len(get_phc_block_details))
-                if get_phc_block_details:
-                    for j in get_phc_block_details:
-                        phc_block_details.append(j)
+                # if get_phc_block_details:
+                for j in get_phc_block_details:
+                    phc_block_details.append(j)
 
             for i in check_pan_id:
                 print(i)
                 get_phc_pan_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(panchayat_code= i)).values('panchayat_name_eng', 'panchayat_code').distinct()
                 print(get_phc_pan_details)
                 print(len(get_phc_pan_details))
-                if get_phc_pan_details:
-                    for j in get_phc_pan_details:
-                        phc_pan_details.append(j)
+                # if get_phc_pan_details:
+                for j in get_phc_pan_details:
+                    phc_pan_details.append(j)
 
             for i in check_vill_id:
                 print(i)
                 get_phc_vill_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(village_code= i)).values('village_name_eng', 'village_code').distinct()
                 print(get_phc_vill_details)
                 print(len(get_phc_vill_details))
-                if get_phc_vill_details:
-                    for j in get_phc_vill_details:
-                        phc_vill_details.append(j)
+                # if get_phc_vill_details:
+                for j in get_phc_vill_details:
+                    phc_vill_details.append(j)
+
+            for i in check_zone_id:
+                print(i)
+                get_phc_zone_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(zone_code= i)).values('zone_name_eng', 'zone_code').distinct()
+                print(get_phc_zone_details)
+                print(len(get_phc_zone_details))
+                # if get_phc_zone_details:
+                for j in get_phc_zone_details:
+                    phc_zone_details.append(j)
+
+            for i in check_vill_id:
+                print(i)
+                get_phc_ward_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(ward_code= i)).values('ward_name_eng', 'ward_code').distinct()
+                print(get_phc_ward_details)
+                print(len(get_phc_ward_details))
+                # if get_phc_ward_details:
+                for j in get_phc_ward_details:
+                    phc_ward_details.append(j)
 
 
             print(phc_dist_details)
             print(phc_block_details)
             print(phc_pan_details)
             print(phc_vill_details)
+            print(phc_zone_details)
+            print(phc_ward_details)
             
             swab_coll_data_user_data = Swab_Collection_Centre.objects.filter(user_id = user_id).values()
 
@@ -3000,7 +3056,7 @@ class GetPHCUserLocationDetails(APIView):
                 i['phc_name'] = (phc_master_data.phc_name).strip()
                 i['phc_code'] = phc_master_data.phc_code
 
-            return Response({'swab_coll_data_user_data':swab_coll_data_user_data,'rural':True, 'urban':False, 'bbmp':False, 'phc_district_details':phc_dist_details, 'phc_block_details': phc_block_details, 'phc_pan_details':phc_pan_details, 'phc_vill_details':phc_vill_details}, status=status.HTTP_200_OK)
+            return Response({'swab_coll_data_user_data':swab_coll_data_user_data,'rural':rural_flag, 'urban':urban_flag, 'bbmp':bbmp_flag, 'phc_district_details':phc_dist_details, 'phc_block_details': phc_block_details, 'phc_pan_details':phc_pan_details, 'phc_vill_details':phc_vill_details, 'phc_zone_details': phc_zone_details, 'phc_ward_details': phc_ward_details}, status=status.HTTP_200_OK)
 
 
 
@@ -3525,13 +3581,24 @@ class GenerateUsername(APIView):
                     for i in check_phc_users_data:
                         last_user_name = User.objects.get(id= i['user_id'])
                         user_name_split_data = (last_user_name.username).split('-')
-                        last_phc_user_name = str((user_name_split_data[0]).split('_')[0])+'_SC'+'-'+str(int(user_name_split_data[1])+ 1)
+                        last_phc_user_name = str((user_name_split_data[0]).split('_')[0])+'_'+str((user_name_split_data[0]).split('_')[1])+'_SC'+'-'+str(int(user_name_split_data[1])+ 1)
 
                     return Response({'last_user_name':last_phc_user_name}, status=status.HTTP_200_OK)
                 else:
                     # check_phc_users_data = Swab_Collection_Centre.objects.get(Q(swab_collection_centre_name= phc_mo_details.swab_collection_centre_name) & Q(role_id= role_data.id)).order_by('-id')[:1]
+                    # print("PHCS",phc_mo_details.swab_collection_centre_name)
+                    # return Response({'last_user_name': str(phc_mo_details.swab_collection_centre_name)+'_SC-1'})
+
                     print("PHCS",phc_mo_details.swab_collection_centre_name)
-                    return Response({'last_user_name': str(phc_mo_details.swab_collection_centre_name)+'_SC-1'})
+                    get_mo_user_data = User.objects.get(id= phc_mo_details.user_id)
+
+                    lst_user_name = get_mo_user_data.username.split('-')
+
+                    last_dd_data = str((lst_user_name[0]).split('_')[0])+'_'+str((lst_user_name[0]).split('_')[1])+'_SC-1'
+
+                    # return Response({'last_user_name': str(phc_mo_details.swab_collection_centre_name)+'_SC-1'})
+                    return Response({'last_user_name': last_dd_data})
+
             if user_role == 'PHCM':
                 role_data = Roles.objects.get(role_name= user_role)
                 check_phc_users_data_check = Swab_Collection_Centre.objects.filter(Q(swab_collection_centre_name= phc_mo_details.swab_collection_centre_name) & Q(role_id= role_data.id)).values()
@@ -3543,13 +3610,23 @@ class GenerateUsername(APIView):
                     for i in check_phc_users_data:
                         last_user_name = User.objects.get(id= i['user_id'])
                         user_name_split_data = (last_user_name.username).split('-')
-                        last_phc_user_name = str((user_name_split_data[0]).split('_')[0])+'_MSC'+'-'+str(int(user_name_split_data[1]) + 1)
+                        last_phc_user_name = str((user_name_split_data[0]).split('_')[0])+'_'+str((user_name_split_data[0]).split('_')[1])+'_MSC'+'-'+str(int(user_name_split_data[1]) + 1)
 
                     return Response({'last_user_name':last_phc_user_name}, status=status.HTTP_200_OK)
                 else:
                     # check_phc_users_data = Swab_Collection_Centre.objects.get(Q(swab_collection_centre_name= phc_mo_details.swab_collection_centre_name) & Q(role_id= role_data.id)).values().order_by('-id')[:1]
+                    # print("PHCS",phc_mo_details.swab_collection_centre_name)
+                    # return Response({'last_user_name': str(phc_mo_details.swab_collection_centre_name)+'_MSC-1'})
+
                     print("PHCS",phc_mo_details.swab_collection_centre_name)
-                    return Response({'last_user_name': str(phc_mo_details.swab_collection_centre_name)+'_MSC-1'})
+                    get_mo_user_data = User.objects.get(id= phc_mo_details.user_id)
+
+                    lst_user_name = get_mo_user_data.username.split('-')
+
+                    last_dd_data = str((lst_user_name[0]).split('_')[0])+'_'+str((lst_user_name[0]).split('_')[1])+'_MSC-1'
+
+                    # return Response({'last_user_name': str(phc_mo_details.swab_collection_centre_name)+'_MSC-1'})
+                    return Response({'last_user_name': last_dd_data})
         
         else:
             return Response({'result':'Something went wrong'}, status= status.HTTP_400_BAD_REQUEST)
@@ -4136,6 +4213,53 @@ class GetThoDsoSsuDashboardDetails(APIView):
 
 
 
+#########################          GET ACTIVATED PHC TEST KITS DETAILS          #########################
+class GetAvailableMOTestKits(APIView):
+
+    def post(self,request):
+        data = request.data
+        print(data)
+        user_id  = data.get('user_id')
+
+        get_swab_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        swab_collected = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1))
+
+        if swab_collected:
+            swab_collected_data = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1)).values()
+            for i in swab_collected_data:
+                test_kit_data = Testing_Kit_Barcode.objects.get(id= i['test_kit_id'])
+                i['test_kit_name']= test_kit_data.testing_kit_barcode_name
+
+            return Response({'result':swab_collected_data, 'kit_available':True,'message':'Sucessfull'},status= status.HTTP_200_OK) 
+        else:
+            
+            test_kit_barcode = Testing_Kit_Barcode.objects.filter(active=1).values()
+            return Response({'result':test_kit_barcode, 'kit_available':False,'message':'Sucessfull'},status= status.HTTP_200_OK) 
+
+
+        # test_kit_ids = []
+        # for i in swab_collected:
+        #     if i.capacity > 0:
+        #         test_kit_ids.append(i.test_kit_id)
+        #     elif(i.capacity == 0):
+        #         swab_collected_delete = Phc_Id_Test_Kit_Id.objects.filter(Q(id__in= test_kit_ids) & Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1)).delete()
+
+        # get_test_kit_details = Testing_Kit_Barcode.objects.filter(Q(id__in= test_kit_ids) & Q(active=1)).values()
+
+
+
+        # class TestingKitBarcode(APIView):
+        #     def get(self, request):
+        #         test_kit_barcode = Testing_Kit_Barcode.objects.filter(active=1).values()
+        #         return Response({'result': test_kit_barcode,'message':'Sucessfull'})
+
+        # get_test_kit_details = Testing_Kit_Barcode.objects.filter(Q(id__in= test_kit_ids)).values()
+        # return Response({'result': get_test_kit_details, 'message':'Sucessfully'})
+
+
+
+
+
 #########################          GET TESTING KIT DETAILS          #########################
 class GetTestingKitDetails(APIView):
 
@@ -4353,17 +4477,24 @@ class CreatePHCUserNames(APIView):
 
                     phc_data = Master_PHC.objects.filter(district_code= dist_code).values('phc_name', 'phc_code').distinct()
 
+                    lab_ids = [6,7,8,9,10]
+                    cnd_lab = 0
+                    
                     for k in phc_data:
-                        print("New PHC Loging")
-                        print("PHC MO USERNAME : "+ str((k['phc_name']).lower().strip()).replace(' ', '.')+'_MO-1')
+                        print(k['phc_code'])
+                        print("New PHC Loging RE Enter")
+                        print("PHC MO USERNAME : "+ str((k['phc_name']).lower().strip()).replace(' ', '.')+'_'+str((k['phc_code']).strip())+'_MO-1')
                         print("PHC MO USERNAME : "+ str((k['phc_name']).lower().strip()).replace(' ', '')+'@123')
 
-                        data['phc_logins'].append({'phc_username': str((k['phc_name']).lower().strip()).replace(' ', '.')+'_MO-1', 'phc_password': str((k['phc_name']).lower().strip()).replace(' ', '')+'@123'})
+                        data['phc_logins'].append({'phc_username': str((k['phc_name']).lower().strip()).replace(' ', '.')+'_'+str((k['phc_code']).strip())+'_MO-1', 'phc_password': str((k['phc_name']).lower().strip()).replace(' ', '')+'@123'})
 
-                        create_phc_user = User.objects.create_user(username= str((k['phc_name']).lower().strip()).replace(' ', '.')+'_MO-1', password= str((k['phc_name']).lower().strip()).replace(' ', '')+'@123')
+                        create_phc_user = User.objects.create_user(username= str((k['phc_name']).lower().strip()).replace(' ', '.')+'_'+str((k['phc_code']).strip())+'_MO-1', password= str((k['phc_name']).lower().strip()).replace(' ', '')+'@123')
                         create_phc_user_ref = User_Role_Ref.objects.create(user_id= create_phc_user.id, role_id= 6, user_role_name= 'PHCMO', user_role_desc='PHCMO')
                         create_phc_details = Swab_Collection_Centre.objects.create(user_id= create_phc_user.id, role_id= 6, swab_collection_centre_name= str((k['phc_name']).lower().strip()).replace(' ', '.'), district_id= check_master_dist.id, city_id= check_master_taluk.id)
-
+                        if cnd_lab == 4:
+                            cnd_lab = 0
+                        else: 
+                            cnd_lab += 1
         return Response(data)
 
 
@@ -4444,15 +4575,18 @@ class FilterDSOLabsBasedLocation(APIView):
                     # print(dist_cal)
 
                     if dist_cal < 100:
-                        if int(i['closing_balance']) >=10:
+                        # if int(i['closing_balance']) >=10:
+                        if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
                             # if int(i['closing_balance']) == 10 and int(i['closing_balance']) > 0:
                             dist_inside_hundr.append(i)
                     if dist_cal > 100 and dist_cal < 200:
-                        if int(i['closing_balance']) >= 10:
+                        # if int(i['closing_balance']) >= 10:
+                        if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
                             # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
                             dist_inside_twohund.append(i)
                     if dist_cal > 200 and dist_cal < 300:
-                        if int(i['closing_balance']) >= 10:
+                        # if int(i['closing_balance']) >= 10:
+                        if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
                             # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
                             dist_inside_threehund.append(i)
 
@@ -6880,7 +7014,7 @@ class SSUGetLabwiseDelayReport(APIView):
 
 
 
-
+#########################      OVERALL LAB WISE DELAY REPORT               #########################
 class SSUGetOverallLabDelayD4(GenericAPIView):
 
     def post (self,request):
@@ -7103,6 +7237,602 @@ class SSUGetOverallLabDelayD4(GenericAPIView):
 
 
 
+
+
+
+#########################      SYMPTOMATIC  ASYMPTOMATIC POSITIVITY RATE REPORT              #########################
+class SSUGetMasterSysAsym(GenericAPIView):
+
+    def get (self,request):
+        Arr=[]
+        id=0
+        new_id=0
+        master_dist =   Master_District.objects.all()
+
+        for i in master_dist:
+            total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+            patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+            for j in patientObj:
+                id=j.patient.pk
+            new_id=id
+            # print(new_id)
+            District_name=i.district_code
+            total_Test_District=total_test
+            #!--------------------------------  Symptomatic  -----------------------------------------------------------------------------------------------------
+
+            #!-------------------------------------------------------------------------------------------------------------------------------------
+            tested_symptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Symptomatic')).count()
+            try:
+                tested_sym          =   tested_symptomatic/total_test
+            except ZeroDivisionError:
+                tested_sym  =  0
+            tested_sym_per      =   "{:.0%}".format(tested_sym)
+
+            #!-------------------------------------------------------------------------------------------------------------------------------------
+            sym_pos             =   Patient_Testing.objects.filter(Q(patient__patient_status='Symptomatic')&Q(testing_status__in=['1','3'])&Q(patient__pk=new_id)).count()
+            print(sym_pos,'sysPo')
+            # sym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Symptomatic')).count()
+
+            # print(sym_pos,'sys')
+            try:
+                sym_positivity      =   sym_pos/total_test
+            except ZeroDivisionError:
+                sym_positivity  =  0
+            sym_positivity_per  =   "{:.0%}".format(sym_positivity)
+
+            # #!--------------------------------- ASymptomatic ----------------------------------------------------------------------------------------------------
+
+
+            tested_Asymptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Asymptomatic')).count()
+            try:
+                tested_asym          =   tested_Asymptomatic/total_test
+            except ZeroDivisionError:
+                tested_asym  =  0
+            tested_asym_per      =   "{:.0%}".format(tested_asym)
+
+            asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=[1,3]) & Q(patient__patient_status='Asymptomatic')&Q(patient__pk=new_id)).count()
+            # asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Asymptomatic')).count()
+            try:
+                asym_positivity      =   asym_pos/total_test
+            except ZeroDivisionError:
+                asym_positivity  =  0
+            asym_positivity_per  =   "{:.0%}".format(asym_positivity)
+            try:
+                total_positivity        =   (sym_positivity+asym_positivity)/total_test
+                print(total_positivity,'pos')
+            except ZeroDivisionError:
+                total_positivity  =  0
+
+            total_positivity_per    =   "{:.0%}".format(total_positivity)
+
+            Arr.append({
+            'District_name':i.district_name_eng,
+            # 'District_repeated_count':dist_cnt,
+            'Total_Test_District':total_test,
+
+            'Symptomatic_tested':tested_symptomatic,
+            'Symptomatic_tested_per':tested_sym_per,
+            'Symptomatic_positives':sym_pos,
+            'Symptomatic_positives_per':sym_positivity_per,
+
+            'Asymptomatic_tested':tested_Asymptomatic,
+            'Asymptomatic_tested_per':tested_asym_per,
+            'Asymptomatic_positives':asym_pos,
+            'Asymptomatic_positives_per':asym_positivity_per,
+
+            # 'Positives_without_Sym_Asym':pos,
+            'Total_Positivity_per':total_positivity_per
+            })
+        return Response({
+
+                'data':Arr,
+
+                'result':' Sucessfully'})
+
+    def post (self,request):
+        data        = request.data
+        id   = data.get('user_id')
+        datef   = data.get('from_date')
+        datet   = data.get('to_date')
+        if data.get('user_id') is '':
+            return Response("user id required ")
+
+        elif User.objects.filter(id=id).exists():
+            if datef and datet:
+                print('1111')
+                date_to= datetime.strptime(datet,'%Y-%m-%d')
+                datet= date_to+timedelta(days=1)
+                datef= datetime.strptime(datef,'%Y-%m-%d')
+                Arr=[]
+                id=0
+                new_id=0
+                master_dist =   Master_District.objects.all()
+
+                for i in master_dist:
+                    total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet))
+                    for j in patientObj:
+                        id=j.patient.pk
+                    new_id=id
+                    print(new_id,'iii')
+                    District_name=i.district_code
+                    total_Test_District=total_test
+                    #!--------------------------------  Symptomatic  -----------------------------------------------------------------------------------------------------
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    tested_symptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Symptomatic')&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    try:
+                        tested_sym          =   tested_symptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_sym  =  0
+                    tested_sym_per      =   "{:.0%}".format(tested_sym)
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    sym_pos             =   Patient_Testing.objects.filter(Q(patient__patient_status='Symptomatic')&Q(testing_status__in=['1','3'])&Q(patient__pk=new_id)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    print(sym_pos,'sysPo')
+                    # sym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Symptomatic')).count()
+
+                    # print(sym_pos,'sys')
+                    try:
+                        sym_positivity      =   sym_pos/total_test
+                    except ZeroDivisionError:
+                        sym_positivity  =  0
+                    sym_positivity_per  =   "{:.0%}".format(sym_positivity)
+
+                    # #!--------------------------------- ASymptomatic ----------------------------------------------------------------------------------------------------
+
+
+                    tested_Asymptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Asymptomatic')&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    try:
+                        tested_asym          =   tested_Asymptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_asym  =  0
+                    tested_asym_per      =   "{:.0%}".format(tested_asym)
+
+                    asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=[1,3]) & Q(patient__patient_status='Asymptomatic')&Q(patient__pk=new_id)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    # asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Asymptomatic')).count()
+                    # print(asym_pos,'asys')
+                    try:
+                        asym_positivity      =   asym_pos/total_test
+                    except ZeroDivisionError:
+                        asym_positivity  =  0
+                    asym_positivity_per  =   "{:.0%}".format(asym_positivity)
+
+                    try:
+                        # total_positivity        =   (pos+tested_symptomatic+tested_Asymptomatic)/total_test
+                        total_positivity        =   (sym_positivity+asym_positivity)/total_test
+                        print(total_positivity,'pos')
+                    except ZeroDivisionError:
+                        total_positivity  =  0
+
+                    total_positivity_per    =   "{:.0%}".format(total_positivity)
+
+                    Arr.append({
+                    'District_name':i.district_name_eng,
+                    # 'District_repeated_count':dist_cnt,
+                    'Total_Test_District':total_test,
+
+                    'Symptomatic_tested':tested_symptomatic,
+                    'Symptomatic_tested_per':tested_sym_per,
+                    'Symptomatic_positives':sym_pos,
+                    'Symptomatic_positives_per':sym_positivity_per,
+
+                    'Asymptomatic_tested':tested_Asymptomatic,
+                    'Asymptomatic_tested_per':tested_asym_per,
+                    'Asymptomatic_positives':asym_pos,
+                    'Asymptomatic_positives_per':asym_positivity_per,
+
+                    # 'Positives_without_Sym_Asym':pos,
+                    'Total_Positivity_per':total_positivity_per
+                    })
+                return Response({
+
+                        'data':Arr,
+
+                        'result':' Sucessfully'})
+
+            else:
+                print('else')
+                Arr=[]
+                id=0
+                new_id=0
+                master_dist =   Master_District.objects.all()
+
+                for i in master_dist:
+                    total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+                    for j in patientObj:
+                        id=j.patient.pk
+                    new_id=id
+                    District_name=i.district_code
+                    total_Test_District=total_test
+                    #!--------------------------------  Symptomatic  -----------------------------------------------------------------------------------------------------
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    tested_symptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Symptomatic')).count()
+                    try:
+                        tested_sym          =   tested_symptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_sym  =  0
+                    tested_sym_per      =   "{:.0%}".format(tested_sym)
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    sym_pos             =   Patient_Testing.objects.filter(Q(patient__patient_status='Symptomatic')&Q(testing_status__in=['1','3'])&Q(patient__pk=new_id)).count()
+                    print(sym_pos,'sysPo')
+                    # sym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Symptomatic')).count()
+
+                    # print(sym_pos,'sys')
+                    try:
+                        sym_positivity      =   sym_pos/total_test
+                    except ZeroDivisionError:
+                        sym_positivity  =  0
+                    sym_positivity_per  =   "{:.0%}".format(sym_positivity)
+
+                    # #!--------------------------------- ASymptomatic ----------------------------------------------------------------------------------------------------
+
+
+                    tested_Asymptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Asymptomatic')).count()
+                    try:
+                        tested_asym          =   tested_Asymptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_asym  =  0
+                    tested_asym_per      =   "{:.0%}".format(tested_asym)
+
+                    asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=[1,3]) & Q(patient__patient_status='Asymptomatic')&Q(patient__pk=new_id)).count()
+                    # asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Asymptomatic')).count()
+                    # print(asym_pos,'asys')
+                    try:
+                        asym_positivity      =   asym_pos/total_test
+                    except ZeroDivisionError:
+                        asym_positivity  =  0
+                    asym_positivity_per  =   "{:.0%}".format(asym_positivity)
+
+                    try:
+                        # total_positivity        =   (pos+tested_symptomatic+tested_Asymptomatic)/total_test
+                        total_positivity        =   (sym_positivity+asym_positivity)/total_test
+                        print(total_positivity,'pos')
+                    except ZeroDivisionError:
+                        total_positivity  =  0
+
+                    total_positivity_per    =   "{:.0%}".format(total_positivity)
+
+                    Arr.append({
+                    'District_name':i.district_name_eng,
+                    # 'District_repeated_count':dist_cnt,
+                    'Total_Test_District':total_test,
+
+                    'Symptomatic_tested':tested_symptomatic,
+                    'Symptomatic_tested_per':tested_sym_per,
+                    'Symptomatic_positives':sym_pos,
+                    'Symptomatic_positives_per':sym_positivity_per,
+
+                    'Asymptomatic_tested':tested_Asymptomatic,
+                    'Asymptomatic_tested_per':tested_asym_per,
+                    'Asymptomatic_positives':asym_pos,
+                    'Asymptomatic_positives_per':asym_positivity_per,
+
+                    # 'Positives_without_Sym_Asym':pos,
+                    'Total_Positivity_per':total_positivity_per
+                    })
+                return Response({
+
+                        'data':Arr,
+
+                        'result':' Sucessfully'})
+
+        else:
+            return Response("user not found")
+
+
+
+#########################      RAT RTPCR POSITIVITY RATE REPORT              #########################
+class SSUGetMasterRatRtpcrPositivityReport(APIView):
+
+    def get (self,request):
+        Arr=[]
+        id=0
+        new_id=0
+        master_dist =   Master_District.objects.all()
+        for i in master_dist:
+            dist_cnt  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+            patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+            for j in patientObj:
+                id=j.patient.pk
+            new_id=id
+            # print(new_id)
+            antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+            print(antigen,'antigen')
+            RTPCR_other  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+            print(RTPCR_other,'RTPCR_other')
+
+            #!-------------------------------------------------------------------------------------------------------------------------------------
+            Total_test          =  antigen+RTPCR_other
+            Test_done_antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+
+
+            try:
+                RAT_vs_T          =   Test_done_antigen/Total_test
+            except ZeroDivisionError:
+                RAT_vs_T  =  0
+            RAT_vs_T_per      =   "{:.0%}".format(RAT_vs_T)
+
+
+            Antigen_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)& Q(testing_status__in=[1,3])).count()
+            try:
+                Total_Antigen_positivity      =   Antigen_positivity/Total_test
+            except ZeroDivisionError:
+                Total_Antigen_positivity  =  0
+            Total_Antigen_positivity_per  =   "{:.0%}".format(Total_Antigen_positivity)
+
+            # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+            Test_done_RTPCR_other   =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+
+            try:
+                RTPCR_other_vs_T          =   Test_done_RTPCR_other/Total_test
+            except ZeroDivisionError:
+                RTPCR_other_vs_T  =  0
+            RTPCR_other_vs_T_per      =   "{:.0%}".format(RTPCR_other_vs_T)
+
+
+            RTPCR_other_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))& Q(testing_status__in=[1,3])).count()
+            try:
+                Total_RTPCR_other_positivity      =   RTPCR_other_positivity/Total_test
+            except ZeroDivisionError:
+                Total_RTPCR_other_positivity  =  0
+            Total_RTPCR_other_positivity_per  =   "{:.0%}".format(Total_RTPCR_other_positivity)
+
+            # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+            Positives_total                  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & Q(testing_status__in=[1,3])).count()
+
+            try:
+                Total_positivity        =   Positives_total/Total_test
+            except ZeroDivisionError:
+                Total_positivity  =  0
+
+            Total_positivity_per    =   "{:.0%}".format(Total_positivity)
+
+
+
+
+
+
+            Arr.append({
+            'District_name':i.district_name_eng,
+            'District_repeated_count':dist_cnt,
+            'Total_Test':Total_test,
+            'Test_done_antigen':Test_done_antigen,
+            'RAT_vs_T_per':RAT_vs_T_per,
+            'Antigen_positivity':Antigen_positivity,
+            'Total_Antigen_positivity_per':Total_Antigen_positivity_per,
+
+            'Test_done_RTPCR_other':Test_done_RTPCR_other,
+            'RTPCR_other_vs_T_per':RTPCR_other_vs_T_per,
+            'RTPCR_other_positivity':RTPCR_other_positivity,
+            'Total_RTPCR_other_positivity_per':Total_RTPCR_other_positivity_per,
+
+            'Total_Positives':Positives_total,
+            'Total_positivity_per':Total_positivity_per
+
+            })
+        return Response({
+
+            'data':Arr,
+            'result':' Sucessfully'})
+
+
+    def post (self,request):
+
+        data        = request.data
+        id   = data.get('user_id')
+        datef   = data.get('from_date')
+        datet   = data.get('to_date')
+
+        if data.get('user_id') is '':
+            return Response("user id required ")
+
+        elif User.objects.filter(id=id).exists():
+            if datef and datet:
+                print('1111')
+                date_to= datetime.strptime(datet,'%Y-%m-%d')
+                datet= date_to+timedelta(days=1)
+                datef= datetime.strptime(datef,'%Y-%m-%d')
+                Arr=[]
+                id=0
+                new_id=0
+                master_dist =   Master_District.objects.all()
+                for i in master_dist:
+                    dist_cnt  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet))
+                    for j in patientObj:
+                        id=j.patient.pk
+
+                    new_id=id
+                    # print(new_id)
+                    antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+                    print(antigen,'antigen')
+                    RTPCR_other  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+                    print(RTPCR_other,'RTPCR_other')
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    Total_test          =  antigen+RTPCR_other
+                    Test_done_antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+
+
+                    try:
+                        RAT_vs_T          =   Test_done_antigen/Total_test
+                    except ZeroDivisionError:
+                        RAT_vs_T  =  0
+                    RAT_vs_T_per      =   "{:.0%}".format(RAT_vs_T)
+
+
+                    Antigen_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_Antigen_positivity      =   Antigen_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_Antigen_positivity  =  0
+                    Total_Antigen_positivity_per  =   "{:.0%}".format(Total_Antigen_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Test_done_RTPCR_other   =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+
+                    try:
+                        RTPCR_other_vs_T          =   Test_done_RTPCR_other/Total_test
+                    except ZeroDivisionError:
+                        RTPCR_other_vs_T  =  0
+                    RTPCR_other_vs_T_per      =   "{:.0%}".format(RTPCR_other_vs_T)
+
+
+                    RTPCR_other_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_RTPCR_other_positivity      =   RTPCR_other_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_RTPCR_other_positivity  =  0
+                    Total_RTPCR_other_positivity_per  =   "{:.0%}".format(Total_RTPCR_other_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Positives_total                  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & Q(testing_status__in=[1,3])).count()
+
+                    try:
+                        Total_positivity        =   Positives_total/Total_test
+                    except ZeroDivisionError:
+                        Total_positivity  =  0
+
+                    Total_positivity_per    =   "{:.0%}".format(Total_positivity)
+
+
+
+
+
+
+                    Arr.append({
+                    'District_name':i.district_name_eng,
+                    'District_repeated_count':dist_cnt,
+                    'Total_Test':Total_test,
+                    'Test_done_antigen':Test_done_antigen,
+                    'RAT_vs_T_per':RAT_vs_T_per,
+                    'Antigen_positivity':Antigen_positivity,
+                    'Total_Antigen_positivity_per':Total_Antigen_positivity_per,
+
+                    'Test_done_RTPCR_other':Test_done_RTPCR_other,
+                    'RTPCR_other_vs_T_per':RTPCR_other_vs_T_per,
+                    'RTPCR_other_positivity':RTPCR_other_positivity,
+                    'Total_RTPCR_other_positivity_per':Total_RTPCR_other_positivity_per,
+
+                    'Total_Positives':Positives_total,
+                    'Total_positivity_per':Total_positivity_per
+
+                    })
+                return Response({
+
+                    'data':Arr,
+                    'result':' Sucessfully'})
+
+            else:
+                print('else')
+                Arr=[]
+                id=0
+                new_id=0
+                master_dist =   Master_District.objects.all()
+                for i in master_dist:
+                    dist_cnt  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+                    # print(patientObj,'obj')
+                    for j in patientObj:
+                        id=j.patient.pk
+
+                    new_id=id
+                    # print(new_id)
+                    antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+                    print(antigen,'antigen')
+                    RTPCR_other  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+                    print(RTPCR_other,'RTPCR_other')
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    Total_test          =  antigen+RTPCR_other
+                    Test_done_antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+
+
+                    try:
+                        RAT_vs_T          =   Test_done_antigen/Total_test
+                    except ZeroDivisionError:
+                        RAT_vs_T  =  0
+                    RAT_vs_T_per      =   "{:.0%}".format(RAT_vs_T)
+
+
+                    Antigen_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_Antigen_positivity      =   Antigen_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_Antigen_positivity  =  0
+                    Total_Antigen_positivity_per  =   "{:.0%}".format(Total_Antigen_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Test_done_RTPCR_other   =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+
+                    try:
+                        RTPCR_other_vs_T          =   Test_done_RTPCR_other/Total_test
+                    except ZeroDivisionError:
+                        RTPCR_other_vs_T  =  0
+                    RTPCR_other_vs_T_per      =   "{:.0%}".format(RTPCR_other_vs_T)
+
+
+                    RTPCR_other_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_RTPCR_other_positivity      =   RTPCR_other_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_RTPCR_other_positivity  =  0
+                    Total_RTPCR_other_positivity_per  =   "{:.0%}".format(Total_RTPCR_other_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Positives_total                  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & Q(testing_status__in=[1,3])).count()
+
+                    try:
+                        Total_positivity        =   Positives_total/Total_test
+                    except ZeroDivisionError:
+                        Total_positivity  =  0
+
+                    Total_positivity_per    =   "{:.0%}".format(Total_positivity)
+
+
+
+
+
+
+                    Arr.append({
+                    'District_name':i.district_name_eng,
+                    'District_repeated_count':dist_cnt,
+                    'Total_Test':Total_test,
+                    'Test_done_antigen':Test_done_antigen,
+                    'RAT_vs_T_per':RAT_vs_T_per,
+                    'Antigen_positivity':Antigen_positivity,
+                    'Total_Antigen_positivity_per':Total_Antigen_positivity_per,
+
+                    'Test_done_RTPCR_other':Test_done_RTPCR_other,
+                    'RTPCR_other_vs_T_per':RTPCR_other_vs_T_per,
+                    'RTPCR_other_positivity':RTPCR_other_positivity,
+                    'Total_RTPCR_other_positivity_per':Total_RTPCR_other_positivity_per,
+
+                    'Total_Positives':Positives_total,
+                    'Total_positivity_per':Total_positivity_per
+
+                    })
+                return Response({
+
+                    'data':Arr,
+                    'result':' Sucessfully'})
+
+
+        else:
+            return Response("user not found")
+
+
+
 # #!########################      PackageLabWiseReport               #########################
 # class PHCPackageLabWiseReport(APIView):
 
@@ -7159,7 +7889,7 @@ class GetSSUTargetSetup(APIView):
                     selected_date = date.split('-')
                 
                     dist_data_details = {'district_code': i['district_code'], 'district_name_eng':i['district_name_eng']}
-                    dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= datetime.datetime(int(selected_date[0]), int(selected_date[1]), int(selected_date[2])).date()) & Q(district_code= i['district_code'])).values()
+                    dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= dttm.dttm(int(selected_date[0]), int(selected_date[1]), int(selected_date[2])).date()) & Q(district_code= i['district_code'])).values()
 
                     print(dso_target_data)
                     print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
@@ -7231,7 +7961,7 @@ class TargetForDSO(APIView):
 
         if id:
             if date:
-                PHCTargetAssignment.objects.filter(id= id).update(dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+                PHCTargetAssignment.objects.filter(id= id).update(dso_target= dis_targets, dso_created_datetime= dttm.dttm(int(split_date[0]), int(split_date[1]), int(split_date[2])))
             else:
                 PHCTargetAssignment.objects.filter(id= id).update(district_code= dist_codes, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
             # dist_data = Master_District.objects.get(district_code= dist_codes)
@@ -7240,7 +7970,7 @@ class TargetForDSO(APIView):
 
         else:
             if date:
-                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= dttm.dttm(int(split_date[0]), int(split_date[1]), int(split_date[2])))
             else:
                 target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
 
@@ -8857,15 +9587,18 @@ class GetTlabOPSPlatePatientDetails(APIView):
                 i['test_result'] = get_patient_test_data.testing_status
                 i['test_result_id'] = get_patient_test_data.id
 
-                Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 1)
+                # Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 1)
+                Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 0)
 
             else:
-                test_result_create = Patient_Testing.objects.create(patient_id= i['patient_id'], testing_status= 2, rtpcr_test= 1)
-                i['test_result'] = 2
+                # test_result_create = Patient_Testing.objects.create(patient_id= i['patient_id'], testing_status= 2, rtpcr_test= 1)
+                test_result_create = Patient_Testing.objects.create(patient_id= i['patient_id'], testing_status= 4, rtpcr_test= 1)
+                i['test_result'] = 4
                 i['test_result_id'] = test_result_create.id
-                Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 1)
+                # Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 1)
+                Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 0)
 
-            GroupSamples.objects.filter(id= i['id']).update(test_result= 2)
+            GroupSamples.objects.filter(id= i['id']).update(test_result= 4)
 
             i['srf_id'] = get_patient_data.srf_id
             i['patient_name'] = get_patient_data.patient_name
@@ -8876,8 +9609,6 @@ class GetTlabOPSPlatePatientDetails(APIView):
             i['patient_id']= i['patient_id']
 
 
-            
-        
         print("GET GROUP DATA")
         print("GET GROUP DATA", get_plate_details)
         print("GET GROUP DATA", len(get_plate_details))
