@@ -2964,11 +2964,11 @@ class GetPHCUserLocationDetails(APIView):
                 if i['village_code'] not in check_vill_id:
                     check_vill_id.append(i['village_code'])
 
-                if i['zone_code'] not in check_zone_id:
-                    check_zone_id.append(i['zone_code'])
+#                 if i['zone_code'] not in check_zone_id:
+#                     check_zone_id.append(i['zone_code'])
 
-                if i['ward_code'] not in check_ward_id:
-                    check_ward_id.append(i['ward_code'])
+#                 if i['ward_code'] not in check_ward_id:
+#                     check_ward_id.append(i['ward_code'])
 
             phc_dist_details = []
             phc_block_details = []
@@ -3015,23 +3015,23 @@ class GetPHCUserLocationDetails(APIView):
                 for j in get_phc_vill_details:
                     phc_vill_details.append(j)
 
-            for i in check_zone_id:
-                print(i)
-                get_phc_zone_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(zone_code= i)).values('zone_name_eng', 'zone_code').distinct()
-                print(get_phc_zone_details)
-                print(len(get_phc_zone_details))
-                # if get_phc_zone_details:
-                for j in get_phc_zone_details:
-                    phc_zone_details.append(j)
+#             for i in check_zone_id:
+#                 print(i)
+#                 get_phc_zone_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(zone_code= i)).values('zone_name_eng', 'zone_code').distinct()
+#                 print(get_phc_zone_details)
+#                 print(len(get_phc_zone_details))
+#                 # if get_phc_zone_details:
+#                 for j in get_phc_zone_details:
+#                     phc_zone_details.append(j)
 
-            for i in check_vill_id:
-                print(i)
-                get_phc_ward_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(ward_code= i)).values('ward_name_eng', 'ward_code').distinct()
-                print(get_phc_ward_details)
-                print(len(get_phc_ward_details))
-                # if get_phc_ward_details:
-                for j in get_phc_ward_details:
-                    phc_ward_details.append(j)
+#             for i in check_vill_id:
+#                 print(i)
+#                 get_phc_ward_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(ward_code= i)).values('ward_name_eng', 'ward_code').distinct()
+#                 print(get_phc_ward_details)
+#                 print(len(get_phc_ward_details))
+#                 # if get_phc_ward_details:
+#                 for j in get_phc_ward_details:
+#                     phc_ward_details.append(j)
 
 
             print(phc_dist_details)
