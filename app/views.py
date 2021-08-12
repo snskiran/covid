@@ -3416,9 +3416,11 @@ class GetTestingLabs(APIView):
             availlable_limit = check_testing_lab_details.availability_limit
 
             print(swab_collection_user_details.test_lab_id)
+            lab_master_details = Master_Labs.objects.get(id= check_testing_lab_details.testing_lab_master_id)
 
             # if (int(max_limit) <= int(availlable_limit)):
-            if (int(availlable_limit) >= 5):
+            # if (int(availlable_limit) >= 5):
+            if (int(lab_master_details.closing_balance) >= 100):
                 test_lab_details = Testing_Lab_Facility.objects.filter(id= swab_collection_user_details.test_lab_id).values()
                 print(test_lab_details)
                 for i in test_lab_details:
