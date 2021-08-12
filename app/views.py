@@ -908,7 +908,7 @@ class AddPatient(APIView):
                                             main_road_no= main_road_no,
                                             pincode= pincode,
                                             locality= locality,
-                                            landmark= landmark
+#                                             landmark= landmark
                                             )
         else:
             Patient_Address.objects.create(patient_id= patients_data.id, 
