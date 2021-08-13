@@ -14,7 +14,7 @@ from django.http import JsonResponse, request
 
 from rest_framework.views import APIView
 from rest_framework import viewsets, status
-from rest_framework.response import Response 
+from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -23,8 +23,8 @@ from rest_framework.generics import GenericAPIView, RetrieveAPIView
 
 import requests
 from datetime import datetime as asdatetime
-from datetime import datetime, timedelta
-import datetime as dttm
+from datetime import timedelta
+# import datetime as dttm
 from datetime import date as dt
 import json
 import os
@@ -729,6 +729,7 @@ class AddPatient(APIView):
         pincode = data.get('pincode')
         gender = data.get('gender')
         age = data.get('age')
+        age_type = data.get('age_type')
         idProof_type = data.get('idProof_type')
 
         aadhar_number = data.get('aadhar_number')
@@ -758,6 +759,51 @@ class AddPatient(APIView):
 
         barcode = data.get('barcode')
 
+
+        print(reason_testing)
+        print(reason)
+        print(patient_type)
+        print(patient_name)
+        print(mobile_number_belongs_to)
+        print(mobile_number)
+        print(otp_no)
+        print(states)
+        print(district_name)
+        print(resident_type)
+        print(ward_type)
+        print(city_name)
+        print(taluk_name)
+        print(village_name)
+        print(panchayat_name)
+        print(zone_name)
+        print(ward_name)
+        print(flat_door_no)
+        print(main_road_no)
+        print(pincode)
+        print(gender)
+        print(age)
+        print(idProof_type)
+        print(aadhar_number)
+        print(ration_card_number)
+        print(speciman_type)
+        print(speciman_collection_date)
+        print(patient_status_type)
+        print(symptoms)
+        print(co_morbidity)
+        print(co_morbidity_type)
+        print(test_type)
+        print(old_srf_id)
+        print(vaccine_status)
+        print(con_mobile_number)
+        print(existing_mobile_number)
+        print(user_id)
+        print(locality)
+        print(landmark)
+        print(arrival_date)
+        print(rat_created_id_data)
+        print(generate_srf)
+        print(barcode)
+
         patient_type_ref_data = Patient_Type_Ref.objects.get(patient_type_name= patient_type)
         specimen_type_ref_data = Specimen_Type_Ref.objects.get(specimen_type_name= speciman_type)
         # testing_type_ref_data = Testing_Kit_Barcode.objects.get(testing_kit_barcode_name= testing_kit_barcode)
@@ -783,85 +829,112 @@ class AddPatient(APIView):
             else:
                 co_morbidity_type_list.append(i['name'])
 
-        if rat_created_id_data:
-            generate_srf = str(generate_srf) + '-TEMP'
+        
 
 
         record_create_timestamp = ''
 
         rat_created_id = 0
+        """
+        if patient_type == 'Contact Testing':
 
-        # if patient_type == 'Contact Testing':
+            contact_tracing_patients_data = New_Entry_Contact_Tracing.objects.create(reason_for_testing= reason_testing, reason_for_testing_description= reason, patient_type_id= patient_type_ref_data.id,
+                                            added_by_id= user_id,
+                                            patient_name= patient_name, 
+                                            mobile_number= mobile_number, 
+                                            mobile_number_belongs_to= mobile_number_belongs_to,
+                                            gender= gender, 
+                                            age= age, 
+                                            id_proof_type= idProof_type, 
+                                            aadhar_number= aadhar_number, 
+                                            ration_card_number= ration_card_number, 
+                                            vaccine_status= vaccine_status, 
+                                            # vaccine_mobile_registered= vaccine_mobile_registered,
+                                            specimen_type_id= specimen_type_ref_data.id, 
+                                            co_morbidity= co_morbidity,
+                                            co_morbidity_type= co_morbidity_type_list,
+                                            patient_status = patient_status_type,
+                                            # specimen_collection_date= specimen_collection_date, 
+                                            #testing_kit_barcode_id= testing_type_ref_data.id,
+                                            # symptoms_list= symptoms, 
+                                            symptoms_list= symptoms_list, 
+                                            test_type_id= test_type_ref_data.id, 
+                                            srf_id= generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
+                                            rat_created_id= rat_created_id_data,
+                                            arrival_date= arrival_date)
+            record_create_timestamp = str(contact_tracing_patients_data.create_timestamp)
 
-        #     contact_tracing_patients_data = New_Entry_Contact_Tracing.objects.create(reason_for_testing= reason_testing, reason_for_testing_description= reason, patient_type_id= patient_type_ref_data.id,
-        #                                     added_by_id= user_id,
-        #                                     patient_name= patient_name, 
-        #                                     mobile_number= mobile_number, 
-        #                                     mobile_number_belongs_to= mobile_number_belongs_to,
-        #                                     gender= gender, 
-        #                                     age= age, 
-        #                                     id_proof_type= idProof_type, 
-        #                                     aadhar_number= aadhar_number, 
-        #                                     ration_card_number= ration_card_number, 
-        #                                     vaccine_status= vaccine_status, 
-        #                                     # vaccine_mobile_registered= vaccine_mobile_registered,
-        #                                     specimen_type_id= specimen_type_ref_data.id, 
-        #                                     co_morbidity= co_morbidity,
-        #                                     co_morbidity_type= co_morbidity_type_list,
-        #                                     patient_status = patient_status_type,
-        #                                     # specimen_collection_date= specimen_collection_date, 
-        #                                     #testing_kit_barcode_id= testing_type_ref_data.id,
-        #                                     # symptoms_list= symptoms, 
-        #                                     symptoms_list= symptoms_list, 
-        #                                     test_type_id= test_type_ref_data.id, 
-        #                                     srf_id= generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
-        #                                     rat_created_id= rat_created_id_data,
-        #                                     arrival_date= arrival_date)
-        #     record_create_timestamp = str(contact_tracing_patients_data.create_timestamp)
+            if data.get('id'):
+                Contact_Tracing.objects.filter(id= data.get('id')).update(sample_collected= 1)
+            # if test_type == 'RAT':
+            #     New_Entry_Contact_Tracing.objects.filter(id= contact_tracing_patients_data.id).update(rat_created_id= contact_tracing_patients_data.id)
 
-        #     if data.get('id'):
-        #         Contact_Tracing.objects.filter(id= data.get('id')).update(sample_collected= 1)
-        #     # if test_type == 'RAT':
-        #     #     New_Entry_Contact_Tracing.objects.filter(id= contact_tracing_patients_data.id).update(rat_created_id= contact_tracing_patients_data.id)
+            rat_created_id = contact_tracing_patients_data.id
+            if resident_type == 'Other-state':
+                New_Entry_Contact_Tracing_Address.objects.create(new_entry_contact_tracing_id= contact_tracing_patients_data.id, 
+                                                state_name= states, 
+                                                district_name= district_name, #district_type= district_type, 
+                                                city_name= city_name,
+                                                zone_type= zone_name, 
+                                                ward_name= ward_name, 
+                                                taluk_name= taluk_name, 
+                                                panchayat_name= panchayat_name, 
+                                                village_name= village_name, 
+                                                resident_type= resident_type, 
+                                                ward_type= ward_type, 
+                                                flat_door_no= flat_door_no, 
+                                                main_road_no= main_road_no,
+                                                pincode= pincode,
+                                                locality= locality)
 
-        #     rat_created_id = contact_tracing_patients_data.id
-        #     if resident_type == 'Other-state':
-        #         New_Entry_Contact_Tracing_Address.objects.create(new_entry_contact_tracing_id= contact_tracing_patients_data.id, 
-        #                                         state_name= states, 
-        #                                         district_name= district_name, #district_type= district_type, 
-        #                                         city_name= city_name,
-        #                                         zone_type= zone_name, 
-        #                                         ward_name= ward_name, 
-        #                                         taluk_name= taluk_name, 
-        #                                         panchayat_name= panchayat_name, 
-        #                                         village_name= village_name, 
-        #                                         resident_type= resident_type, 
-        #                                         ward_type= ward_type, 
-        #                                         flat_door_no= flat_door_no, 
-        #                                         main_road_no= main_road_no,
-        #                                         pincode= pincode,
-        #                                         locality= locality)
+            else:
+                New_Entry_Contact_Tracing_Address.objects.create(new_entry_contact_tracing_id= contact_tracing_patients_data.id, 
+                                                state_name= states, 
+                                                district_name= district_name, #district_type= district_type, 
+                                                city_name= city_name,
+                                                zone_type= zone_name, 
+                                                ward_name= ward_name, 
+                                                taluk_name= taluk_name, 
+                                                panchayat_name= panchayat_name, 
+                                                village_name= village_name, 
+                                                resident_type= resident_type, 
+                                                ward_type= ward_type, 
+                                                flat_door_no= flat_door_no, 
+                                                main_road_no= main_road_no,
+                                                pincode= pincode,
+                                                locality= locality)
 
-        #     else:
-        #         New_Entry_Contact_Tracing_Address.objects.create(new_entry_contact_tracing_id= contact_tracing_patients_data.id, 
-        #                                         state_name= states, 
-        #                                         district_name= district_name, #district_type= district_type, 
-        #                                         city_name= city_name,
-        #                                         zone_type= zone_name, 
-        #                                         ward_name= ward_name, 
-        #                                         taluk_name= taluk_name, 
-        #                                         panchayat_name= panchayat_name, 
-        #                                         village_name= village_name, 
-        #                                         resident_type= resident_type, 
-        #                                         ward_type= ward_type, 
-        #                                         flat_door_no= flat_door_no, 
-        #                                         main_road_no= main_road_no,
-        #                                         pincode= pincode,
-        #                                         locality= locality)
-
-
+        """
 
         # else:
+
+        user_dist_status = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        get_user_master_dist_code = Master_PHC.objects.get(id= user_dist_status.phc_master_id)
+
+        srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+        yr = str(asdatetime.now().year)[2:]
+        mn = str(asdatetime.now().month).zfill(2)
+        dd = str(asdatetime.now().day)
+
+        srf_data = srf_dist_code+yr+mn+dd
+
+        last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+        print('hhhhhhhhhh', last_srf_id)
+        if last_srf_id:
+            srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+            print(srf_data)
+        else:
+            srf_data = srf_data + '1'.zfill(5)
+
+        if rat_created_id_data:
+            get_patient_rat_data = Patient.objects.get(id= rat_created_id_data)
+            srf_data = str(get_patient_rat_data.srf_id) + '-TEMP'
+            print("RAT SRF ID")
+            print(srf_data)
+
         patients_data = Patient.objects.create(reason_for_testing= reason_testing, reason_for_testing_description= reason, patient_type_id= patient_type_ref_data.id,
                                         added_by_id= user_id,
                                         patient_name= patient_name, 
@@ -870,7 +943,8 @@ class AddPatient(APIView):
 
                                         gender= gender, 
                                         age= age,
-                                        id_proof_type= idProof_type, 
+                                        age_type= age_type,
+                                        id_proof_type= idProof_type,
                                         aadhar_number= aadhar_number, 
                                         ration_card_number= ration_card_number, 
                                         vaccine_status= vaccine_status, 
@@ -884,7 +958,7 @@ class AddPatient(APIView):
                                         # symptoms_list= symptoms, 
                                         symptoms_list= symptoms_list, 
                                         test_type_id= test_type_ref_data.id, 
-                                        srf_id= generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
+                                        srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
                                         barcode= barcode,
                                         rat_created_id= rat_created_id_data, arrival_date= arrival_date
                                     )
@@ -908,7 +982,7 @@ class AddPatient(APIView):
                                             main_road_no= main_road_no,
                                             pincode= pincode,
                                             locality= locality,
-#                                             landmark= landmark
+                                            landmark= landmark
                                             )
         else:
             Patient_Address.objects.create(patient_id= patients_data.id, 
@@ -932,7 +1006,7 @@ class AddPatient(APIView):
 
         # Patient_Testing.objects.create(patient_id= patients_data.id, lab_received_date= , testing_kit_id= , testing_status= , ct_value= , 
         #                                 comments= ,)                             
-        res_data = [{'patient_name':patient_name, 'mobile_number':mobile_number, 'gender': gender, 'age':age, 'speciman_type':speciman_type,'patient_status_type':patient_status_type, 'test_type':test_type, 'added_date':record_create_timestamp, 'srf_id': generate_srf, 'rat_created_id':rat_created_id}]
+        res_data = [{'patient_name':patient_name, 'mobile_number':mobile_number, 'gender': gender, 'age':age, 'speciman_type':speciman_type,'patient_status_type':patient_status_type, 'test_type':test_type, 'added_date':record_create_timestamp, 'srf_id': srf_data, 'rat_created_id':rat_created_id}]
         return Response({'result': res_data,'message':"Patient Data added Sucessfully"}, status= status.HTTP_200_OK)
 
 
@@ -1135,6 +1209,7 @@ class GetAlreadyTestedPatientsData(APIView):
                         i['main_road_no'] = patint_addr.main_road_no
                         i['pincode'] = patint_addr.pincode
                         i['locality'] = patint_addr.locality
+                        i['landmark'] = patint_addr.landmark
 
                         i['patient_dist'] = patient_dist
                         i['patient_taluk'] = patient_taluk
@@ -1179,6 +1254,7 @@ class GetAlreadyTestedPatientsData(APIView):
                             i['main_road_no'] = patint_addr.main_road_no
                             i['pincode'] = patint_addr.pincode
                             i['locality'] = patint_addr.locality
+                            i['landmark'] = patint_addr.landmark
 
                             i['patient_dist'] = patient_dist
                             i['patient_taluk'] = patient_taluk
@@ -1221,6 +1297,7 @@ class GetAlreadyTestedPatientsData(APIView):
                             i['main_road_no'] = patint_addr.main_road_no
                             i['pincode'] = patint_addr.pincode
                             i['locality'] = patint_addr.locality
+                            i['landmark'] = patint_addr.landmark
 
                             i['patient_dist'] = patient_dist
                             i['patient_taluk'] = patient_taluk
@@ -1265,6 +1342,7 @@ class GetAlreadyTestedPatientsData(APIView):
                             i['main_road_no'] = patint_addr.main_road_no
                             i['pincode'] = patint_addr.pincode
                             i['locality'] = patint_addr.locality
+                            i['landmark'] = patint_addr.landmark
 
                             i['patient_dist'] = patient_dist
                             i['patient_taluk'] = patient_taluk
@@ -1298,6 +1376,7 @@ class GetAlreadyTestedPatientsData(APIView):
                     i['main_road_no'] = ''
                     i['pincode'] = ''
                     i['locality'] = ''
+                    i['landmark'] = ''
                     i['patient_dist'] = patient_dist
                     i['patient_taluk'] = patient_taluk
                     i['patient_panc'] = patient_panc
@@ -1363,6 +1442,7 @@ class GetAlreadyTestedPatientsData(APIView):
                     i['main_road_no'] = patint_addr.main_road_no
                     i['pincode'] = patint_addr.pincode
                     i['locality'] = patint_addr.locality
+                    i['landmark'] = patint_addr.landmark
 
                     i['patient_dist'] = patient_dist
                     i['patient_taluk'] = patient_taluk
@@ -1391,6 +1471,7 @@ class GetAlreadyTestedPatientsData(APIView):
                     i['main_road_no'] = ''
                     i['pincode'] = ''
                     i['locality'] = ''
+                    i['landmark'] = ''
                     i['patient_dist'] = patient_dist
                     i['patient_taluk'] = patient_taluk
                     i['patient_panc'] = patient_panc
@@ -1813,7 +1894,7 @@ class PHCUserDAteFilter(APIView):
                 # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
                 # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
 
-                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2])))).values().order_by('-id')
+                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status= 31) & Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2])))).values().order_by('-id')
                 for i in patient_details:
                     patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
                     patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
@@ -2077,7 +2158,7 @@ class PHCUseTestTypeFilter(APIView):
                 # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
                 test_type_id = Test_Type_Ref.objects.get(test_type_name= test_type)
 
-                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(test_type_id= test_type_id.id)).values().order_by('-id')
+                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status= 31) & Q(test_type_id= test_type_id.id)).values().order_by('-id')
                 for i in patient_details:
                     patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
                     patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
@@ -2133,8 +2214,28 @@ class UpdatePatientTestingResult(APIView):
         if check_patient_data:
             lab_test_result_update = Patient_Testing.objects.filter(patient_id= id).update(testing_status= test_result)
             if test_result == '0':
-                generate_srf = random.randint(100000000, 999999999)
-                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).update(srf_id= generate_srf)
+                # generate_srf = random.randint(100000000, 999999999)
+
+                user_dist_status = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+                get_user_master_dist_code = Master_PHC.objects.get(id= user_dist_status.phc_master_id)
+
+                srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+                yr = str(asdatetime.now().year)[2:]
+                mn = str(asdatetime.now().month).zfill(2)
+                dd = str(asdatetime.now().day)
+
+                srf_data = srf_dist_code+yr+mn+dd
+
+                last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+                if last_srf_id:
+                    srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+                else:
+                    srf_data = srf_data + '1'.zfill(5)
+
+                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).update(srf_id= srf_data)
                 # print("Antigen Negative", check_rtpcr_data)
 
             if test_result == '1':
@@ -2144,8 +2245,28 @@ class UpdatePatientTestingResult(APIView):
             lab_test_result_update = Patient_Testing.objects.create(patient_id= id, testing_status= test_result)
 
             if test_result == '0':
-                generate_srf = random.randint(100000000, 999999999)
-                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).update(srf_id= generate_srf)
+                # generate_srf = random.randint(100000000, 999999999)
+                
+                user_dist_status = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+                get_user_master_dist_code = Master_PHC.objects.get(id= user_dist_status.phc_master_id)
+
+                srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+                yr = str(asdatetime.now().year)[2:]
+                mn = str(asdatetime.now().month).zfill(2)
+                dd = str(asdatetime.now().day)
+
+                srf_data = srf_dist_code+yr+mn+dd
+
+                last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+                if last_srf_id:
+                    srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+                else:
+                    srf_data = srf_data + '1'.zfill(5)
+
+                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).update(srf_id= srf_data)
                 # print("Antigen Negative DATA", check_rtpcr_data)
 
             if test_result == '1':
@@ -2212,26 +2333,29 @@ class CreatePackage(APIView):
 
         print("COUNT", count)
 
-
         tho_deatils = Swab_Collection_Centre.objects.get(user_id= user_id)
 
-        last_package_name = Package_Sampling.objects.all().values().order_by('-id')
+        last_package_name = Package_Sampling.objects.filter(Q(master_phc= tho_deatils.phc_master_id) & Q(create_timestamp__date= asdatetime.now())).values().order_by('-id')[:1]
         print(last_package_name)
 
         master_phc_data = Master_PHC.objects.get(id= tho_deatils.phc_master_id)
         
         last_package_name_data = ''
         if last_package_name:
-            last_package_name = Package_Sampling.objects.all().values().order_by('-id')[0]
-            current_datetime = asdatetime.now().strftime('%Y-%m-%d')
-            # last_package_name_data = 'PHCID_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
-            last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
+            # last_package_name = Package_Sampling.objects.filter(master_phc= tho_deatils.phc_master_id).values().order_by('-id')[0]
+            for i in last_package_name:
+                current_datetime = asdatetime.now().strftime('%Y-%m-%d')
+                # last_package_name_data = 'PHCID_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
+                last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_'+str(int((i['package_sampling_name']).split('_')[2]) + 1)
+            # current_datetime = asdatetime.now().strftime('%Y-%m-%d')
+            # # last_package_name_data = 'PHCID_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
+            # last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
         else:
             current_datetime = asdatetime.now().strftime('%Y-%m-%d')
             # last_package_name_data = 'PHCID_'+str(current_datetime)+'_1'
             last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_1'
 
-        created_package_list = Package_Sampling.objects.create(user_id= user_id, swab_cc_id= tho_deatils.id, package_sampling_name= last_package_name_data, package_sampling_barcode= random.randint(1000000000,9999999999), samples_count= count, dispatch_status= 0, sympto_indication= patient_status, package_type_status= 6, package_type_action=16)
+        created_package_list = Package_Sampling.objects.create(user_id= user_id, swab_cc_id= tho_deatils.id, master_phc_id= tho_deatils.phc_master_id, package_sampling_name= last_package_name_data, package_sampling_barcode= random.randint(1000000000,9999999999), samples_count= count, dispatch_status= 0, sympto_indication= patient_status, package_type_status= 6, package_type_action=16)
 
         for pid in patient_ids:
             print(pid)
@@ -2286,7 +2410,7 @@ class GetPackageSamples(APIView):
 
 
         for i in get_package_patients_details:
-            Patient.objects.filter(id= i['id']).update(sample_status= 'Accepted', lab_accepted_datetime= asdatetime.now())
+            # Patient.objects.filter(id= i['id']).update(sample_status= 'Accepted', lab_accepted_datetime= asdatetime.now())
             specimen_type_details = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
             test_type_details = Test_Type_Ref.objects.get(id= i['test_type_id'])
             package_details = Package_Sampling.objects.get(id= i['package_sampling_id'])
@@ -2296,8 +2420,6 @@ class GetPackageSamples(APIView):
             i['package_barcode'] = package_details.package_sampling_barcode
 
             i['disable'] = True
-
-        
 
         return Response(get_package_patients_details)
 
@@ -2374,7 +2496,7 @@ class GetPHCUseraddedPatients(APIView):
                 # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
                 # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 1) & Q(package_sampling_id__isnull = True)).values()
                 # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
-                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31)  & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
                 for i in patient_details:
                     
                     patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
@@ -2615,7 +2737,6 @@ class GetAllPackageDetails(APIView):
     def post(self, request):
         
         data = request.data
-        print("TTTTTTTTTTTTTTT", data)
         user_id = data.get('user_id')
 
         check_scc_user = Swab_Collection_Centre.objects.filter(user_id= user_id)
@@ -2629,32 +2750,51 @@ class GetAllPackageDetails(APIView):
             check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
             if check_user_roles.role_name == 'PHCMO':
                 all_phcm_data = []
-                check_all_slab_collector = Swab_Collection_Centre.objects.filter(swab_collection_centre_name= check_user_data.swab_collection_centre_name).values()
-                for i in check_all_slab_collector:
-                    package_details = Package_Sampling.objects.filter(Q(user_id=i['user_id'])).values()
-                    for pd in package_details:
-                        # patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
-                        # patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
-                        # patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
-                        # pd['patient_type_name'] = patient_type_data.patient_type_name
-                        # pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
-                        # pd['test_type_name']= patient_test_type_data.test_type_name
-                        check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
-                        if check_lab:
-                            check_lab = Testing_Lab_Facility.objects.get(id=  pd['test_lab_id'])
-                            lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
-                            pd['lab_name'] = lab_master_data.lab_name
-                        else:
-                            pd['lab_name'] = '-'
+                # check_all_slab_collector = Swab_Collection_Centre.objects.filter(phc_master_id= check_user_data.phc_master_id).values_list('user_id',flat=True)
+                # for i in check_all_slab_collector:
+                #     package_details = Package_Sampling.objects.filter(Q(user_id=i['user_id']) & (Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17))).values()
+                #     for pd in package_details:
+                #         # patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
+                #         # patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
+                #         # patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
+                #         # pd['patient_type_name'] = patient_type_data.patient_type_name
+                #         # pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                #         # pd['test_type_name']= patient_test_type_data.test_type_name
+                #         check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
+                #         if check_lab:
+                #             check_lab = Testing_Lab_Facility.objects.get(id=  pd['test_lab_id'])
+                #             lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
+                #             pd['lab_name'] = lab_master_data.lab_name
+                #         else:
+                #             pd['lab_name'] = '-'
 
 
-                        all_phcm_data.append(pd)
+                #         all_phcm_data.append(pd)
+                # return Response({'package_details':all_phcm_data,'result': 'Sucess'})
 
-                return Response({'package_details':all_phcm_data,'result': 'Sucess'})
+                check_all_slab_collector = Swab_Collection_Centre.objects.filter(phc_master_id= check_user_data.phc_master_id).values_list('user_id',flat=True)
+                print(list(check_all_slab_collector))
+                print("LISTTTTTTTTT")
+                # for i in check_all_slab_collector:
+                package_details = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector)) & (Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17))).values()
+                # for pd in package_details:
+                #     check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
+                #     if check_lab:
+                #         check_lab = Testing_Lab_Facility.objects.get(id=  pd['test_lab_id'])
+                #         lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
+                #         pd['lab_name'] = lab_master_data.lab_name
+                #     else:
+                #         pd['lab_name'] = '-'
+
+
+                #     all_phcm_data.append(pd)
+
+
+                return Response({'package_details':package_details,'result': 'Sucess'})
 
             if check_user_roles.role_name == 'PHCS':
                  # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
-                package_details = Package_Sampling.objects.filter(user_id=user_id).values()
+                package_details = Package_Sampling.objects.filter(user_id=user_id).values().order_by('-id')
 
                 return Response({'package_details':package_details,'result': 'Sucess'})
 
@@ -2671,7 +2811,7 @@ class GetAllPackageDetails(APIView):
 
         if tho_present:
             tho_data            = THO.objects.get(user_id= user_id)
-            tho_package_datas   = Package_Sampling.objects.filter(tho_id= tho_data.id).values()
+            tho_package_datas   = Package_Sampling.objects.filter(Q(tho_id= tho_data.id) & Q(package_type_action=13)).values()
             for pd in tho_package_datas:
                 check_lab = Testing_Lab_Facility.objects.filter(id= pd['test_lab_id'])
                 if check_lab:
@@ -2682,6 +2822,7 @@ class GetAllPackageDetails(APIView):
                     pd['lab_name'] = '-'
 
             return Response({'package_details':tho_package_datas,'result':'Sucess'})
+
 
         elif dso_present:
             dso_data            = DSO.objects.get(user_id= user_id)
@@ -2938,12 +3079,12 @@ class GetPHCUserLocationDetails(APIView):
             urban_flag = False
             bbmp_flag = False
 
-            # if master_data.phc_type == 'R':
-            #     rural_flag = True
-            # if master_data.phc_type == 'U':
-            #     urban_flag = True
-            # if master_data.phc_type == 'B':
-            #     bbmp_flag = True
+            if master_data.phc_type == 'R':
+                rural_flag = True
+            if master_data.phc_type == 'U':
+                urban_flag = True
+            if master_data.phc_type == 'B':
+                bbmp_flag = True
 
 
             dist_details = Master_PHC.objects.filter(phc_code= master_data.phc_code).values('district_code').distinct()
@@ -2964,11 +3105,11 @@ class GetPHCUserLocationDetails(APIView):
                 if i['village_code'] not in check_vill_id:
                     check_vill_id.append(i['village_code'])
 
-#                 if i['zone_code'] not in check_zone_id:
-#                     check_zone_id.append(i['zone_code'])
+                if i['zone_code'] not in check_zone_id:
+                    check_zone_id.append(i['zone_code'])
 
-#                 if i['ward_code'] not in check_ward_id:
-#                     check_ward_id.append(i['ward_code'])
+                if i['ward_code'] not in check_ward_id:
+                    check_ward_id.append(i['ward_code'])
 
             phc_dist_details = []
             phc_block_details = []
@@ -3015,23 +3156,23 @@ class GetPHCUserLocationDetails(APIView):
                 for j in get_phc_vill_details:
                     phc_vill_details.append(j)
 
-#             for i in check_zone_id:
-#                 print(i)
-#                 get_phc_zone_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(zone_code= i)).values('zone_name_eng', 'zone_code').distinct()
-#                 print(get_phc_zone_details)
-#                 print(len(get_phc_zone_details))
-#                 # if get_phc_zone_details:
-#                 for j in get_phc_zone_details:
-#                     phc_zone_details.append(j)
+            for i in check_zone_id:
+                print(i)
+                get_phc_zone_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(zone_code= i)).values('zone_name_eng', 'zone_code').distinct()
+                print(get_phc_zone_details)
+                print(len(get_phc_zone_details))
+                # if get_phc_zone_details:
+                for j in get_phc_zone_details:
+                    phc_zone_details.append(j)
 
-#             for i in check_vill_id:
-#                 print(i)
-#                 get_phc_ward_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(ward_code= i)).values('ward_name_eng', 'ward_code').distinct()
-#                 print(get_phc_ward_details)
-#                 print(len(get_phc_ward_details))
-#                 # if get_phc_ward_details:
-#                 for j in get_phc_ward_details:
-#                     phc_ward_details.append(j)
+            for i in check_ward_id:
+                print(i)
+                get_phc_ward_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(ward_code= i)).values('ward_name_eng', 'ward_code').distinct()
+                print(get_phc_ward_details)
+                print(len(get_phc_ward_details))
+                # if get_phc_ward_details:
+                for j in get_phc_ward_details:
+                    phc_ward_details.append(j)
 
 
             print(phc_dist_details)
@@ -3194,7 +3335,7 @@ class AllContactTracingData(APIView):
 #         return Response({'result': 'Assigned Sucessfully'}, status= status.HTTP_200_OK)
 
 
-
+#########################          ASSIGN CONTACT TRACING          #########################
 class AssignContactTracing(APIView):
     
     def post(self, request):
@@ -3415,8 +3556,9 @@ class GetTestingLabs(APIView):
             max_limit = check_testing_lab_details.current_count
             availlable_limit = check_testing_lab_details.availability_limit
 
-            print(swab_collection_user_details.test_lab_id)
             lab_master_details = Master_Labs.objects.get(id= check_testing_lab_details.testing_lab_master_id)
+
+            print(swab_collection_user_details.test_lab_id)
 
             # if (int(max_limit) <= int(availlable_limit)):
             # if (int(availlable_limit) >= 5):
@@ -3984,6 +4126,15 @@ class GetPHCDashboardDetails(APIView):
 
                 # return Response({'total_patient_added':patient_count,'patient_symptomatic_count': patient_symptomatic_count,'patient_asymptomatic_count':patient_asymptomatic_count, 'total_samples_collected':patient_count})
                     # return Response({'no_of_mobile_team': no_of_mobile_team,'no_of_swab_collector': no_of_swab_collector,'total_samples_collected':total_samples_collected, 'total_rat_result_published':total_rat_result_published,}, status= status.HTTP_200_OK)
+                    
+                    print("DDDDDDDDDDDDDDDDDDDDDDDDDDD")
+                    print({'no_of_mobile_team': no_of_mobile_team,
+                                        'no_of_swab_collector': no_of_swab_collector,
+                                        'total_samples_collected':total_samples_collected, 
+                                        'total_rat_result_published':total_rat_result_published,
+                                        'total_target_tersting_today':total_target_today, 'total_testing_assigned_today': today_contact_tracing_ass,
+                                        'total_testing_collected':today_total_sam_collected_cnt, 'short_fall':short_fall_cnt})
+                    
                     return Response({'no_of_mobile_team': no_of_mobile_team,
                                         'no_of_swab_collector': no_of_swab_collector,
                                         'total_samples_collected':total_samples_collected, 
@@ -4124,33 +4275,73 @@ class GetThoDsoSsuDashboardDetails(APIView):
     def post(self, request):
 
         data = request.data
+        print("THIS DASHBOARD CALLED")
         print(data)
 
         user_id = data.get('user_id')
+        print(user_id)
 
         tho_data = THO.objects.filter(user_id= user_id)
+        print(tho_data)
         dso_data = DSO.objects.filter(user_id= user_id)
         ssu_data = SSU.objects.filter(user_id= user_id)
 
         print(dso_data)
 
         if tho_data:
+            print("INSIDE THO")
+            from_date = data.get('from_date')
+            to_date = data.get('to_date')
+            print(from_date)
+            print(to_date)
+            if from_date and to_date:
+                print("INSIDE IF CND")
+                tho_data_get = THO.objects.get(user_id= user_id)
 
-            tho_data_get = THO.objects.get(user_id= user_id)
+                no_of_swab_collector = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).count()
+                no_of_packages = Package_Sampling.objects.filter(Q(tho_id= tho_data_get.id) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                print(no_of_packages)
+                no_of_samples = 0
 
-            no_of_swab_collector = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).count()
-            no_of_packages = Package_Sampling.objects.filter(Q(tho_id= tho_data_get.id)).count()
-            no_of_samples = 0
+                print(asdatetime.strptime(from_date,'%Y-%m-%d').date())
+                print(asdatetime.strptime(to_date,'%Y-%m-%d').date())
+                print(type(asdatetime.strptime(to_date,'%Y-%m-%d').date()))
 
-            swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values()
-            if swab_collectios_details:
-                for i in swab_collectios_details:
-                    print(i)
-                    phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values()
-                    for j in phc_swab_collection_team:
-                        no_of_samples += Patient.objects.filter(added_by_id= j['user_id']).count()
+                swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values()
+                if swab_collectios_details:
+                    for i in swab_collectios_details:
+                        print(i)
+                        # phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id'))
+                        # print("FFFFFFFFFFFFF",phc_swab_collection_team)
+                        # for j in phc_swab_collection_team:
+                        #     ss= Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                        #     print(ss)
+                        #     no_of_samples += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                        phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id'))
+                      
+                        ss= Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                        print(ss)
+                        no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
 
-            return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':0, 'no_of_packages_for_dispatch':0, 'no_of_packages_dispatched_to_lab':0},status= status.HTTP_200_OK)
+                return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':0, 'no_of_packages_for_dispatch':0, 'no_of_packages_dispatched_to_lab':0},status= status.HTTP_200_OK)
+
+            else:
+                print("ELSE")
+                tho_data_get = THO.objects.get(user_id= user_id)
+
+                no_of_swab_collector = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).count()
+                no_of_packages = Package_Sampling.objects.filter(Q(tho_id= tho_data_get.id) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                no_of_samples = 0
+
+                swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values()
+                if swab_collectios_details:
+                    for i in swab_collectios_details:
+                        print(i)
+                        phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values()
+                        for j in phc_swab_collection_team:
+                            no_of_samples += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':0, 'no_of_packages_for_dispatch':0, 'no_of_packages_dispatched_to_lab':0},status= status.HTTP_200_OK)
 
 
         if dso_data:
@@ -4378,7 +4569,7 @@ class AcceptPackage(APIView):
 
 
 
-
+#########################          GET CONTACTEE PATIENT DETAILS          #########################
 class GetContacteePatientDetails(APIView):
 
     def post(self, request):
@@ -4961,7 +5152,7 @@ class DeletePHCTestKit(APIView):
 #             'message':   'Sucessfully'})
 
 
-
+#########################      TESTING KIT BARCODE               #########################
 class TestingKitBarcode(APIView):
     def get(self, request):
         test_kit_barcode = Testing_Kit_Barcode.objects.filter(active=1).values()
@@ -4969,6 +5160,8 @@ class TestingKitBarcode(APIView):
 
 
 
+
+#########################      USER TARGET ASSIGNED COUNTS               #########################
 class UserTargetAssignedCounts(APIView):
     
     def post(self, request):
@@ -4994,6 +5187,258 @@ class UserTargetAssignedCounts(APIView):
 ####################################################################            REPORT             #####################################################################
 
 
+#########################      PHC DATE WISE COLLECTION STATUS AND RESULT TOTAL COUNT               #########################
+class PHCDateWiseCollectionStatusAndResultTotalCount(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        print(data)
+
+        check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values()
+
+        phc_user_ids = []
+
+        for i in check_all_swab_collector:
+            if i['user_id'] not in phc_user_ids:
+                phc_user_ids.append(i['user_id'])
+
+
+        patient_data = Patient.objects.filter(added_by_id__in= phc_user_ids).values('create_timestamp__date').distinct()
+
+        swab_col_rep_data = []
+
+        for i in patient_data:
+            for j in phc_user_ids:
+                user_data = User.objects.get(id= j)
+                samp_collected_cnt = Patient.objects.filter(Q(added_by_id= j) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+                if samp_collected_cnt > 0:
+                    swab_col_rep_data.append({'user_id':j, 'name':user_data.first_name, 'username':user_data.username,'date': i['create_timestamp__date'], 'total_collection_count':samp_collected_cnt})
+
+        return Response({'result': swab_col_rep_data, 'message': 'Sucess'})
+
+
+
+
+#########################      PHC DATE WISE CONTACT TRACING STATUS REPORT               #########################
+class PHCDateWiseContectTestingStatusReport(APIView):
+
+    def post(self, request):
+        data = request.data
+        user_id     =   data.get('user_id')
+        Arr=[]
+
+        check_user  =   Swab_Collection_Centre.objects.get(Q(user_id= user_id) & Q(role_id=6))
+
+        get_scc_users = list(Swab_Collection_Centre.objects.filter(phc_master_id= check_user.phc_master_id).values_list('user_id'))
+        
+        phc_target_assigned =   PHCTargetAssignment.objects.filter(Q(phc_id= check_user.phc_master_id)).values('phc_created_datetime__date').distinct()
+
+        for i in phc_target_assigned:
+            
+            phc_created_datetime    =   PHCTargetAssignment.objects.get(phc_created_datetime__date=i['phc_created_datetime__date'])
+            contact_testing         =   Contact_Tracing.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+            ili                     =   ILI.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+
+            col_cnt_testing_cnt = Contact_Tracing.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(sample_collected= 1) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+            col_ili_cnt = ILI.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(sample_collected= 1) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+            col_rnd_samp_cnt = Patient.objects.filter(Q(added_by_id__in= get_scc_users) & Q(create_timestamp__date= i['phc_created_datetime__date'])).count()
+
+            phc_target_count = phc_created_datetime.phc_target
+
+            random = phc_target_count - contact_testing - ili
+
+            Arr.append({'date':i['phc_created_datetime__date'],
+                        'Total_target':phc_target_count,
+                        'actieved_target':col_cnt_testing_cnt + col_ili_cnt + col_rnd_samp_cnt,
+                        'contact_testing':contact_testing,
+                        'ili':ili,
+                        'random':random})
+        return Response({
+            'result':Arr,
+            'message':'Sucessfully'
+        },status=status.HTTP_200_OK)
+
+
+
+
+#########################      PHC DATE WISE CONTACT TRACING STATUS INDIVIDUAL USER COUNT               #########################
+class PHCDateWiseContectTestingStatusIndividualUserReport(APIView):
+
+    def post(self, request):
+        data = request.data
+        user_id     =   data.get('user_id')
+        date     =   data.get('date')
+        Arr=[]
+
+        check_user  =   Swab_Collection_Centre.objects.get(Q(user_id= user_id) & Q(role_id=6))
+
+        get_scc_users = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id) & Q(role_id=8)).values_list('user_id'))
+        
+        get_target_user     =   TargetAssignToUser.objects.filter(Q(user_id__in=get_scc_users) & Q(created_datetime__date=date)).values()
+        for i in get_target_user:
+            msc_user_data = User.objects.get(id= i['user_id'])
+            i['msc_name']= msc_user_data.first_name
+            i['total_target'] = str(int(i['contact_tracing_target']) + int(i['ili_target']) + int(i['random_other_target']))
+            i['date']= date
+
+        return Response({
+            'get_target_user':get_target_user,
+            'message':'Sucessfully'
+        },status=status.HTTP_200_OK)
+
+
+
+
+#########################      PHC DATE WISE CONTACT TRACING STATUS INDIVIDUAL USER COUNT               #########################
+class PHCDateWiseContectTestingStatusIndividualUserDetailReport(APIView):
+
+    def post(self, request):
+        data            =   request.data
+        user_id         =   data.get('user_id')
+        date            =   data.get('date')
+
+        contract_user   =   Contact_Tracing.objects.filter(Q(assigned_date__date=date) & Q(assigned_msc_user_id=user_id)).values()
+
+        return Response({
+            'contract_user':contract_user,
+            'message':'Sucessfully'
+        },status=status.HTTP_200_OK)
+
+
+
+
+#########################      PHC DATE WISE COLLECTION STATUS AND RESULT TOTAL COUNT INDIVIDUAL               #########################
+class PHCDateWiseCollectionStatusAndResultTotalCountndividual(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+        print("JJJJJJJJJJJJJ", data)
+        user_id = data.get('user_id')
+        date = data.get('date')
+
+        date_split = date.split('-')
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+
+        patient_details = Patient.objects.filter(Q(added_by_id=user_id) & Q(create_timestamp__date= datetime.datetime(int(date_split[0]), int(date_split[1]), int(date_split[2])))).values()
+
+        for i in patient_details:
+            print(i)
+            
+            patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+            patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+            patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+            # i.patient_type_name = i.patient_type.patient_type_name
+            i['patient_type_name'] = patient_type_data.patient_type_name
+            i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+            i['test_type_name']= patient_test_type_data.test_type_name
+
+            check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id'])
+            if check_tkb:
+                check_tkb_get = Testing_Kit_Barcode.objects.get(id= i['testing_kit_barcode_id'])
+                i['test_kit_name'] = check_tkb_get.testing_kit_barcode_name
+            else:
+                i['test_kit_name'] = 21
+
+            if patient_test_type_data.test_type_name == 'RAT':
+                lab_test_data = Patient_Testing.objects.filter(patient_id= i['id'])
+                if lab_test_data:
+                    lab_test_data_get = Patient_Testing.objects.get(patient_id= i['id'])
+                    i['test_result'] = lab_test_data_get.testing_status
+                else:
+                    i['test_result'] = 2
+
+        #     i.patient_type_name = i.patient_type.patient_type_name
+        #     i.patient_type_name = i.patient_type.patient_type_name
+        #     i.specimen_type_name= i.specimen_type.specimen_type_name
+        #     i.test_type_name= i.test_type.test_type_name
+
+        #     check_tkb = Testing_Kit_Barcode.objects.filter(id= i.testing_kit_barcode_id)
+        #     if check_tkb:
+        #         # check_tkb_get = Testing_Kit_Barcode.objects.get(id= i['testing_kit_barcode_id'])
+        #         i.test_kit_name = i.testing_kit_barcode.testing_kit_barcode_name
+        #     else:
+        #         i.test_kit_name = 21
+
+        #     if i.test_type.test_type_name == 'RAT':
+        #         lab_test_data = Patient_Testing.objects.filter(patient_id= i.id)
+        #         if lab_test_data:
+        #             # lab_test_data_get = Patient_Testing.objects.get(patient_id= i['id'])
+        #             # i.test_result = i.id.testing_status
+        #             lab_test_data_get = Patient_Testing.objects.get(patient_id= i.id)
+        #             i.test_result = lab_test_data_get.testing_status
+        #         else:
+        #             i.test_result = 2
+
+        # # json_data = json.dumps(list(patient_details))
+        # rrr = serializer.serializer('json', patient_details)
+        return Response({'patient_details':patient_details,'result': 'successfull'})
+
+
+
+
+#########################      PHC DATE WISE SAMPLES REJECTED COUNT REPORT               #########################
+class PHCDateWiseSampleRejectedCountReport(APIView):
+    def post(self, request):
+        data = request.data
+        user_id = data.get('user_id')
+        Arr=[]
+
+        check_user  =   Swab_Collection_Centre.objects.get(Q(user_id= user_id) & Q(role_id=6))
+        
+        phc_user    =   Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id')
+
+        patient_details = Patient.objects.filter(Q(added_by_id__in=phc_user) & Q(samples_rejected=1)).values('create_timestamp__date').distinct()
+
+        for i in patient_details:
+            patient_rej = Patient.objects.filter(Q(create_timestamp__date=i['create_timestamp__date']) & Q(added_by_id__in=list(phc_user)) & Q(samples_rejected=1)).count()
+            
+            Arr.append({'date':i['create_timestamp__date'],
+                        'rejected_count':patient_rej})
+
+        return Response({
+            'result':Arr,
+            'message':'Sucessfully'
+        },status=status.HTTP_200_OK)
+
+
+
+
+#########################      PHC DATE WISE SAMPLES REJECTED COUNT REPORT INDETAIL               #########################
+class PHCDateWiseSampleRejectedIndetailReport(APIView):
+    def post(self, request):
+        data = request.data
+        user_id     =   data.get('user_id')
+        date        =   data.get('date')
+        Arr=[]
+
+        check_user  =   Swab_Collection_Centre.objects.get(Q(user_id= user_id) & Q(role_id=6))
+        
+        phc_user    =   Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id')
+
+        rejected_patient_samp_details = Patient.objects.filter(Q(added_by_id__in=list(phc_user)) & Q(samples_rejected=1) &Q(create_timestamp__date=date)).values()
+
+        for j in rejected_patient_samp_details:
+
+            get_sp_type = Specimen_Type_Ref.objects.get(id= j['specimen_type_id'])
+            j['specimen_type_name'] = get_sp_type.specimen_type_name
+            added_user_data = User.objects.get(id= j['added_by_id'])
+            j['added_user_name'] = added_user_data.first_name
+
+        
+        return Response({
+            'result':rejected_patient_samp_details,
+            'message':'Sucessfully'
+        },status=status.HTTP_200_OK)
+
+
 
 
 #########################      PHC TARGET VS ACTUAL SWAB COLLECTION               #########################
@@ -5008,18 +5453,19 @@ class PHCTargetvsActualSwabCollection(APIView):
 
         check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
 
-        all_targets  = PHCTargetAssignment.objects.filter(phc_id= check_user.phc_master_id).values('created_datetime__date').distinct()
+        all_targets  = PHCTargetAssignment.objects.filter(phc_id= check_user.phc_master_id).values('phc_created_datetime__date').distinct()
 
         rep_data = []
 
         for i in all_targets:
+            print(i)
             rep_details = {}
-            all_targets  = PHCTargetAssignment.objects.get(Q(phc_id= check_user.phc_master_id) & Q(created_datetime__date= i['created_datetime__date']))
-            rep_details['date']= i['created_datetime__date']
+            all_targets  = PHCTargetAssignment.objects.get(Q(phc_id= check_user.phc_master_id) & Q(phc_created_datetime__date= i['phc_created_datetime__date']))
+            rep_details['date']= i['phc_created_datetime__date']
             rep_details['daily_target'] = all_targets.phc_target
 
-            no_of_patient_alloted = Contact_Tracing.objects.filter(Q(assigned_phc= check_user.phc_master_id) & Q(assigned_date__date= i['created_datetime__date'])).count()
-            no_of_swab_collected = Contact_Tracing.objects.filter(Q(assigned_phc= check_user.phc_master_id) & Q(assigned_date__date= i['created_datetime__date']) & Q(sample_collected= 1)).count()
+            no_of_patient_alloted = Contact_Tracing.objects.filter(Q(assigned_phc= check_user.phc_master_id) & Q(assigned_date__date= i['phc_created_datetime__date'])).count()
+            no_of_swab_collected = Contact_Tracing.objects.filter(Q(assigned_phc= check_user.phc_master_id) & Q(assigned_date__date= i['phc_created_datetime__date']) & Q(sample_collected= 1)).count()
             rep_details['no_of_patient_alloted'] = no_of_patient_alloted
             rep_details['no_of_swab_collected'] = no_of_swab_collected
             rep_details['balance'] = no_of_patient_alloted - no_of_swab_collected
@@ -5030,11 +5476,11 @@ class PHCTargetvsActualSwabCollection(APIView):
 
 
 
+
 #########################      PHC TARGET VS ACTUAL SWAB COLLECTION DATE VIEW               #########################
 class PHCTargetvsActualSwabCollectionDateView(APIView):
 
     def post(self,request):
-        
 
         data = request.data
 
@@ -5087,7 +5533,6 @@ class PHCTargetvsActualSwabCollectionDateView(APIView):
 
 
 
-
 #########################      SWAB COLLECTION BY SWAB COLLECTOR               #########################
 class SwabCollectionBySwabCollector(APIView):
 
@@ -5124,12 +5569,13 @@ class SwabCollectionBySwabCollector(APIView):
             swab_col_rep_details['no_of_swab_collected'] = no_of_swab_collected
             swab_col_rep_details['balance'] = no_of_patient_alloted - no_of_swab_collected
             
-            total_swab_coll += 1
-            total_swab_alloted += no_of_patient_alloted
-            total_swab_collected += no_of_swab_collected
-            total_balance += no_of_patient_alloted - no_of_swab_collected
-
-            swab_col_rep_data.append(swab_col_rep_details)
+            
+            if (no_of_patient_alloted != 0 and no_of_swab_collected != 0):
+                swab_col_rep_data.append(swab_col_rep_details)
+                total_swab_coll += 1
+                total_swab_alloted += no_of_patient_alloted
+                total_swab_collected += no_of_swab_collected
+                total_balance += no_of_patient_alloted - no_of_swab_collected
 
         # swab_col_rep_data.append({'total_swab_coll':total_swab_coll, 'total_swab_alloted':total_swab_alloted, 'total_swab_collected':total_swab_collected, 'total_balance':total_balance})
 
@@ -5198,7 +5644,7 @@ class SwabCollectionBySwabCollectorSwabcollectorView(APIView):
 
 
 #########################      SWAB PACKAGE DISPATCH DETAILS               #########################
-class SwabPackageDespatchDetails(APIView):
+class SwabPackageDespatchDetailsCount(APIView):
 
     def post(self,request):
         
@@ -5254,6 +5700,25 @@ class SwabPackageDespatchDetails(APIView):
 
 
 
+#########################      SWAB PACKAGE DISPATCH DETAILS               #########################
+class SwabPackageDespatchDetails(APIView):
+
+    def post(self, request):
+        data = request.data
+        user_id     =   data.get('user_id')
+        date     =   data.get('date')
+
+        check_user  =   Swab_Collection_Centre.objects.get(Q(user_id= user_id) & Q(role_id=6))
+        user_created_package_details = Package_Sampling.objects.filter(Q(master_phc_id= check_user.phc_master_id) & Q(create_timestamp__date=date)).values()
+        
+        return Response({
+            'get_scc_users':user_created_package_details,
+            'message':'Sucessfully'
+        },status=status.HTTP_200_OK)
+
+
+
+
 #########################      PHC PACKAGE LAB WISE REPORT               #########################
 class PHCPackageLabWiseReport(APIView):
 
@@ -5265,15 +5730,9 @@ class PHCPackageLabWiseReport(APIView):
 
         check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
 
-        check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values()
+        check_all_swab_collector = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id'))
 
-        swab_col_users = []
-
-        for i in check_all_swab_collector:
-            if i['user_id'] not in swab_col_users:
-                swab_col_users.append(i['user_id'])
-
-        get_all_pack = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users)).values('create_timestamp__date').distinct()
+        get_all_pack = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(test_lab__isnull= False)).values('create_timestamp__date').distinct().order_by('-create_timestamp__date')
 
         package_lab_details = []
 
@@ -5289,13 +5748,11 @@ class PHCPackageLabWiseReport(APIView):
             # check_package_dis_lab = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 5)).values()
             # print(check_package_dis_lab)
 
-            check_package_dis_lab = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 5)).values('test_lab_id').distinct()
+            check_package_dis_lab = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(test_lab__isnull= False)).values('test_lab_id').distinct()
 
-            print(check_package_dis_lab)
             if check_package_dis_lab:
                 for j in check_package_dis_lab:
 
-                    print(j)
                     
                     check_test_lab = Testing_Lab_Facility.objects.get(id= j['test_lab_id'])
                     lab_name_data = Master_Labs.objects.get(id= check_test_lab.testing_lab_master_id)
@@ -5304,7 +5761,7 @@ class PHCPackageLabWiseReport(APIView):
                     
                     total_lab_created += 1
 
-                    check_package_sam_count = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 12) & Q(test_lab_id= j['test_lab_id'])).values()
+                    check_package_sam_count = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(test_lab_id= j['test_lab_id'])).values()
 
                     if check_package_sam_count:
                         sample_count = 0
@@ -5321,10 +5778,8 @@ class PHCPackageLabWiseReport(APIView):
             package_lab_details.append(lab_package_details)
         
         # package_lab_details.append({'total_lab_created':total_lab_created, 'total_samples':total_samples})
-
+        print("MMMMMMMMMMMM", package_lab_details)
         return Response({'result': package_lab_details, 'total_lab_created':total_lab_created, 'total_samples':total_samples, 'message': 'Sucess'})
-
-
 
 
 
@@ -5606,8 +6061,6 @@ class THOPackageLabWiseReport(APIView):
 
 
 
-
-
 #########################      DSO TARGET VS ACTUAL SWAB COLLECTION               #########################
 class DSOTargetvsActualSwabCollection(APIView):
 
@@ -5676,7 +6129,6 @@ class DSOTargetvsActualSwabCollection(APIView):
 
 
 
-
 #########################      DSO SWAB DISPATCH DETAILS               #########################
 class DSOTargetvsActualSwabCollectionView(APIView):
 
@@ -5690,8 +6142,6 @@ class DSOTargetvsActualSwabCollectionView(APIView):
         ct_data = Contact_Tracing.objects.filter(Q(assigned_phc= phc_id)).values()
 
         return Response({'result': ct_data, 'message':'Sucessfully'}, status= status.HTTP_200_OK)
-
-
 
 
 
@@ -5850,6 +6300,67 @@ class DSOPackageLabWiseReport(APIView):
 
 
 
+#########################      SSU DATE WISE TOTAL TARGET COUNT               #########################
+class SSUDateWiseTotalTargetCountReport(APIView):
+    def post(self,request):
+
+        data        = request.data
+        id   = data.get('user_id')
+        Arr=[]
+
+        if id:
+            if User.objects.filter(id=id).exists():
+                all_contact_tracing = Contact_Tracing.objects.all().values('district','assigned_date__date').distinct()
+
+                for i in all_contact_tracing:
+
+                    date= i['assigned_date__date']
+                    contact_tracing_assigned_cnt = Contact_Tracing.objects.filter(Q(district = i['district']) & Q(assigned_date__date= i['assigned_date__date'])).count()
+                    contact_tracing_samp_coll = Contact_Tracing.objects.filter(Q(district = i['district']) & Q(assigned_date__date= i['assigned_date__date']) & Q(sample_collected= 1)).count()
+                    contact_tracing_samp_pend = Contact_Tracing.objects.filter(Q(district = i['district']) & Q(assigned_date__date= i['assigned_date__date']) & Q(sample_collected= 0)).count()
+                    # if i['assigned_msc_user_id'] == None:
+                    #     i['status'] = 0
+                    #     i['msc_name'] = 'N/A'
+                    # else:
+                    #     i['status'] = 1
+                    #     check_user_name = User.objects.get(id= i['assigned_msc_user_id'])
+                    #     i['msc_name'] = check_user_name.first_name
+
+                    Arr.append({
+                    # 'district_name':
+                    'district_code':i['district'],
+                    'date':date,
+
+                    'assigned_count':contact_tracing_assigned_cnt,
+                    'sample_collected_count':contact_tracing_samp_coll,
+                    'pending_count':contact_tracing_samp_pend
+
+                    })
+
+                return Response({'Data':Arr})
+
+
+
+#########################      SSU DATE WISE TOTAL TARGET COUNT DETAILS               #########################
+class SSUViewTotalTargetCountDetails(GenericAPIView):
+    def post(self,request):
+        data        = request.data
+        date= data.get('date')
+        disctric_code   = data.get('disctric_code')
+
+        if date:
+            date1= asdatetime.strptime(date,'%Y-%m-%d')
+            if disctric_code:
+                all_contact_tracing = Contact_Tracing.objects.filter(Q(district=disctric_code)&Q(assigned_date__date=date1)).values()
+
+                return Response({'Data':all_contact_tracing})
+            else:
+                return Response('District Code Required')
+        else:
+            return Response('Date Required')
+
+
+
 #########################      SSU SWAB COLLECTION TEAM               #########################
 class SSUSwabCollectorsTeam(APIView):
 
@@ -5888,8 +6399,6 @@ class SSUSwabCollectorsTeam(APIView):
                 i['phc_team_count'] = 0
 
         return Response({'result':master_dist_data}, status=status.HTTP_200_OK)
-
-
 
 
 
@@ -6040,6 +6549,66 @@ class SSUTotalSampleCollected(APIView):
 
         return Response({'result':master_dist_data}, status=status.HTTP_200_OK)
 
+
+
+
+#########################      SSU DATE WISE GENERATED PACKAGE REPORT               #########################
+class SSUDateWiseGeneratedPackageReport(APIView):
+    def post(self,request):
+        data = request.data
+        id = data.get('user_id')
+        Arr=[]
+
+        if id:
+            if User.objects.filter(id=id).exists():
+                all_Package_Sampling = Package_Sampling.objects.all().values('master_phc_id','create_timestamp__date').distinct()
+                for i in all_Package_Sampling:
+                    
+                    date= i['create_timestamp__date']
+                    package_details = Package_Sampling.objects.filter(Q(master_phc_id = i['master_phc_id']) & Q(create_timestamp__date= i['create_timestamp__date']))
+                    phc_name = ''
+                    for j in package_details:
+                        phc_name = j.master_phc.phc_name
+                    package_count = Package_Sampling.objects.filter(Q(master_phc_id = i['master_phc_id']) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+                    
+                    Arr.append({'date':date, 'master_phc_id':i['master_phc_id'],'phc_name':phc_name,'total_packege_count':package_count})
+
+        return Response({'result':Arr})
+
+
+
+#########################      SSU DATE WISE GENERATED PACKAGE REPORT DETAILS               #########################
+class SSUDateWiseGeneratedPackageDetailsReport(APIView):
+
+    def post(self,request):
+        data        = request.data
+        date= data.get('date')
+        id   = data.get('user_id')
+        master_phc_id = data.get('master_phc_id')
+
+        if date:
+            date1= asdatetime.strptime(date,'%Y-%m-%d')
+            if id:
+                all_Package_Sampling = Package_Sampling.objects.filter(Q(master_phc_id= master_phc_id) & Q(create_timestamp__date=date)).values()
+
+                for i in all_Package_Sampling:
+                    lab_master = Master_Labs.objects.filter(id= i['lab_master_id'])
+                    if lab_master:
+                        lab_master = Master_Labs.objects.get(id= i['lab_master_id'])
+                        i['lab_name'] = lab_master.lab_name
+                    else:
+                        i['lab_name'] = '-'
+
+                return Response({'result':all_Package_Sampling})
+            else:
+                return Response('Invalid User')
+        else:
+            return Response('Date Required')
+
+
+
+
+#########################      SSU DATE WISE GENERATED PACKAGE REPORT DETAILS               #########################
 
 
 
@@ -6501,8 +7070,6 @@ class SSUGetLabwiseDelayReport(APIView):
                 })
         else:
             return Response("user not found")"""
-
-
 
 
 
@@ -7011,9 +7578,8 @@ class SSUGetLabwiseDelayReport(APIView):
                         'result':' Sucessfully'})
         else:
             return Response("user not found")
+
 """
-
-
 
 
 #########################      OVERALL LAB WISE DELAY REPORT               #########################
@@ -7236,8 +7802,6 @@ class SSUGetOverallLabDelayD4(GenericAPIView):
 
         else:
             return Response("user not found")
-
-
 
 
 
@@ -7861,8 +8425,6 @@ class SSUGetMasterRatRtpcrPositivityReport(APIView):
 
 
 
-
-
 #########################      TARGET FOR DSO      #########################
 class GetSSUTargetSetup(APIView):
 
@@ -7891,7 +8453,7 @@ class GetSSUTargetSetup(APIView):
                     selected_date = date.split('-')
                 
                     dist_data_details = {'district_code': i['district_code'], 'district_name_eng':i['district_name_eng']}
-                    dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= dttm.dttm(int(selected_date[0]), int(selected_date[1]), int(selected_date[2])).date()) & Q(district_code= i['district_code'])).values()
+                    dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= datetime.datetime(int(selected_date[0]), int(selected_date[1]), int(selected_date[2])).date()) & Q(district_code= i['district_code'])).values()
 
                     print(dso_target_data)
                     print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
@@ -7936,7 +8498,6 @@ class GetSSUTargetSetup(APIView):
 
 
 
-
 #########################      TARGET FOR DSO      #########################
 class TargetForDSO(APIView):
 
@@ -7954,8 +8515,7 @@ class TargetForDSO(APIView):
         id = data.get('id')
         date = data.get('target_date')
 
-        print("DDDDDDDDDDDDDDDDDDD", date)
-        split_date = date.split('-')
+        
 
         dist_data = Master_District.objects.get(district_code= dist_codes)
 
@@ -7963,7 +8523,10 @@ class TargetForDSO(APIView):
 
         if id:
             if date:
-                PHCTargetAssignment.objects.filter(id= id).update(dso_target= dis_targets, dso_created_datetime= dttm.dttm(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+                print("DDDDDDDDDDDDDDDDDDD", date)
+                split_date = date.split('-')
+
+                PHCTargetAssignment.objects.filter(id= id).update(dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
             else:
                 PHCTargetAssignment.objects.filter(id= id).update(district_code= dist_codes, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
             # dist_data = Master_District.objects.get(district_code= dist_codes)
@@ -7972,13 +8535,14 @@ class TargetForDSO(APIView):
 
         else:
             if date:
-                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= dttm.dttm(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+                print("DDDDDDDDDDDDDDDDDDD", date)
+                split_date = date.split('-')
+
+                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
             else:
                 target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
 
             return Response({'result': 'Target Assigned Sucessfully'})
-
-
 
 
 
@@ -7989,7 +8553,7 @@ class GetDSOTarget(APIView):
     def post(self, request):
 
         data = request.data
-
+    
         user_id = data.get('user_id')
 
         dso_details = DSO.objects.get(user_id= user_id)
@@ -8082,6 +8646,9 @@ class TargetForPHC(APIView):
 
         # check_phc = Master_PHC.objects.get(phc_code= phc_codes)
 
+        phc_data = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
+        print(phc_data)
+
         phc_data = Swab_Collection_Centre.objects.get(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
 
         get_all_phc = Master_PHC.objects.get(id= phc_data.phc_master_id)
@@ -8111,7 +8678,6 @@ class TargetForPHC(APIView):
 #             'result' : get_phc,
 #             'message' :'Sucessfull'
 #         })
-
 
 
 
@@ -8194,12 +8760,6 @@ class GetAssignedUserTargets(APIView):
         print(user_assigned_targets)
 
         return Response({'result':user_assigned_targets, 'message':'Sucessfully'})
-
-
-
-
-
-
 
 
 
@@ -8653,7 +9213,6 @@ class GroupSmaples(APIView):
 
 
 """
-
 #########################          GROUP SAMPLES          #########################
 class GroupSmaples(APIView):
 
@@ -8852,13 +9411,11 @@ class GroupSmaples(APIView):
 
         return Response({'result':res_list, 'total_no_of_single_samples':total_no_of_single_samples, 'last_plate_no':last_plate_no})
 
-
 """
 
 
 
 """
-
 #########################          GROUP SAMPLES          #########################
 class GroupSmaples(APIView):
 
@@ -9067,8 +9624,6 @@ class GroupSmaples(APIView):
             print(len(i))
 
         return Response({'result':res_list, 'total_no_of_single_samples':total_no_of_single_samples, 'last_plate_no':last_plate_no})
-
-
 
 """
 
@@ -9289,9 +9844,6 @@ class GroupSmaples(APIView):
 
 
 
-
-
-
 #########################          POOL SAMPLES          #########################
 class PoolSmaples(APIView):
 
@@ -9453,7 +10005,6 @@ class PoolSmaples(APIView):
 
 
 
-
 #########################          UPDATE LAB ID / GENERATE LAB ID          #########################
 class UpdatePatientLabId(APIView):
 
@@ -9537,7 +10088,6 @@ class UpdatePatientLabId(APIView):
 
 
 
-
 #########################      GET LAB PLATE DATA      #########################
 class GetTlabOPSPlateData(APIView):
 
@@ -9556,7 +10106,6 @@ class GetTlabOPSPlateData(APIView):
             i['lab_name'] = master_lab_data.lab_name
 
         return Response(get_plate_details)
-
 
 
 
@@ -9619,7 +10168,6 @@ class GetTlabOPSPlatePatientDetails(APIView):
 
 
 
-
 #########################      UPDATE GROUP SAMPLES TEST RESULT       #########################
 class UpdateGroupSamplesTestResult(APIView):
 
@@ -9646,8 +10194,6 @@ class UpdateGroupSamplesTestResult(APIView):
 
 
 
-
-
 #########################      GET LAB POOL PLATE DATA      #########################
 class GetTlabOPSPoolPlateData(APIView):
 
@@ -9666,7 +10212,6 @@ class GetTlabOPSPoolPlateData(APIView):
             i['lab_name'] = master_lab_data.lab_name
 
         return Response(get_plate_details)
-
 
 
 
@@ -9742,7 +10287,6 @@ class GetTlabOPSPoolPlatePatientDetails(APIView):
         print("GET POOL DATA", len(get_pool_plate_details))
 
         return Response(get_pool_plate_details)
-
 
 
 
@@ -9825,8 +10369,6 @@ class UpdatePoolSamplesTestResult(APIView):
                     #     Patient_Testing.objects.create(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status)
 
         return Response({'result': 'Updated'})
-
-
 
 
 
@@ -10033,8 +10575,6 @@ class UpdatePatientPoolLabId(APIView):
 
 
 
-
-
 #########################          POOL PATIENT TEST RESULT VIEW          #########################
 class PatientPoolTestResultView(APIView):
 
@@ -10063,8 +10603,6 @@ class PatientPoolTestResultView(APIView):
             i['retest'] = True
 
         return Response(check_all_patient_details)
-
-
 
 
 
@@ -10098,8 +10636,6 @@ class AcceptPackageSamples(APIView):
 
 
 
-
-
 #########################          ICMR ACCESS TOKEN          #########################
 class ICMRGetAccessToken(APIView):
 
@@ -10124,8 +10660,6 @@ class ICMRGetAccessToken(APIView):
 
         else:
             return Response({'result':'Please Enter Username and Password'}, status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 
@@ -11531,6 +12065,24 @@ class CompleteCreatedSamples(APIView):
                 cnt += 1
 
         return Response({'result': 'Updated Sucessfully'})
+
+
+
+
+
+
+class DeleteMasterPHC(APIView):
+
+    def get(self, request):
+
+        Master_PHC.objects.filter(district_code= 1525).delete()
+
+        return Response('Deleted')
+
+
+
+
+
 
 
 
