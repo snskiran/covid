@@ -177,11 +177,19 @@ urlpatterns = [
 
 
     ####################      REPORTS      ####################
+    path('phc-date-wise-collection-status-result-count/', PHCDateWiseCollectionStatusAndResultTotalCount.as_view()),
+    path('phc-date-wise-contact-testing-status-report-count/', PHCDateWiseContectTestingStatusReport.as_view()),
+    path('phc-date-wise-contact-testing-status-individual-user-count-report/', PHCDateWiseContectTestingStatusIndividualUserReport.as_view()),
+    path('phc-date-wise-contact-testing-status-individual-user-detail-report/', PHCDateWiseContectTestingStatusIndividualUserDetailReport.as_view()),
+    path('phc-date-wise-collection-status-result-count-individual-data/', PHCDateWiseCollectionStatusAndResultTotalCountndividual.as_view()),
+    path('phc-date-wise-samples-rejected-counts/', PHCDateWiseSampleRejectedCountReport.as_view()),
+    path('phc-date-wise-samples-rejected-indetail-report/', PHCDateWiseSampleRejectedIndetailReport.as_view()),
     path('phc-target-vs-actual-swab-collection/', PHCTargetvsActualSwabCollection.as_view()),
     path('phc-target-vs-actual-swab-collection-date-wise/', PHCTargetvsActualSwabCollectionDateView.as_view()),
     path('phc-swab-collection-by-swab-collector/', SwabCollectionBySwabCollector.as_view()),
     path('phc-swab-collection-by-swab-collector-wise/', SwabCollectionBySwabCollectorSwabcollectorView.as_view()),
-    path('phc-swab-package-dispatch-details/', SwabPackageDespatchDetails.as_view()),
+    path('phc-swab-package-dispatch-details-count/', SwabPackageDespatchDetailsCount.as_view()),
+    path('phc-swab-package-dispatch-indetail/', SwabPackageDespatchDetails.as_view()),
     path('phc-package-lab-wise-report/', PHCPackageLabWiseReport.as_view()),
 
     path('tho-target-vs-actual-swab-collection/', THOTargetvsActualSwabCollection.as_view()),
@@ -193,8 +201,12 @@ urlpatterns = [
     path('dso-swab-dispatch-details/', DSOSwabDispatchDetails.as_view()),
     path('dso-package-lab-wise-report/', DSOPackageLabWiseReport.as_view()),
 
+    path('ssu-date-wise-total-target-count-report/', SSUDateWiseTotalTargetCountReport.as_view()),
+    path('ssu-date-wise-total-target-count-details-report/', SSUViewTotalTargetCountDetails.as_view()),
     path('ssu-all-swab-collector-team/', SSUSwabCollectorsTeam.as_view()),
     path('ssu-total-samples-collected/', SSUTotalSampleCollected.as_view()),
+    path('ssu-get-date-wise-generated-package-report/', SSUDateWiseGeneratedPackageReport.as_view()),
+    path('ssu-get-date-wise-generated-package-details-report/', SSUDateWiseGeneratedPackageDetailsReport.as_view()),
     path('ssu-get-lab-wise-delay-report/', SSUGetLabwiseDelayReport.as_view()),
     path('ssu-get-overall-lab-delay-report/', SSUGetOverallLabDelayD4.as_view()),
     path('ssu-get-sysc-asysc-report/', SSUGetMasterSysAsym.as_view()),
@@ -221,6 +233,8 @@ urlpatterns = [
 
     path('automate-patient-create/', AutomatePatientCreate.as_view()),
     path('automate-complete-created-samples/', CompleteCreatedSamples.as_view()),
+
+    path('delete-master-phc/', DeleteMasterPHC.as_view()),
 
 
 
