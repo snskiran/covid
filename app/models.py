@@ -169,12 +169,17 @@ class Master_PHC(models.Model):
     block_name_eng = models.CharField(max_length=120, blank=True, null=True)
     panchayat_name_eng = models.CharField(max_length=150, blank=True, null=True)
     village_name_eng = models.CharField(max_length=120, blank=True, null=True)
+    ward_name_eng = models.CharField(max_length=120, blank=True, null=True)
+    zone_name_eng = models.CharField(max_length=120, blank=True, null=True)
     district_code = models.IntegerField(blank=True, null=True)
     block_code = models.CharField(max_length=30, blank=True, null=True)
     panchayat_code = models.CharField(max_length=30, blank=True, null=True)
     village_code = models.CharField(max_length=120, blank=True, null=True)
+    zone_code = models.CharField(max_length=120, blank=True, null=True)
+    ward_code = models.CharField(max_length=120, blank=True, null=True)
     phc_name = models.CharField(max_length=220, blank=True, null=True)
     phc_code = models.CharField(max_length=120, blank=True, null=True)
+    phc_type = models.CharField(max_length=20, blank=True, null=True)
 
 
 
@@ -439,6 +444,7 @@ class Package_Sampling(models.Model):
     
     user                            =   models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
     swab_cc                         =   models.ForeignKey(Swab_Collection_Centre,on_delete=models.CASCADE,blank=True,null=True)
+    master_phc                         =   models.ForeignKey(Master_PHC,on_delete=models.CASCADE,blank=True,null=True)
     tho                             =   models.ForeignKey(THO,on_delete=models.CASCADE,blank=True,null=True)
     dso                             =   models.ForeignKey(DSO,on_delete=models.CASCADE,blank=True,null=True)
     ssu                             =   models.ForeignKey(SSU,on_delete=models.CASCADE,blank=True,null=True)
@@ -496,6 +502,7 @@ class Patient(models.Model):
     mobile_number_belongs_to        =   models.CharField(max_length=50, blank=True, null=True)
     gender                          =   models.CharField(max_length=10, blank=True, null=True)
     age                             =   models.IntegerField( blank=True, null=True)
+    age_type = models.CharField(max_length=10, blank=True, null=True)
     id_proof_type                   =   models.CharField(max_length=120, blank=True, null=True)
     aadhar_number                   =   models.CharField(max_length=12, blank=True, null=True)
     ration_card_number              =   models.CharField(max_length=15, blank=True, null=True)
@@ -590,6 +597,7 @@ class Outside_Patient_Address(models.Model):
     flat_door_no                    =   models.CharField(max_length=50, blank=True, null=True)
     main_road_no                    =   models.CharField(max_length=50, blank=True, null=True)
     locality = models.CharField(max_length=250, blank=True, null=True)
+    landmark = models.CharField(max_length=250, blank=True, null=True)
     # address_line1                   =   models.CharField(max_length=150, blank=True, null=True)
     # address_line2                   =   models.CharField(max_length=150, blank=True, null=True)
     pincode                         =   models.CharField(max_length=10, blank=True, null=True)
@@ -842,8 +850,6 @@ class PoolSamples(models.Model):
     # plate_no = models.IntegerField(blank=True, null=True)
     test_result = models.IntegerField(blank=True, null=True)
     create_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-
-
 
 
 
