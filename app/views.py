@@ -1011,7 +1011,8 @@ class AddPatient(APIView):
 
 
 
-#########################          GET OTP          #########################
+#########################          GET 
+#########################
 class GetOTPData(APIView):
 
     def post(self, request):
@@ -1052,7 +1053,8 @@ class GetOTPData(APIView):
 
                 # print(body)
 
-                response = requests.post('http://103.148.156.208:81/Covid/SendOTP.php', data= json_data)
+#                 response = requests.post('http://103.148.156.208:81/Covid/SendOTP.php', data= json_data)
+                response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+mobile_number+'&message=Your%20'+otp+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS', data= json_data)
 
 
                 return Response({'result':otp,}, status= status.HTTP_200_OK)
