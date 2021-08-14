@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'covidproject.wsgi.application'
 
 DATABASES = {
 'default': {
-'NAME': 'Covid_Swab',
+'NAME': 'Covid_Final',
 'ENGINE': 'sql_server.pyodbc',
 'HOST': 'cowar-db-app02.public.ab8984e16a93.database.windows.net',
 'PORT': '3342',
