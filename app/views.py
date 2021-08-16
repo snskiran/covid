@@ -1055,7 +1055,8 @@ class GetOTPData(APIView):
 
 #                 response = requests.post('http://103.148.156.208:81/Covid/SendOTP.php', data= json_data)
 #                 response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20'+str(otp)+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS', data= json_data)
-                response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20'+str(otp)+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS')
+#                 response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20'+str(otp)+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS')
+                response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20OTP%20is%20'+str(otp)+'%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS')
 
 
                 return Response({'result':otp,}, status= status.HTTP_200_OK)
