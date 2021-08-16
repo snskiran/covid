@@ -618,7 +618,7 @@ class Patient_Testing(models.Model):
     last_update_timestamp           =   models.DateTimeField(auto_now_add=False,verbose_name="Last_Update_TimeStamp",blank=True,null=True)
 
     
-
+"""
 class Contact_Tracing(models.Model):
 
     covid_id = models.CharField(max_length=20, blank= False, null=False)
@@ -650,6 +650,50 @@ class Contact_Tracing(models.Model):
     assigned_phc = models.CharField(max_length=150 ,blank=True, null=True)
     assigned_msc_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     sample_collected = models.IntegerField(default=0, blank=True, null=True)
+"""
+
+
+class Contact_Tracing(models.Model):
+
+    covid_id = models.CharField(max_length=20, blank= False, null=False)
+    name = models.CharField(max_length=150, blank=True, null=True)
+    mobile_number = models.CharField(max_length=12, blank=True, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    gender = models.CharField(max_length=10, blank=True, null=True)
+
+    category = models.CharField(max_length=150, blank=True, null=True)
+    district = models.CharField(max_length=150, blank=True, null=True)
+    district_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    city = models.CharField(max_length=150, blank=True, null=True)
+    city_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    panchayat = models.CharField(max_length=150, blank=True, null=True)
+    panchayat_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    village = models.CharField(max_length=150, blank=True, null=True)
+    village_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    town = models.CharField(max_length=150, blank=True, null=True)
+    town_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    ward = models.CharField(max_length=150, blank=True, null=True)
+    ward_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    taluk = models.CharField(max_length=150, blank=True, null=True)
+    taluk_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    bbmp_zone = models.CharField(max_length=150, blank=True, null=True)
+    bbmp_zone_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    pincode = models.CharField(max_length=20, blank=True, null=True)
+    street = models.CharField(max_length=150, blank=True, null=True)
+    building = models.CharField(max_length=150, blank=True, null=True)
+    door_no = models.CharField(max_length=150, blank=True, null=True)
+
+    ct_latitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
+    ct_longitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
+    date_of_contact_created = models.DateTimeField(auto_now_add=True)
+    assigned_date = models.DateTimeField(auto_now_add=False, blank=True, null=True)
+    # assigned_phc = models.ForeignKey(Master_PHC, on_delete=models.CASCADE ,blank=True, null=True)
+    assigned_phc = models.CharField(max_length=150 ,blank=True, null=True)
+    assigned_msc_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    sample_collected = models.IntegerField(default=0, blank=True, null=True)
+
+
+
 
 
 
