@@ -45,6 +45,7 @@ urlpatterns = [
 
 
     path('add-patient/', AddPatient.as_view()),
+    path('contact-testing-offline/', ContectTestingOffline.as_view()),
     path('get-otp-details/', GetOTPData.as_view()),
     path('collection-status/', CollectionDetailsAndStatus.as_view()),
     path('get-phc-user-added-patients/', GetPHCUseraddedPatients.as_view()),
