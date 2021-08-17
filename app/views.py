@@ -1064,7 +1064,7 @@ class GetOTPData(APIView):
             return Response({'result':'Something Went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
 
 
-
+"""
 #########################          ALREADY TESTED PATIENTS          #########################
 class ChackAlreadyTestedPatients(APIView):
 
@@ -1091,9 +1091,188 @@ class ChackAlreadyTestedPatients(APIView):
 
         else:
             return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+"""
+
+
+#########################          ALREADY TESTED PATIENTS          #########################
+class ChackAlreadyTestedPatients(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        srf_id = data.get('old_srf_id')
+        mobile_number = data.get('existing_mobile_number')
 
 
 
+        if srf_id and mobile_number:
+            check_already_tested_patient = Patient.objects.filter(Q(mobile_number= mobile_number) & Q(srf_id= srf_id)).values()
+            if check_already_tested_patient:
+                return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+            else:
+                # acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+                # token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+                # acc_json_data = json.dumps(token_body)
+                # acc_tok_res = requests.post(acc_url, data= token_body)
+
+                # acc_token_res = acc_tok_res.json()
+                # print(acc_token_res)
+                # print(acc_json_data)
+                # body_hdr = acc_token_res['access_token']
+
+                # header = {'Authorization': 'Bearer ' + body_hdr}
+                # json_header = json.dumps(header)
+
+                # url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetAlreadyTestedData/'
+                # input_body = {'SRF_ID_OR_MOBILE_NO':mobile_number, 'ID_TYPE':2}
+                # json_data = json.dumps(input_body)
+                # check_alredy_tested_data_response = requests.post(url, data= json_data, headers= header)
+                # print(check_alredy_tested_data_response)
+                
+                # j_data = check_alredy_tested_data_response.json()
+                # # res_json = check_alredy_tested_data_response.json()
+                # print(j_data)
+                # res_data = j_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                # return Response({'result':res_data}, status= status.HTTP_200_OK)
+                acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+                token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+                acc_json_data = json.dumps(token_body)
+                acc_tok_res = requests.post(acc_url, data= token_body)
+
+                acc_token_res = acc_tok_res.json()
+                body_hdr = acc_token_res['access_token']
+
+                header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
+                json_header = json.dumps(header)
+
+                url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetAlreadyTestedData/'
+                input_body = {'SRF_ID_OR_MOBILE_NO':mobile_number, 'ID_TYPE':2}
+
+                json_data = json.dumps(input_body, indent=4)
+
+                check_alredy_tested_data_response = requests.post(url, data= json_data, headers= header)
+
+                j_data = check_alredy_tested_data_response.json()
+                res_data = j_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                return Response({'result':res_data}, status= status.HTTP_200_OK)
+
+        elif srf_id and mobile_number == '':
+            check_already_tested_patient = Patient.objects.filter(Q(srf_id= srf_id)).values()
+            if check_already_tested_patient:
+                return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+            else:
+                # acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+                # token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+                # acc_json_data = json.dumps(token_body)
+                # acc_tok_res = requests.post(acc_url, data= token_body)
+
+                # acc_token_res = acc_tok_res.json()
+                # print(acc_token_res)
+                # print(acc_json_data)
+                # body_hdr = acc_token_res['access_token']
+
+                # header = {'Authorization': 'Bearer ' + body_hdr}
+                # json_header = json.dumps(header)
+
+                # url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetAlreadyTestedData/'
+                # input_body = {'SRF_ID_OR_MOBILE_NO':mobile_number, 'ID_TYPE':1}
+                # json_data = json.dumps(input_body)
+                # check_alredy_tested_data_response = requests.post(url, data= json_data, headers= header)
+                # print(check_alredy_tested_data_response)
+                
+                # # res_json = check_alredy_tested_data_response.json()
+                # # res_data = res_json['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                # j_data = check_alredy_tested_data_response.json()
+                # # res_json = check_alredy_tested_data_response.json()
+                # print(j_data)
+                # res_data = j_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                # return Response({'result':res_data}, status= status.HTTP_200_OK)
+
+                acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+                token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+                acc_json_data = json.dumps(token_body)
+                acc_tok_res = requests.post(acc_url, data= token_body)
+
+                acc_token_res = acc_tok_res.json()
+                body_hdr = acc_token_res['access_token']
+
+                header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
+                json_header = json.dumps(header)
+
+                url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetAlreadyTestedData/'
+                input_body = {'SRF_ID_OR_MOBILE_NO':mobile_number, 'ID_TYPE':1}
+
+                json_data = json.dumps(input_body, indent=4)
+
+                check_alredy_tested_data_response = requests.post(url, data= json_data, headers= header)
+
+                j_data = check_alredy_tested_data_response.json()
+                res_data = j_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                return Response({'result':res_data}, status= status.HTTP_200_OK)
+
+        elif srf_id == '' and mobile_number:
+            check_already_tested_patient = Patient.objects.filter(Q(mobile_number= mobile_number)).values()
+            if check_already_tested_patient:                
+                return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+            else:
+
+                acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+                token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+                acc_json_data = json.dumps(token_body)
+                acc_tok_res = requests.post(acc_url, data= token_body)
+
+                acc_token_res = acc_tok_res.json()
+                body_hdr = acc_token_res['access_token']
+
+                header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
+                json_header = json.dumps(header)
+
+                url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetAlreadyTestedData/'
+                input_body = {'SRF_ID_OR_MOBILE_NO':mobile_number, 'ID_TYPE':2}
+
+                json_data = json.dumps(input_body, indent=4)
+
+                check_alredy_tested_data_response = requests.post(url, data= json_data, headers= header)
+
+                j_data = check_alredy_tested_data_response.json()
+                res_data = j_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                return Response({'result':res_data}, status= status.HTTP_200_OK)
+
+                # acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+                # token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+                # acc_json_data = json.dumps(token_body)
+                # acc_tok_res = requests.post(acc_url, data= token_body)
+
+                # acc_token_res = acc_tok_res.json()
+                # print(acc_token_res)
+                # print(acc_json_data)
+                # body_hdr = acc_token_res['access_token']
+
+                # header = {'Authorization': 'Bearer ' + body_hdr}
+                # json_header = json.dumps(header)
+
+                # url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetAlreadyTestedData/'
+                # input_body = {'SRF_ID_OR_MOBILE_NO':mobile_number, 'ID_TYPE':2}
+                # json_data = json.dumps(input_body)
+                # check_alredy_tested_data_response = requests.post(url, data= json_data, headers= json_header)
+                # print(check_alredy_tested_data_response)
+                # # res_json = check_alredy_tested_data_response.json()
+                # # res_data = res_json['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                # print(check_alredy_tested_data_response.text)
+                # j_data = check_alredy_tested_data_response.json()
+                # print(j_data)
+                # # res_json = check_alredy_tested_data_response.json()
+                # res_data = j_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                return Response({'result':res_data}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+"""
 #########################          CONTACT TRACING PATIENTS          #########################
 class ChackContactTracingPatients(APIView):
 
@@ -1124,6 +1303,84 @@ class ChackContactTracingPatients(APIView):
 
         else:
             return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+"""
+
+
+#########################          CONTACT TRACING PATIENTS          #########################
+class ChackContactTracingPatients(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        # srf_id = data.get('old_srf_id')
+        mobile_number = data.get('existing_mobile_number')
+
+        if mobile_number:
+            check_contact_tracing_patient = Contact_Tracing.objects.filter(Q(mobile_number= mobile_number)).values()
+            if check_contact_tracing_patient:
+                for i in check_contact_tracing_patient:
+                    i['patient_name'] = i['name']
+                return Response({'result':check_contact_tracing_patient}, status= status.HTTP_200_OK)
+
+            else:
+
+                acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+                token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+                acc_json_data = json.dumps(token_body)
+                acc_tok_res = requests.post(acc_url, data= token_body)
+
+                acc_token_res = acc_tok_res.json()
+                body_hdr = acc_token_res['access_token']
+
+                print(body_hdr)
+
+                header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
+                json_header = json.dumps(header)
+
+                # url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetAlreadyTestedData/'
+                # input_body = {'SRF_ID_OR_MOBILE_NO':mobile_number, 'ID_TYPE':2}
+
+                url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetContactTesting/'
+                input_body = {'PATIENT_MOBILE_NUMBER':mobile_number}
+
+                json_data = json.dumps(input_body, indent=4)
+
+                check_alredy_tested_data_response = requests.post(url, data= json_data, headers= header)
+
+                j_data = check_alredy_tested_data_response.json()
+                print(j_data)
+                res_data = j_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+                return Response({'result':res_data}, status= status.HTTP_200_OK)
+
+
+                # url = 'https://www.covidwar.karnataka.gov.in/service19_test'
+                # input_body = {'PATIENT_MOBILE_NUMBER':mobile_no}
+                # json_data = json.dumps(input_body)
+                # check_contact_testing_response = requests.post(url, data= json_data)
+                # res_json = check_contact_testing_response.json()
+                # res_data = res_json['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA']
+
+                # return Response({'result':res_data}, status= status.HTTP_200_OK)
+
+
+        # elif srf_id and mobile_number == '':
+        #     check_contact_tracing_patient = Contact_Tracing.objects.filter(Q(srf_id= srf_id)).values()
+        #     for i in check_contact_tracing_patient:
+        #         i['patient_name'] = i['name']
+        #     return Response({'result':check_contact_tracing_patient}, status= status.HTTP_200_OK)
+
+        # elif srf_id == '' and mobile_number:
+        #     check_contact_tracing_patient = Contact_Tracing.objects.filter(Q(mobile_number= mobile_number)).values()
+        #     for i in check_contact_tracing_patient:
+        #         i['patient_name'] = i['name']
+        #     return Response({'result':check_contact_tracing_patient}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
 
 
 
