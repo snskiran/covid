@@ -1010,6 +1010,258 @@ class AddPatient(APIView):
         return Response({'result': res_data,'message':"Patient Data added Sucessfully"}, status= status.HTTP_200_OK)
 
 
+    
+
+
+#########################          CONTACT TESTING OFF LINE          #########################
+class ContectTestingOffline(APIView):
+
+    def post(self, request):
+
+        lpdata = request.data
+
+        cnt = 0
+        for data in lpdata:
+
+            reason_testing = data.get('reason_testing')
+            reason = data.get('reason')
+            patient_type = data.get('patient_type')
+            patient_name = data.get('patient_name')
+            mobile_number_belongs_to = data.get('mobile_number_belongs_to')
+            mobile_number = data.get('mobile_number')
+        
+            otp_no = data.get('otp_no')
+            states = data.get('states')
+            district_name = data.get('district_name')
+            resident_type = data.get('resident_type')
+            ward_type = data.get('ward_type')
+            city_name = data.get('city_name')
+            taluk_name = data.get('taluk_name')
+            village_name = data.get('village_name')
+            panchayat_name = data.get('panchayat_name')
+            zone_name = data.get('zone_name')
+            ward_name = data.get('ward_name')
+            flat_door_no = data.get('flat_door_no')
+            main_road_no = data.get('main_road_no')
+            pincode = data.get('pincode')
+            gender = data.get('gender')
+            age = data.get('age')
+            age_type = data.get('age_type')
+            idProof_type = data.get('idProof_type')
+
+            aadhar_number = data.get('aadhar_number')
+            ration_card_number = data.get('ration_card_number')
+            speciman_type = data.get('speciman_type')
+            speciman_collection_date = data.get('speciman_collection_date')
+            patient_status_type = data.get('patient_status_type')
+            symptoms = data.get('symptoms')
+            co_morbidity = data.get('co_morbidity')
+            co_morbidity_type = data.get('co_morbidity_type')
+            test_type = data.get('test_type')
+            old_srf_id = data.get('old_srf_id')
+            
+            vaccine_status = data.get('vaccine_status')
+            con_mobile_number = data.get('con_mobile_number')
+            existing_mobile_number = data.get('existing_mobile_number')
+            user_id = data.get('user_id')
+
+            locality = data.get('locality')
+            landmark = data.get('landmark')
+
+            arrival_date = data.get('arrival_date')
+
+            rat_created_id_data = data.get('rat_created_id')
+
+            generate_srf = random.randint(100000000, 999999999)
+
+            barcode = data.get('barcode')
+
+
+            print(reason_testing)
+            print(reason)
+            print(patient_type)
+            print(patient_name)
+            print(mobile_number_belongs_to)
+            print(mobile_number)
+            print(otp_no)
+            print(states)
+            print(district_name)
+            print(resident_type)
+            print(ward_type)
+            print(city_name)
+            print(taluk_name)
+            print(village_name)
+            print(panchayat_name)
+            print(zone_name)
+            print(ward_name)
+            print(flat_door_no)
+            print(main_road_no)
+            print(pincode)
+            print(gender)
+            print(age)
+            print(idProof_type)
+            print(aadhar_number)
+            print(ration_card_number)
+            print(speciman_type)
+            print(speciman_collection_date)
+            print(patient_status_type)
+            print(symptoms)
+            print(co_morbidity)
+            print(co_morbidity_type)
+            print(test_type)
+            print(old_srf_id)
+            print(vaccine_status)
+            print(con_mobile_number)
+            print(existing_mobile_number)
+            print(user_id)
+            print(locality)
+            print(landmark)
+            print(arrival_date)
+            print(rat_created_id_data)
+            print(generate_srf)
+            print(barcode)
+
+            patient_type_ref_data = Patient_Type_Ref.objects.get(patient_type_name= patient_type)
+            specimen_type_ref_data = Specimen_Type_Ref.objects.get(specimen_type_name= speciman_type)
+            # testing_type_ref_data = Testing_Kit_Barcode.objects.get(testing_kit_barcode_name= testing_kit_barcode)
+            test_type_ref_data = Test_Type_Ref.objects.get(test_type_name= test_type)
+        
+            symptoms_list = []
+            if symptoms:
+                for i in symptoms:
+                    print(i)
+                    if isinstance(i, str):
+                        dist_type = ast.literal_eval(i)
+                        symptoms_list.append(dist_type['name'])
+                    else:
+                        symptoms_list.append(i['name'])
+            
+            co_morbidity_type_list = []
+            for i in co_morbidity_type:
+                print(i)
+                # print(i['name'])
+                if isinstance(i, str):
+                    dist_type = ast.literal_eval(i)
+                    co_morbidity_type_list.append(dist_type['name'])
+                else:
+                    co_morbidity_type_list.append(i['name'])
+
+            record_create_timestamp = ''
+
+            rat_created_id = 0
+
+            user_dist_status = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+            get_user_master_dist_code = Master_PHC.objects.get(id= user_dist_status.phc_master_id)
+
+            srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+            yr = str(asdatetime.now().year)[2:]
+            mn = str(asdatetime.now().month).zfill(2)
+            dd = str(asdatetime.now().day)
+
+            srf_data = srf_dist_code+yr+mn+dd
+
+            last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+            print('hhhhhhhhhh', last_srf_id)
+            if last_srf_id:
+                srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+                print(srf_data)
+            else:
+                srf_data = srf_data + '1'.zfill(5)
+
+            if rat_created_id_data:
+                get_patient_rat_data = Patient.objects.get(id= rat_created_id_data)
+                srf_data = str(get_patient_rat_data.srf_id) + '-TEMP'
+                print("RAT SRF ID")
+                print(srf_data)
+
+            if data.get('id'):
+                Contact_Tracing.objects.filter(id= data.get('id')).update(sample_collected= 1)
+
+            patients_data = Patient.objects.create(reason_for_testing= reason_testing, reason_for_testing_description= reason, patient_type_id= patient_type_ref_data.id,
+                                            added_by_id= user_id,
+                                            patient_name= patient_name, 
+                                            mobile_number= mobile_number, 
+                                            mobile_number_belongs_to= mobile_number_belongs_to,
+
+                                            gender= gender, 
+                                            age= age,
+                                            age_type= age_type,
+                                            id_proof_type= idProof_type,
+                                            aadhar_number= aadhar_number, 
+                                            ration_card_number= ration_card_number, 
+                                            vaccine_status= vaccine_status, 
+                                            # vaccine_mobile_registered= vaccine_mobile_registered,
+                                            specimen_type_id= specimen_type_ref_data.id, 
+                                            co_morbidity= co_morbidity,
+                                            co_morbidity_type= co_morbidity_type_list,
+                                            patient_status = patient_status_type,
+                                            # specimen_collection_date= specimen_collection_date, 
+                                            #testing_kit_barcode_id= testing_type_ref_data.id,
+                                            # symptoms_list= symptoms, 
+                                            symptoms_list= symptoms_list, 
+                                            test_type_id= test_type_ref_data.id, 
+                                            srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
+                                            barcode= barcode,
+                                            rat_created_id= rat_created_id_data, arrival_date= arrival_date
+                                        )
+            record_create_timestamp = str(patients_data.create_timestamp)
+            # if test_type == 'RAT':
+            #     Patient.objects.filter(id= patients_data.id).update(rat_created_id= patients_data.id)
+            rat_created_id = patients_data.id
+            # if resident_type == 'Other-state':
+            #     Outside_Patient_Address.objects.create(patient_id= patients_data.id, 
+            #                                     state_name= states, 
+            #                                     district_name= district_name, #district_type= district_type, 
+            #                                     city_name= city_name,
+            #                                     zone_type= zone_name, 
+            #                                     ward_name= ward_name, 
+            #                                     taluk_name= taluk_name, 
+            #                                     panchayat_name= panchayat_name, 
+            #                                     village_name= village_name, 
+            #                                     resident_type= resident_type, 
+            #                                     ward_type= ward_type, 
+            #                                     flat_door_no= flat_door_no, 
+            #                                     main_road_no= main_road_no,
+            #                                     pincode= pincode,
+            #                                     locality= locality,
+            #                                     landmark= landmark
+            #                                     )
+            # else:
+            Patient_Address.objects.create(patient_id= patients_data.id, 
+                                            state_name= states, 
+                                            district_name= district_name, #district_type= district_type, 
+                                            city_name= city_name,
+                                            zone_type= zone_name, 
+                                            ward_name= ward_name, 
+                                            taluk_name= taluk_name, 
+                                            panchayat_name= panchayat_name, 
+                                            village_name= village_name, 
+                                            resident_type= resident_type, 
+                                            ward_type= ward_type, 
+                                            flat_door_no= flat_door_no, 
+                                            main_road_no= main_road_no,
+                                            pincode= pincode,
+                                            locality= locality,
+                                            landmark= landmark)
+
+            # Patient_Testing.objects.create()                                        
+
+            # Patient_Testing.objects.create(patient_id= patients_data.id, lab_received_date= , testing_kit_id= , testing_status= , ct_value= , 
+            #                                 comments= ,)                             
+            #res_data = [{'patient_name':patient_name, 'mobile_number':mobile_number, 'gender': gender, 'age':age, 'speciman_type':speciman_type,'patient_status_type':patient_status_type, 'test_type':test_type, 'added_date':record_create_timestamp, 'srf_id': srf_data, 'rat_created_id':rat_created_id}]
+
+            cnt += 1
+
+        return Response({'result': cnt,'message':"Data Uploaded Sucessfully"}, status= status.HTTP_200_OK)
+
+    
+    
+    
+    
+    
 
 #########################          GET 
 #########################
