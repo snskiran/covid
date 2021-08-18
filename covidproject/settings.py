@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&=_73y%hn$y^%$p2ku62!7n@w8e)g1-(6n%%^#l#*!=tikifv!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','cowar-web-vp04.azurewebsites.net','www.cowar-web-vp04.azurewebsites.net']
+ALLOWED_HOSTS = ['*','covitest.karnataka.gov.in','www.covitest.karnataka.gov.in']
 
 
 # Application definition
