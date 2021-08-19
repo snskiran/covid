@@ -960,7 +960,7 @@ class AddPatient(APIView):
                                         test_type_id= test_type_ref_data.id, 
                                         srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
 #                                         barcode= barcode,
-                                         barcode= srf_data
+                                        barcode= srf_data
                                         rat_created_id= rat_created_id_data, arrival_date= arrival_date
                                     )
         record_create_timestamp = str(patients_data.create_timestamp)
