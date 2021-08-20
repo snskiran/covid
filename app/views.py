@@ -3750,6 +3750,45 @@ class GetPHCUserVillageDataFilter(APIView):
             return Response({'check_village_details': []})
 
 
+        
+
+#########################          PHC USER LOCATION WARD FILTER          #########################
+class GetPHCUserWardDataFilter(APIView):
+
+    def post(self, request):
+        
+        data = request.data
+
+        print(data)
+
+        resident_type = data.get('resident_type')
+        user_id= data.get('user_id')
+        ward_code = data.get('ward_name')
+
+        swab_coll_data_user_data = Swab_Collection_Centre.objects.filter(user_id = user_id).values()
+
+        if resident_type == 'Local':
+            
+            check_swab_collector_details = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+            # print(check_swab_collector_details.phc_master_id)
+
+            master_data = Master_PHC.objects.get(id= check_swab_collector_details.phc_master_id)
+            # print(master_data.phc_code)
+
+            # check_ward_details = Master_PHC.objects.filter(Q(phc_code= master_data.phc_code) & Q(ward_code = ward_code)).values()
+            check_ward_details = Master_PHC.objects.filter(Q(ward_code = ward_code)).values()
+            # print(check_ward_details)
+
+
+            return Response({'check_ward_details':check_ward_details}, status=status.HTTP_200_OK)
+        
+        else:
+            return Response({'check_ward_details': []})
+
+        
+        
+        
 
 
 #########################          GET PHC MOBILE USERS          #########################
