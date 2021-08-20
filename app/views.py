@@ -6083,7 +6083,8 @@ class SwabCollectionBySwabCollector(APIView):
             swab_col_rep_details['balance'] = no_of_patient_alloted - no_of_swab_collected
             
             
-            if (no_of_patient_alloted != 0 and no_of_swab_collected != 0):
+#             if (no_of_patient_alloted != 0 and no_of_swab_collected != 0):
+            if (no_of_patient_alloted != 0):
                 swab_col_rep_data.append(swab_col_rep_details)
                 total_swab_coll += 1
                 total_swab_alloted += no_of_patient_alloted
