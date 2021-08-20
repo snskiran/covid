@@ -69,6 +69,7 @@ urlpatterns = [
 
     path('get-phc-user-location-details/', GetPHCUserLocationDetails.as_view()),
     path('get-phc-user-location-village-filter/', GetPHCUserVillageDataFilter.as_view()),
+    path('get-phc-user-location-ward-filter/', GetPHCUserWardDataFilter.as_view()),
     path('get-master-table-dropdown/', MasterTableFilterData.as_view()),
     path('get-testing-kits/', GetTestingKitDetails.as_view()),
     path('check-already-tested-patients/', ChackAlreadyTestedPatients.as_view()),
