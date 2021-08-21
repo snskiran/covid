@@ -6512,7 +6512,7 @@ class THOTargetvsActualSwabCollection(APIView):
 
 
 
-
+"""
 #########################      THO SWAB DISPATCH DETAILS               #########################
 class THOSwabDispatchDetails(APIView):
 
@@ -6576,6 +6576,81 @@ class THOSwabDispatchDetails(APIView):
         print({'result': rep_data, 'total_package_created':total_package_created, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho, 'message': 'Sucess'})
 
         return Response({'result': rep_data, 'total_package_created':total_package_created, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho, 'message': 'Sucess'})
+"""
+
+#########################      THO SWAB DISPATCH DETAILS               #########################
+class THOSwabDispatchDetails(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        rep_data = []
+
+        total_package_created = 0
+        total_package_dispatched_lab = 0
+        total_package_dispatched_to_tho = 0
+
+        check_tho = THO.objects.get(user_id= user_id)
+
+        check_all_phc_details = Swab_Collection_Centre.objects.filter(Q(tho_id = check_tho.id) & Q(role_id= 6)).values()
+
+
+        date_dis = Package_Sampling.objects.all().values('create_timestamp__date').distinct()
+
+        for dd in date_dis:
+
+            for i in check_all_phc_details:
+                
+                tho_rep_data = {}
+
+                master_phc_details = Master_PHC.objects.get(id= i['phc_master_id'])
+
+                tho_rep_data['date'] = dd['create_timestamp__date']
+                tho_rep_data['phc_name'] = master_phc_details.phc_name
+
+                # check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= i['phc_master_id'])).values()
+
+                # swab_col_users = []
+
+                # for j in check_all_swab_collector:
+                #     if j['user_id'] not in swab_col_users:
+                #         swab_col_users.append(j['user_id'])
+                
+                swab_col_users = Swab_Collection_Centre.objects.filter(Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True)
+
+
+                # get_all_pack = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users)).values('create_timestamp__date').distinct()
+
+                check_package_created = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= dd['create_timestamp__date'])).count()
+                # check_package_received_mo = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_status= 7)).count()
+                check_package_dispatched_lab = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(package_type_action= 15) & Q(package_type_status= 5)  & Q(create_timestamp__date= dd['create_timestamp__date'])).count()
+                check_package_accepted_tho = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(package_type_action= 13)  & Q(create_timestamp__date= dd['create_timestamp__date'])).count()
+
+                # package_sts_details = []
+
+                tho_rep_data['no_of_package_created'] = check_package_created
+                tho_rep_data['no_of_package_dis_lab'] = check_package_dispatched_lab
+                tho_rep_data['no_of_package_acc_tho'] = check_package_accepted_tho
+
+
+                total_package_created += check_package_created
+                # total_package_acc_mo += check_package_received_mo
+                total_package_dispatched_lab += check_package_dispatched_lab
+                total_package_dispatched_to_tho += check_package_accepted_tho
+
+                if check_package_created != 0:
+                    rep_data.append(tho_rep_data)
+
+        # rep_data.append({'total_package_created':total_package_created, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho,})
+        
+
+        print({'result': rep_data, 'total_package_created':total_package_created, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho, 'message': 'Sucess'})
+
+        return Response({'result': rep_data, 'total_package_created':total_package_created, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho, 'message': 'Sucess'})
+
 
 
 
