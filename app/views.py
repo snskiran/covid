@@ -9506,6 +9506,79 @@ class SSUGetMasterRatRtpcrPositivityReport(APIView):
 
 
 
+"""
+#########################      TARGET FOR DSO      #########################
+class GetSSUTargetSetup(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        date = data.get('target_date')
+
+        mast_dist_data = Master_District.objects.all().values()
+
+        all_dist_data = []
+
+        for i in mast_dist_data:
+
+            if date:
+
+                if datetime.datetime(int(date.split('-')[0]), int(date.split('-')[1]), int(date.split('-')[2])).date() >= asdatetime.now().date():
+                    
+                    print("HHHHHHHHHHHHHHH")
+                    print(asdatetime.now().date())
+                    print(datetime.datetime(int(date.split('-')[0]), int(date.split('-')[1]), int(date.split('-')[2])).date())
+
+                    selected_date = date.split('-')
+                
+                    dist_data_details = {'district_code': i['district_code'], 'district_name_eng':i['district_name_eng']}
+                    dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= datetime.datetime(int(selected_date[0]), int(selected_date[1]), int(selected_date[2])).date()) & Q(district_code= i['district_code'])).values()
+
+                    print(dso_target_data)
+                    print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+
+                    if dso_target_data:
+                        for j in dso_target_data:
+                            
+                            dist_data_details['id'] = j['id']
+                            dist_data_details['dso_id']= j['dso_id']
+                            dist_data_details['dso_target']= j['dso_target']
+                            dist_data_details['edit'] = True
+                    else:
+                        dist_data_details['id'] = ''
+                        dist_data_details['dso_id']= ''
+                        dist_data_details['dso_target']= ''
+                        dist_data_details['edit'] = False
+                else:
+                    print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+                    return Response({'result':[], 'message':'Please Select Current Date or Future Dates only'}, status=status.HTTP_200_OK)
+            else:
+
+                dist_data_details = {'district_code': i['district_code'], 'district_name_eng':i['district_name_eng']}
+                dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= asdatetime.now().date()) & Q(district_code= i['district_code'])).values()
+
+                if dso_target_data:
+                    for j in dso_target_data:
+                        
+                        dist_data_details['id'] = j['id']
+                        dist_data_details['dso_id']= j['dso_id']
+                        dist_data_details['dso_target']= j['dso_target']
+                        dist_data_details['edit'] = True
+                else:
+                    dist_data_details['id'] = ''
+                    dist_data_details['dso_id']= ''
+                    dist_data_details['dso_target']= ''
+                    dist_data_details['edit'] = False
+
+            all_dist_data.append(dist_data_details)
+        
+        return Response({'result':all_dist_data, 'message':'Sucessfully'}, status=status.HTTP_200_OK)
+"""
+
+
 
 #########################      TARGET FOR DSO      #########################
 class GetSSUTargetSetup(APIView):
@@ -9580,6 +9653,58 @@ class GetSSUTargetSetup(APIView):
 
 
 
+
+"""
+#########################      TARGET FOR DSO      #########################
+class TargetForDSO(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        user_id = data.get('user_id')
+
+        dist_codes = data.get('district_code')
+        dis_targets = data.get('contact_testing_count')
+
+        id = data.get('id')
+        date = data.get('target_date')
+
+        
+
+        dist_data = Master_District.objects.get(district_code= dist_codes)
+
+        dso_data = DSO.objects.get(district_id= dist_data.id)
+
+        if id:
+            if date:
+                print("DDDDDDDDDDDDDDDDDDD", date)
+                split_date = date.split('-')
+
+                PHCTargetAssignment.objects.filter(id= id).update(dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+            else:
+                PHCTargetAssignment.objects.filter(id= id).update(district_code= dist_codes, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
+            # dist_data = Master_District.objects.get(district_code= dist_codes)
+            # dso_data = DSO.objects.get(district_id= dist_data.id)
+            return Response({'result': 'Updated Sucessfully'})
+
+        else:
+            if date:
+                print("DDDDDDDDDDDDDDDDDDD", date)
+                split_date = date.split('-')
+
+                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+            else:
+                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
+
+            return Response({'result': 'Target Assigned Sucessfully'})
+"""
+
+
+
+
 #########################      TARGET FOR DSO      #########################
 class TargetForDSO(APIView):
 
@@ -9629,6 +9754,8 @@ class TargetForDSO(APIView):
 
 
 
+
+"""
 #########################      GET DSO TARGET      #########################
 class GetDSOTarget(APIView):
 
@@ -9647,10 +9774,62 @@ class GetDSOTarget(APIView):
         target_ass_dso = PHCTargetAssignment.objects.filter(Q(dso_id= dso_details.id) & Q(dso_created_datetime__date= asdatetime.now().date())).values()
 
         return Response({'result': get_all_thos, 'dso_target':target_ass_dso}, status=status.HTTP_200_OK)
+"""
+
+
+
+#########################      GET DSO TARGET      #########################
+class GetDSOTarget(APIView):
+
+    def post(self, request):
+
+        data = request.data
+    
+        user_id = data.get('user_id')
+
+        dso_details = DSO.objects.get(user_id= user_id)
+
+        check_dist_data = Master_District.objects.get(id= dso_details.district_id)
+
+        get_all_thos = Master_PHC.objects.filter(district_code = check_dist_data.district_code).values('block_code', 'block_name_eng').distinct()
+
+        # get_thos_data = THO.objects.filter(dso_id= dso_details.id).values_list('id', flat=True)
+
+        for i in get_all_thos:
+
+            if i['block_code'] != ' NULL':
+                taluk_data = Master_Block.objects.get(block_code= i['block_code'])
+                print(i['block_code'])
+                get_tho_data_filter = THO.objects.filter(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
+                print(get_tho_data_filter)
+                if get_tho_data_filter:
+                    get_tho_data = THO.objects.get(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
+
+                    get_already_assigned_tho_targets = PHCTargetAssignment.objects.filter(Q(tho_id= get_tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
+
+                    print(get_already_assigned_tho_targets)
+
+                    if get_already_assigned_tho_targets:
+                        get_already_assigned_tho_targets_get = PHCTargetAssignment.objects.get(Q(tho_id= get_tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()))
+                        print(get_already_assigned_tho_targets_get.tho_target)
+                        i['edit'] = True
+                        i['tho_target'] = get_already_assigned_tho_targets_get.tho_target
+                    else:
+                        i['edit'] = False
+                        i['tho_target'] = 0
+                else:
+                    i['edit'] = False
+                    i['tho_target'] = 0
+
+        target_ass_dso = PHCTargetAssignment.objects.filter(Q(dso_id= dso_details.id) & Q(dso_created_datetime__date= asdatetime.now().date())).values()
+
+        return Response({'result': get_all_thos, 'dso_target':target_ass_dso}, status=status.HTTP_200_OK)
 
 
 
 
+
+"""
 #########################      TARGET FOR THO      #########################
 class TargetForTHO(APIView):
 
@@ -9674,10 +9853,54 @@ class TargetForTHO(APIView):
         target_ass_tho = PHCTargetAssignment.objects.filter(Q(dso_id= dso_data.id) & Q(dso_created_datetime__date= asdatetime.now().date())).update(tho_id= tho_data.id, tho_target= taluk_targets, tho_created_datetime= asdatetime.now())
 
         return Response({'result': 'Target Assigned Sucessfully'})
+"""
+
+
+
+#########################      TARGET FOR THO      #########################
+class TargetForTHO(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        taluk_codes = data.get('taluk_code')
+        taluk_targets = data.get('contact_testing_count')
+
+        print(data)
+
+        tal_data = Master_Block.objects.get(block_code= taluk_codes)
+
+        tho_data = THO.objects.get(city_id= tal_data.id)
+
+        
+        dso_data = DSO.objects.get(user_id= user_id)
+        
+        # target_ass_tho = PHCTargetAssignment.objects.create(tho_id= tho_data.id, tho_target= taluk_targets, tho_created_datetime= asdatetime.now().date())
+
+        get_target_ass_tho = PHCTargetAssignment.objects.filter(Q(dso_id= dso_data.id) & Q(dso_created_datetime__date= asdatetime.now().date())).values()
+        print(get_target_ass_tho)
+        if get_target_ass_tho:
+            check_assigned_tgt = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(dso_id= dso_data.id))
+            if check_assigned_tgt:
+                target_ass_tho = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(dso_id= dso_data.id)).update(tho_target= taluk_targets, tho_created_datetime= asdatetime.now())
+                return Response({'result': 'Update Target Assigned Sucessfully'})
+            else:
+                get_target_ass_tho = PHCTargetAssignment.objects.filter(Q(dso_id= dso_data.id) & Q(dso_created_datetime__date= asdatetime.now().date())).values().order_by('id')[:1]
+                print(get_target_ass_tho)
+                for i in get_target_ass_tho:
+                    target_ass_tho = PHCTargetAssignment.objects.create(tho_id= tho_data.id, tho_target= taluk_targets, tho_created_datetime= asdatetime.now(), dso_id= dso_data.id, dso_created_datetime= i['dso_created_datetime'], dso_target= i['dso_target'], district_code= i['district_code'])
+                return Response({'result': 'Target Assigned Sucessfully'})
+        else:
+            return Response({'result': 'Something went wrong'})
 
 
 
 
+
+"""
 #########################      GET THO TARGET      #########################
 class GetTHOTarget(APIView):
 
@@ -9703,10 +9926,52 @@ class GetTHOTarget(APIView):
         target_ass_dso = PHCTargetAssignment.objects.filter(Q(tho_id= tho_details.id) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
 
         return Response({'result': get_all_phc, 'tho_target':target_ass_dso}, status=status.HTTP_200_OK)
+"""
+
+
+
+#########################      GET THO TARGET      #########################
+class GetTHOTarget(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        tho_details = THO.objects.get(user_id= user_id)
+
+        # swb_coll_data = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_details.id) & Q(role_id= 6)).values()
+
+        # phc_ids = []
+
+        # for i in swb_coll_data:
+        #     phc_ids.append(i['phc_master_id'])
+
+        phc_ids = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_details.id) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
+
+        # check_dist_data = Master_District.objects.get(district_code= dso_details.district_id)
+
+        get_all_phc = Master_PHC.objects.filter(id__in= phc_ids).values()
+
+        target_asgn_dso = PHCTargetAssignment.objects.filter(Q(tho_id= tho_details.id) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
+        
+        for i in get_all_phc:
+            target_assigned_dso = PHCTargetAssignment.objects.filter(Q(tho_id= tho_details.id) & Q(phc_id= i['id']) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
+            if target_assigned_dso:
+                target_assigned_dso_get = PHCTargetAssignment.objects.get(Q(tho_id= tho_details.id) & Q(phc_id= i['id']) & Q(tho_created_datetime__date= asdatetime.now().date()))
+                i['phc_target'] = target_assigned_dso_get.phc_target
+                i['edit'] = True
+            else:
+                i['phc_target'] = 0
+                i['edit'] = False
+
+        return Response({'result': get_all_phc, 'tho_target':target_asgn_dso}, status=status.HTTP_200_OK)
 
 
 
 
+"""
 #########################      TARGET FOR PHC      #########################
 class TargetForPHC(APIView):
 
@@ -9740,6 +10005,61 @@ class TargetForPHC(APIView):
         target_ass_phc = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date())).update(phc_id= get_all_phc.id, phc_target= phc_targets, phc_created_datetime= asdatetime.now())
 
         return Response({'result': 'Target Assigned Sucessfully'})
+"""
+
+#########################      TARGET FOR PHC      #########################
+class TargetForPHC(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+        print("JHHHHHHHHHHHHHHHHHHHHHHH")
+
+        user_id = data.get('user_id')
+
+        phc_codes = data.get('phc_code')
+        phc_targets = data.get('contact_testing_count')
+
+        id = data.get('id')
+        edit_id = data.get('edit_id')
+
+        tho_data = THO.objects.get(user_id= user_id)
+
+        # tal_data = Master_Block.objects.get(block_code= taluk_codes)
+
+        # check_phc = Master_PHC.objects.get(phc_code= phc_codes)
+
+        get_all_phc_ck = Master_PHC.objects.filter(id= id)
+        if get_all_phc_ck:
+
+            get_all_phc = Master_PHC.objects.get(id= id)
+
+            check_assigned_data =  PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(phc_id= get_all_phc.id))
+
+            if check_assigned_data:
+
+                # get_all_phc = Master_PHC.objects.get(id= id)
+                # phc_data = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= get_all_phc))
+                # phc_data = Swab_Collection_Centre.objects.get(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
+                
+                target_ass_phc = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(phc_id= get_all_phc.id)).update(phc_target= phc_targets, phc_created_datetime= asdatetime.now())
+
+                return Response({'result': 'Target Updated Sucessfully'})
+
+            else:
+                # get_all_phc = Master_PHC.objects.get(id= phc_data.phc_master_id)
+                # phc_data = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
+                # phc_data = Swab_Collection_Centre.objects.get(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
+                # target_ass_phc = PHCTargetAssignment.objects.create(phc_id= get_all_phc.id, phc_target= phc_targets)
+                # target_ass_phc = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date())).update(phc_id= get_all_phc.id, phc_target= phc_targets, phc_created_datetime= asdatetime.now())
+                target_ass_phc = PHCTargetAssignment.objects.create(tho_id= tho_data.id, tho_created_datetime= asdatetime.now(), phc_id= get_all_phc.id, phc_target= phc_targets, phc_created_datetime= asdatetime.now())
+
+                return Response({'result': 'Target Assigned Sucessfully'})
+        else:
+            return Response({'result': 'Something Went Wrong'})
+
 
 
 
