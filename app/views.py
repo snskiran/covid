@@ -9796,6 +9796,7 @@ class GetDSOTarget(APIView):
         # get_thos_data = THO.objects.filter(dso_id= dso_details.id).values_list('id', flat=True)
 
         for i in get_all_thos:
+            print("TEST DATA DATA DATA      ", i)
 
             if i['block_code'] != ' NULL':
                 print("CHECK BLOCK CODE",i['block_code'])
