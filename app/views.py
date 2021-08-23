@@ -9797,16 +9797,14 @@ class GetDSOTarget(APIView):
         # get_thos_data = THO.objects.filter(dso_id= dso_details.id).values_list('id', flat=True)
 
         for i in get_all_thos:
-            print("TEST DATA DATA DATA      ", i)
 
             if i['block_code'] != ' NULL' or i['block_code'] != 'NULL':
-                print("CHECK BLOCK CODE",i['block_code'])
                 check_taluk_data = Master_Block.objects.filter(block_code= i['block_code'])
                 if check_taluk_data:
                     taluk_data = Master_Block.objects.get(block_code= i['block_code'])
-                    print(i['block_code'])
+#                     print(i['block_code'])
                     get_tho_data_filter = THO.objects.filter(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
-                    print(get_tho_data_filter)
+#                     print(get_tho_data_filter)
                     if get_tho_data_filter:
                         get_tho_data = THO.objects.get(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
 
