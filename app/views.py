@@ -9792,6 +9792,7 @@ class GetDSOTarget(APIView):
         check_dist_data = Master_District.objects.get(id= dso_details.district_id)
 
         get_all_thos = Master_PHC.objects.filter(district_code = check_dist_data.district_code).values('block_code', 'block_name_eng').exclude(Q(block_code__isnull=True) | Q(block_name_eng__isnull= True)).distinct()
+        print("WWWWWWWWWWWWWWW      ",get_all_thos)
 
         # get_thos_data = THO.objects.filter(dso_id= dso_details.id).values_list('id', flat=True)
 
