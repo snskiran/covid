@@ -9798,7 +9798,7 @@ class GetDSOTarget(APIView):
         for i in get_all_thos:
             print("TEST DATA DATA DATA      ", i)
 
-            if i['block_code'] != ' NULL':
+            if i['block_code'] != ' NULL' or i['block_code'] != 'NULL':
                 print("CHECK BLOCK CODE",i['block_code'])
                 check_taluk_data = Master_Block.objects.filter(block_code= i['block_code'])
                 if check_taluk_data:
