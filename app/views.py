@@ -314,6 +314,24 @@ class TestingLabFacilityModelView(viewsets.ModelViewSet):
 
 
 
+class Master_LabModelView(viewsets.ModelViewSet):
+    queryset = Master_Labs.objects.all()
+    serializer_class = Master_LabSerializer
+
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            id = instance.id
+
+            self.perform_destroy(instance)
+            user_data = Master_Labs.objects.filter(id=id).delete()
+
+        except Http404:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)    
+    
+    
+
 class Master_ZoneModelView(viewsets.ModelViewSet):
     queryset = Master_Zone.objects.all()
     serializer_class = Master_ZoneSerializer
