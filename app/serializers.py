@@ -259,6 +259,14 @@ class Testing_Lab_FacilitySerializer(serializers.ModelSerializer):
         model =   Testing_Lab_Facility
         fields = '__all__'
 
+        
+        
+
+class Master_LabSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model =   Master_Labs
+        fields = '__all__'        
 
 
 
