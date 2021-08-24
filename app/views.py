@@ -1398,6 +1398,280 @@ class ContectTestingDateWiseDump(APIView):
     
     
     
+
+#########################          CONTACT TESTING DATEWISE URBAN DUMP          #########################
+class ContectTestingDateWiseUrbanDump(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        from_date = data.get('from_date')
+        to_date = data.get('to_date')
+
+        acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+        token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+        acc_json_data = json.dumps(token_body)
+        acc_tok_res = requests.post(acc_url, data= token_body)
+
+        acc_token_res = acc_tok_res.json()
+        body_hdr = acc_token_res['access_token']
+
+        header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
+        json_header = json.dumps(header)
+
+        url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetContactTesting_Datewise'
+        input_body = {'FromDate':from_date, 'ToDate':to_date}
+
+        json_data = json.dumps(input_body, indent=4)
+
+        check_contact_testing_dump_response = requests.post(url, data= json_data, headers= header)
+
+        ct_dmp_data = check_contact_testing_dump_response.json()
+        res_data = ct_dmp_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA_DATEWISE']
+
+        print(res_data)
+
+        created_ids= []
+
+        for i in res_data:
+
+            # if i['district_number'] != 0:
+            #     check_dist_data = Master_District.objects.filter(district_code= i['district_number'])
+            #     if check_dist_data:
+            #         check_dist_data_get = Master_District.objects.get(district_code= i['district_number'])
+            #         i['district_name'] = check_dist_data_get.district_name_eng
+            
+            # if i['taluk_number'] != 0:
+            #     check_tlk_data = Master_Block.objects.filter(block_code= i['taluk_number'])
+            #     if check_tlk_data:
+            #         check_tlk_data_get = Master_Block.objects.get(block_code= i['taluk_number'])
+            #         i['taluk_name'] = check_tlk_data_get.block_name_eng
+
+            # if i['panchayat_number'] != 0:
+            #     check_pnc_data = Master_Panchayat.objects.filter(panchayat_code= i['panchayat_number'])
+            #     if check_pnc_data:
+            #         check_pnc_data_get = Master_Panchayat.objects.get(panchayat_code= i['panchayat_number'])
+            #         i['panchayat_name'] = check_pnc_data_get.panchayat_name_eng
+
+            # if i['Village_number'] != 0:
+            #     check_vil_data = Master_Village.objects.filter(village_code= i['Village_number'])
+            #     if check_vil_data:
+            #         check_vil_data_get = Master_Village.objects.get(village_code= i['Village_number'])
+            #         i['village_name'] = check_vil_data_get.village_name_eng
+
+            # if i['city_number'] != 0:
+            #     check_city_data = Master_Ward.objects.filter(Q(ward_no= i['ward_number']) & Q(new_town_code= i['city_number']))
+            #     if check_city_data:
+            #         check_city_data_get = Master_Ward.objects.get(Q(ward_no= i['ward_number']) & Q(new_town_code= i['city_number']))
+            #         i['city_name'] = check_city_data_get.town_name
+
+            # if i['ward_number'] != 0:
+            #     check_ward_data = Master_Ward.objects.filter(Q(ward_no= i['ward_number']) & Q(new_town_code= i['city_number']))
+            #     if check_ward_data:
+            #         check_ward_data_get = Master_Ward.objects.get(Q(ward_no= i['ward_number']) & Q(new_town_code= i['city_number']))
+            #         i['ward_name'] = check_ward_data_get.ward_name
+
+            # if i['zone_id'] != 0:
+            #     check_zone_data = Master_Zone.objects.filter(Q(bbmp_zone_no_ksrsac= i['zone_id']))
+            #     if check_zone_data:
+            #         check_zone_data_get = Master_Zone.objects.get(Q(bbmp_zone_no_ksrsac= i['zone_id']))
+            #         i['zone_name'] = check_zone_data_get.zone_name
+
+
+            created_data = Contact_Tracing.objects.create(
+
+                covid_id = i['covid_id'],
+                name = i['patient_name'],
+                mobile_number = i['mobile_number'],
+                age = i['age'],
+                gender = i['gender'],
+                category = i['category'],
+                district = i['district_number'],
+                city = i['city_number'],
+                block = i['taluk_number'],
+                panchayat = i['panchayat_number'],
+                village = i['Village_number'],
+                town = i['city_number'],
+                ward = i['ward_number'],
+                taluk = i['taluk_number'],
+                bbmp_zone = i['zone_id'],
+                pincode = i['pincode'],
+                street = i['main_road_no'],
+                door_no = i['flat_door_no'],
+                district_name_eng = i['district_name'],
+                city_name_eng = i['city_name'],
+                block_name_eng = i['taluk_name'],
+                panchayat_name_eng = i['panchayat_name'],
+                village_name_eng = i['village_name'],
+                town_name_eng = i['city_name'],
+                ward_name_eng = i['ward_name'],
+                taluk_name_eng = i['taluk_name'],
+                bbmp_zone_name_eng = i['zone_name'],
+                
+            )
+            created_ids.append(created_data.id)
+
+        return Response({'result':'Updated Sucessfully', 'resp':res_data, 'created_ids':created_ids}, status= status.HTTP_200_OK)
+
+
+
+#########################          CONTACT TESTING DATEWISE RURAL DUMP          #########################
+class ContectTestingDateWiseRuralDump(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        from_date = data.get('from_date')
+        to_date = data.get('to_date')
+
+        acc_url = 'https://www.covidwar.karnataka.gov.in/service19_test/token'
+        token_body = {'grant_type':'password','username':'uan387r8hdo9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs678sfui8udf8u', 'password':'vnm488d76go9734eb83d03ec5ba1e3252d08d9ad102b8f0b2cs6785562sed6vv'}
+        acc_json_data = json.dumps(token_body)
+        acc_tok_res = requests.post(acc_url, data= token_body)
+
+        acc_token_res = acc_tok_res.json()
+        body_hdr = acc_token_res['access_token']
+
+        header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
+        json_header = json.dumps(header)
+
+        url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_GetContactTesting_Datewise_Rural/'
+        input_body = {'FromDate':from_date, 'ToDate':to_date}
+
+        json_data = json.dumps(input_body, indent=4)
+
+        check_contact_testing_dump_response = requests.post(url, data= json_data, headers= header)
+
+        ct_dmp_data = check_contact_testing_dump_response.json()
+        res_data = ct_dmp_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA_DATEWISE']
+
+        # print(res_data)
+
+
+        created_ids= []
+
+        for i in res_data:
+
+            if i['district_number']:
+                check_dist_data = Master_District.objects.get(Q(district_code= i['district_number']))
+                i['district_name'] = check_dist_data.district_name_eng
+            
+            if i['taluk_number']:
+                check_tlk_data = Master_Block.objects.get(Q(district_code= i['district_number']) & Q(block_code= i['taluk_number']))
+                i['taluk_name'] = check_tlk_data.block_name_eng
+
+            if i['panchayat_number']:
+                check_pnc_data = Master_Panchayat.objects.get(Q(district_code= i['district_number']) & Q(block_code= i['taluk_number']) & Q(panchayat_code= i['panchayat_number']))
+                i['panchayat_name'] = check_pnc_data.panchayat_name_eng
+
+            if i['Village_number']:
+                check_vil_data = Master_Village.objects.get(Q(district_code= i['district_number']) & Q(block_code= i['taluk_number']) & Q(panchayat_code= i['panchayat_number']) & Q(village_code= i['Village_number']))
+                i['village_name'] = check_vil_data.village_name_eng
+
+            if i['district_number'] and i['taluk_number'] and i['panchayat_number'] and i['Village_number']:
+
+                # print(i['district_number'])
+                # print(i['taluk_number'])
+                # print(i['panchayat_number'])
+                # print(i['Village_number'])
+
+                check_master_phc_data = Master_PHC.objects.filter(Q(district_code= i['district_number']) & Q(block_code= i['taluk_number']) & Q(panchayat_code= i['panchayat_number']) & Q(village_code= i['Village_number']))
+                # print(check_master_phc_data)
+                if check_master_phc_data:
+                    check_master_phc_data_get = Master_PHC.objects.get(Q(district_code= i['district_number']) & Q(block_code= i['taluk_number']) & Q(panchayat_code= i['panchayat_number']) & Q(village_code= i['Village_number']))
+                    check_master_phc_details = Master_PHC.objects.filter(phc_code= check_master_phc_data_get.phc_code).values()[:1]
+
+                    for cmpd in check_master_phc_details:
+                        i['phc_id']= cmpd['id']
+            
+            if i['ward_type'] == 1:
+                i['ward_type_name'] = 'urban'
+            if i['ward_type'] == 2:
+                i['ward_type_name'] = 'rural'
+
+
+            if i['gender'] == 1:
+                i['gender_name'] = 'male'
+            if i['gender'] == 2:
+                i['gender_name'] = 'female'
+            if i['gender'] == 3:
+                i['gender_name'] = 'others'
+
+            # print(i)
+
+            # if str(i['patient_name']) == 'ಪ್ರೇಮ' or str(i['patient_name']) != 'ಶಿಲ್ಪ':
+#             if str(i['patient_name']) == 'ಪ್ರೇಮ' or str(i['patient_name']) == 'ಶಿಲ್ಪ':
+#                 print("JJJJJJ")
+
+                # check_data_data = Contact_Tracing(name= str(i['patient_name']), age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
+                #                                     panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
+                #                                     block_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
+                #                                     date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'])
+
+            # print(check_data_data)
+            # print(check_data_data.name)
+
+            # check_data_data.save()
+#             else:
+
+            created_ids.append(Contact_Tracing(name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
+                                                panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
+                                                block_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
+                                                date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
+
+                # created_ids.append(check_data_data)
+
+            # created_data = Contact_Tracing.objects.create(
+
+            #     covid_id = i['covid_id'],
+            #     name = i['patient_name'],
+            #     mobile_number = i['mobile_number'],
+            #     age = i['age'],
+            #     gender = i['gender'],
+            #     category = i['category'],
+            #     district = i['district_number'],
+            #     city = i['city_number'],
+            #     block = i['taluk_number'],
+            #     panchayat = i['panchayat_number'],
+            #     village = i['Village_number'],
+            #     town = i['city_number'],
+            #     ward = i['ward_number'],
+            #     taluk = i['taluk_number'],
+            #     bbmp_zone = i['zone_id'],
+            #     pincode = i['pincode'],
+            #     street = i['main_road_no'],
+            #     door_no = i['flat_door_no'],
+            #     district_name_eng = i['district_name'],
+            #     city_name_eng = i['city_name'],
+            #     block_name_eng = i['taluk_name'],
+            #     panchayat_name_eng = i['panchayat_name'],
+            #     village_name_eng = i['village_name'],
+            #     town_name_eng = i['city_name'],
+            #     ward_name_eng = i['ward_name'],
+            #     taluk_name_eng = i['taluk_name'],
+            #     bbmp_zone_name_eng = i['zone_name'],
+                
+            # )
+            # created_ids.append(created_data.id)
+
+        print(created_ids)
+
+        # for i in created_ids:
+        #     print(i.name)
+
+
+        create_data = Contact_Tracing.objects.bulk_create(created_ids)
+
+
+        # return Response({'result':'Updated Sucessfully', 'resp':res_data, 'created_ids':created_ids}, status= status.HTTP_200_OK)
+        return Response({'result':'Updated Sucessfully', 'resp':res_data,}, status= status.HTTP_200_OK)
+
+    
+    
+    
+    
     
     
 
