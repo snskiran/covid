@@ -37,6 +37,7 @@ router.register('get-master-village-all', Master_VillageModelView)
 router.register('get-master-pachayat-all', Master_PanchayatModelView)
 router.register('get-master-block-all', Master_BlockModelView)
 router.register('get-district-all', DistrictModelView)
+router.register('get-master-lab-all', Master_LabModelView)
 
 
 
