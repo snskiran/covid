@@ -180,6 +180,7 @@ urlpatterns = [
 
 
     ####################      REPORTS      ####################
+    path('get-phc-user-added-patients-report/', GetPHCUseraddedPatientsReport.as_view()),
     path('phc-date-wise-collection-status-result-count/', PHCDateWiseCollectionStatusAndResultTotalCount.as_view()),
     path('phc-date-wise-contact-testing-status-report-count/', PHCDateWiseContectTestingStatusReport.as_view()),
     path('phc-date-wise-contact-testing-status-individual-user-count-report/', PHCDateWiseContectTestingStatusIndividualUserReport.as_view()),
