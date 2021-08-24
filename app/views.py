@@ -5795,38 +5795,110 @@ class Posttaluk(GenericAPIView):
 #!-------------------------------------------------------------------------------------------------------------------------------------          
 #!-------------------------------------------------------------------------------------------------------------------------------------          
 
-class Postlabs(GenericAPIView):
+
+
+#########################          CREATE LABS          #########################
+class Postlabs(APIView):
 
     def post(self, request):
         data = request.data
-        print(data)
-        print("JJJJJJJJJJJJJJJJJJJJJJJJJ")
-        district_name           = data.get('district_name')
-        taluk_name              = data.get('taluk_name')
-        phone                   = data.get('phone')
-        pincode                 = data.get('pincode')
+
         lab_name                = data.get('lab_name')
+        district_name           = data.get('district_name')
+        district_code = data.get('district_code')
         lab_type                = data.get('lab_type')
+        lab_id = data.get('lab_id')
+        karnataka_districts_id = data.get('karnataka_districts_id')
+        karnataka_blocks_id = data.get('karnataka_blocks_id')
+        lab_type_id = data.get('lab_type_id')
+        address                 = data.get('address')
+        pincode                 = data.get('pincode')
         latitude                = data.get('latitude')
         longitude               = data.get('longitude')
-        address                 = data.get('address')
         max_capacity            = data.get('max_capacity')
-        # created_at              = data.get('created_at')
-        # updated_at              = data.get('updated_at')
-        
-        # check_data = Master_Labs.objects.filter(karnataka_blocks_id=taluk_name)
+        phone                   = data.get('phone')
+        test_type = data.get('test_type')
+        closing_balance = data.get('closing_balance')
 
-        # if :
-        #     return Response({'result': 'Taluk_name  exists '})
-        # else:
-        lab_create = Master_Labs.objects.create(phone=phone,karnataka_districts_id=district_name,karnataka_blocks_id=taluk_name,pincode=pincode,lab_name=lab_name,lab_type_id=lab_type,gps_lat=latitude,gps_lon=longitude,address=address,max_capacity=max_capacity,created_date=asdatetime.now(),updated_date=asdatetime.now())
+        lab_create = Master_Labs.objects.create(
+            lab_name =lab_name,
+            district_code = district_code, 
+            district_name = district_name,
+            lab_type = lab_type,
+            lab_id = lab_id,
+            karnataka_districts_id = karnataka_districts_id,
+            karnataka_blocks_id = karnataka_blocks_id,
+            lab_type_id = lab_type_id,
+            address = address,
+            pincode = pincode,
+            gps_lat = latitude,
+            gps_lon = longitude,
+            max_capacity = max_capacity,
+            phone = phone,
+            test_type = test_type,
+            lab_classification_id = lab_classification_id,
+            closing_balance = closing_balance,)
 
-        return Response({       
-                    'result': 'Labs added Sucessfully'
-                })
 
-#!-------------------------------------------------------------------------------------------------------------------------------------          
-#!-------------------------------------------------------------------------------------------------------------------------------------          
+        return Response({'result': 'Labs added Sucessfully'})
+
+
+    
+
+
+#########################          EDIT LABS          #########################
+class GetEditLabs(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        check_dso = DSO.objects.filter(user_id= user_id)
+        check_ssu = SSU.objects.filter(user_id= user_id)
+
+        if check_dso:
+            
+            check_master_labs = Master_Labs.objects.none()
+
+            for i in check_dso:
+                check_master_labs = Master_Labs.objects.filter(Q(district_code= i.district.district_code) | Q(karnataka_districts_id= i.district.district_code)).values()
+
+            return Response({'result': all_labs_data}, status= status.HTTP_200_OK)
+
+        elif check_ssu:
+            
+            all_labs_data = Master_Labs.objects.all().values()
+
+            return Response({'result': all_labs_data}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':[]}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#########################          EDIT UPDATE LABS          #########################
+class EditUpdateLabs(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        id = data.get('id')
+        max_capacity= data.get('max_capacity')
+
+        check_master_labs = Master_Labs.objects.filter(id= id).update(max_capacity= max_capacity)
+
+            
+        return Response({'result':'Updated Sucessfully'}, status= status.HTTP_200_OK)
+
+    
+
+
+
+
 
 
 class get_all_labs(GenericAPIView):
