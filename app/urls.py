@@ -128,7 +128,7 @@ urlpatterns = [
     ####################     SUU LABS     ####################
     path('get_taluk/', Posttaluk.as_view()),
     path('post_lab/', Postlabs.as_view()),
-    path('edit-lab/', GetEditLabs.as_view()),
+    path('get-edit-lab/', GetEditLabs.as_view()),
     path('edit-update-lab/', EditUpdateLabs.as_view()),
     path('get_all_lab/', get_all_labs.as_view()),
     path('lab_delete/', Postdelete.as_view()),
