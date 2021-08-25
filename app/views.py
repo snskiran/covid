@@ -1147,6 +1147,9 @@ class ContectTestingOffline(APIView):
         
             symptoms_list = []
             
+            print(type(symptoms))
+            print(type(co_morbidity_type))
+            
             check_symt = ast.literal_eval(symptoms)
             
             if symptoms:
