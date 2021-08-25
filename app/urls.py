@@ -79,6 +79,7 @@ urlpatterns = [
     path('get-master-table-dropdown/', MasterTableFilterData.as_view()),
     path('get-testing-kits/', GetTestingKitDetails.as_view()),
     path('check-already-tested-patients/', ChackAlreadyTestedPatients.as_view()),
+    path('check-already-tested-line-list-patients/', ChackAlreadyTestedPatientsLineListData.as_view()),
     path('check-contact-tracing-patients/', ChackContactTracingPatients.as_view()),
     path('get-already-tested-patient-details/', GetAlreadyTestedPatientsData.as_view()),
     path('get-contact-tracing-patient-details/', GetContactTracingPatientsData.as_view()), # Two Fun 1
