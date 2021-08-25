@@ -1598,16 +1598,16 @@ class ContectTestingDateWiseRuralDump(APIView):
             if i['gender'] == 3:
                 i['gender_name'] = 'others'
 
-#             created_ids.append(Contact_Tracing(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], #block= i['taluk_number'], 
+            created_ids.append(Contact_Tracing(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], taluk= i['taluk_number'], 
+                                                panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
+                                                taluk_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
+                                                date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
+            
+            
+#             check_data_data = Contact_Tracing.objects.create(covid_id = str(cnt_dd).zfill(5), name= str(i['patient_name']), age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
 #                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
 #                                                 block_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
-#                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
-            
-            
-            check_data_data = Contact_Tracing.objects.create(covid_id = str(cnt_dd).zfill(5), name= str(i['patient_name']), age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
-                                                panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
-                                                block_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
-                                                date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'])
+#                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'])
             
             cnt_dd += 1
 
