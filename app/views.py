@@ -1699,7 +1699,7 @@ class ChackAlreadyTestedPatients(APIView):
             return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
 """
 
-
+"""
 #########################          ALREADY TESTED PATIENTS          #########################
 class ChackAlreadyTestedPatients(APIView):
 
@@ -1874,6 +1874,36 @@ class ChackAlreadyTestedPatients(APIView):
 
         else:
             return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+"""
+
+
+
+
+#########################          ALREADY TESTED PATIENTS          #########################
+class ChackAlreadyTestedPatients(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        srf_id = data.get('old_srf_id')
+        mobile_number = data.get('existing_mobile_number')
+
+        if srf_id and mobile_number:
+            check_already_tested_patient = Patient.objects.filter(Q(mobile_number= mobile_number) & Q(srf_id= srf_id)).values()
+            return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+
+        elif srf_id and mobile_number == '':
+            check_already_tested_patient = Patient.objects.filter(Q(srf_id= srf_id)).values()
+            return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+
+        elif srf_id == '' and mobile_number:
+            check_already_tested_patient = Patient.objects.filter(Q(mobile_number= mobile_number)).values()            
+            return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
 
 
 
