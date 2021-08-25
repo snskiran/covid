@@ -3645,10 +3645,13 @@ class GetAllPackageDetails(APIView):
                 # return Response({'package_details':all_phcm_data,'result': 'Sucess'})
 
                 check_all_slab_collector = Swab_Collection_Centre.objects.filter(phc_master_id= check_user_data.phc_master_id).values_list('user_id',flat=True)
+                print(check_all_slab_collector)
                 print(list(check_all_slab_collector))
                 print("LISTTTTTTTTT")
+                print("DATA           ", check_all_slab_collector)
                 # for i in check_all_slab_collector:
                 package_details = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector)) & (Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17))).values()
+                print("AAAAAA     ", package_details)
                 # for pd in package_details:
                 #     check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
                 #     if check_lab:
