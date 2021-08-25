@@ -3652,6 +3652,7 @@ class GetAllPackageDetails(APIView):
                 # for i in check_all_slab_collector:
                 package_details = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector)) & (Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17))).values()
                 print("AAAAAA     ", package_details)
+                
                 # for pd in package_details:
                 #     check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
                 #     if check_lab:
