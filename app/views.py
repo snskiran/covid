@@ -1547,9 +1547,6 @@ class ContectTestingDateWiseRuralDump(APIView):
         ct_dmp_data = check_contact_testing_dump_response.json()
         res_data = ct_dmp_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA_DATEWISE']
 
-        # print(res_data)
-
-
         created_ids= []
 
         for i in res_data:
@@ -1572,13 +1569,8 @@ class ContectTestingDateWiseRuralDump(APIView):
 
             if i['district_number'] and i['taluk_number'] and i['panchayat_number'] and i['Village_number']:
 
-                # print(i['district_number'])
-                # print(i['taluk_number'])
-                # print(i['panchayat_number'])
-                # print(i['Village_number'])
-
                 check_master_phc_data = Master_PHC.objects.filter(Q(district_code= i['district_number']) & Q(block_code= i['taluk_number']) & Q(panchayat_code= i['panchayat_number']) & Q(village_code= i['Village_number']))
-                # print(check_master_phc_data)
+                
                 if check_master_phc_data:
                     check_master_phc_data_get = Master_PHC.objects.get(Q(district_code= i['district_number']) & Q(block_code= i['taluk_number']) & Q(panchayat_code= i['panchayat_number']) & Q(village_code= i['Village_number']))
                     check_master_phc_details = Master_PHC.objects.filter(phc_code= check_master_phc_data_get.phc_code).values()[:1]
@@ -1599,72 +1591,13 @@ class ContectTestingDateWiseRuralDump(APIView):
             if i['gender'] == 3:
                 i['gender_name'] = 'others'
 
-            # print(i)
-
-            # if str(i['patient_name']) == 'ಪ್ರೇಮ' or str(i['patient_name']) != 'ಶಿಲ್ಪ':
-#             if str(i['patient_name']) == 'ಪ್ರೇಮ' or str(i['patient_name']) == 'ಶಿಲ್ಪ':
-#                 print("JJJJJJ")
-
-                # check_data_data = Contact_Tracing(name= str(i['patient_name']), age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
-                #                                     panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
-                #                                     block_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
-                #                                     date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'])
-
-            # print(check_data_data)
-            # print(check_data_data.name)
-
-            # check_data_data.save()
-#             else:
-
             created_ids.append(Contact_Tracing(name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
                                                 block_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
 
-                # created_ids.append(check_data_data)
-
-            # created_data = Contact_Tracing.objects.create(
-
-            #     covid_id = i['covid_id'],
-            #     name = i['patient_name'],
-            #     mobile_number = i['mobile_number'],
-            #     age = i['age'],
-            #     gender = i['gender'],
-            #     category = i['category'],
-            #     district = i['district_number'],
-            #     city = i['city_number'],
-            #     block = i['taluk_number'],
-            #     panchayat = i['panchayat_number'],
-            #     village = i['Village_number'],
-            #     town = i['city_number'],
-            #     ward = i['ward_number'],
-            #     taluk = i['taluk_number'],
-            #     bbmp_zone = i['zone_id'],
-            #     pincode = i['pincode'],
-            #     street = i['main_road_no'],
-            #     door_no = i['flat_door_no'],
-            #     district_name_eng = i['district_name'],
-            #     city_name_eng = i['city_name'],
-            #     block_name_eng = i['taluk_name'],
-            #     panchayat_name_eng = i['panchayat_name'],
-            #     village_name_eng = i['village_name'],
-            #     town_name_eng = i['city_name'],
-            #     ward_name_eng = i['ward_name'],
-            #     taluk_name_eng = i['taluk_name'],
-            #     bbmp_zone_name_eng = i['zone_name'],
-                
-            # )
-            # created_ids.append(created_data.id)
-
         print(created_ids)
-
-        # for i in created_ids:
-        #     print(i.name)
-
-
         create_data = Contact_Tracing.objects.bulk_create(created_ids)
-
-
         # return Response({'result':'Updated Sucessfully', 'resp':res_data, 'created_ids':created_ids}, status= status.HTTP_200_OK)
         return Response({'result':'Updated Sucessfully', 'resp':res_data,}, status= status.HTTP_200_OK)
 
@@ -1672,9 +1605,6 @@ class ContectTestingDateWiseRuralDump(APIView):
     
     
     
-    
-    
-
 #########################          GET 
 #########################
 class GetOTPData(APIView):
