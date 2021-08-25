@@ -1148,9 +1148,9 @@ class ContectTestingOffline(APIView):
             symptoms_list = []
             
             print(type(symptoms))
-            print(type(co_morbidity_type))
+            print(type(co_morbidity))
             
-            dddd = co_morbidity_type
+            dddd = co_morbidity
             print(dddd)
             print(type(dddd))
             cccc = str(dddd)
@@ -1170,16 +1170,16 @@ class ContectTestingOffline(APIView):
             
             co_morbidity_type_list = []
             
-            check_co_mrobidity = ast.literal_eval(str(co_morbidity_type))
-            
-            for i in check_co_mrobidity:
-                print(i)
-                # print(i['name'])
-                if isinstance(i, str):
-                    dist_type = ast.literal_eval(i)
-                    co_morbidity_type_list.append(dist_type['name'])
-                else:
-                    co_morbidity_type_list.append(i['name'])
+            check_co_mrobidity = ast.literal_eval(str(co_morbidity))
+            if co_morbidity:
+                for i in check_co_mrobidity:
+                    print(i)
+                    # print(i['name'])
+                    if isinstance(i, str):
+                        dist_type = ast.literal_eval(i)
+                        co_morbidity_type_list.append(dist_type['name'])
+                    else:
+                        co_morbidity_type_list.append(i['name'])
 
             record_create_timestamp = ''
 
