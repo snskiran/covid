@@ -1150,6 +1150,13 @@ class ContectTestingOffline(APIView):
             print(type(symptoms))
             print(type(co_morbidity_type))
             
+            dddd = co_morbidity_type
+            print(dddd)
+            print(type(dddd))
+            cccc = str(dddd)
+            print(cccc)
+            print(type(cccc))
+            
             check_symt = ast.literal_eval(symptoms)
             
             if symptoms:
@@ -1163,7 +1170,7 @@ class ContectTestingOffline(APIView):
             
             co_morbidity_type_list = []
             
-            check_co_mrobidity = ast.literal_eval(co_morbidity_type)
+            check_co_mrobidity = ast.literal_eval(str(co_morbidity_type))
             
             for i in check_co_mrobidity:
                 print(i)
