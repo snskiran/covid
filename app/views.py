@@ -1548,8 +1548,9 @@ class ContectTestingDateWiseRuralDump(APIView):
         res_data = ct_dmp_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA_DATEWISE']
 
         created_ids= []
-
+        cnt_dd = 0
         for i in res_data:
+            
 
             if i['district_number']:
                 check_dist_data = Master_District.objects.get(Q(district_code= i['district_number']))
@@ -1593,7 +1594,7 @@ class ContectTestingDateWiseRuralDump(APIView):
             if i['gender'] == 3:
                 i['gender_name'] = 'others'
 
-            created_ids.append(Contact_Tracing(name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
+            created_ids.append(Contact_Tracing(covid_id = cnt_dd.zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], block= i['taluk_number'], 
                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
                                                 block_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
