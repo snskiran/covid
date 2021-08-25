@@ -1146,8 +1146,11 @@ class ContectTestingOffline(APIView):
             test_type_ref_data = Test_Type_Ref.objects.get(test_type_name= test_type)
         
             symptoms_list = []
+            
+            check_symt = ast.literal_eval(symptoms)
+            
             if symptoms:
-                for i in symptoms:
+                for i in check_symt:
                     print(i)
                     if isinstance(i, str):
                         dist_type = ast.literal_eval(i)
