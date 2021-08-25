@@ -3220,7 +3220,9 @@ class CreatePackage(APIView):
             current_datetime = asdatetime.now().strftime('%Y-%m-%d')
             # last_package_name_data = 'PHCID_'+str(current_datetime)+'_1'
             last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_1'
-
+        
+        print(tho_deatils.id)
+        print(tho_deatils.phc_master_id)
         created_package_list = Package_Sampling.objects.create(user_id= user_id, swab_cc_id= tho_deatils.id, master_phc_id= tho_deatils.phc_master_id, package_sampling_name= last_package_name_data, package_sampling_barcode= random.randint(1000000000,9999999999), samples_count= count, dispatch_status= 0, sympto_indication= patient_status, package_type_status= 6, package_type_action=16)
 
         for pid in patient_ids:
