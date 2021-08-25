@@ -1159,7 +1159,10 @@ class ContectTestingOffline(APIView):
                         symptoms_list.append(i['name'])
             
             co_morbidity_type_list = []
-            for i in co_morbidity_type:
+            
+            check_co_mrobidity = ast.literal_eval(co_morbidity_type)
+            
+            for i in check_co_mrobidity:
                 print(i)
                 # print(i['name'])
                 if isinstance(i, str):
