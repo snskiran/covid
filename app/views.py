@@ -4274,7 +4274,7 @@ class LabReceivePackage(APIView):
 
 
 
-
+"""
 #########################          ACCEPT PACKAGE SAMPLES          #########################
 class AcceptPackagePatientSamples(APIView):
 
@@ -4339,6 +4339,65 @@ class AcceptPackagePatientSamples(APIView):
         # get_phcm_user_details = Swab_Collection_Centre.objects.get(Q(swab_collection_centre_name= get_phcs_user_details.swab_collection_centre_name) & Q(role= get_roles.id))
 
         return Response('Updated Sucessfully')
+"""
+
+
+
+
+#########################          ACCEPT PACKAGE SAMPLES          #########################
+class AcceptPackagePatientSamples(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        srf_id = data.get('srf_id')
+        result_status = data.get('received_status')
+        result_status_comment = data.get('reject_reason')
+        user_id = data.get('user_id')
+        package_id = data.get('package_id')
+
+        if result_status:
+
+            if result_status == 'Reject':
+                test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+                master_lab_data = Master_Labs.objects.get(id= test_lab_data.testing_lab_master_id)
+                get_patient_details = Patient.objects.filter(srf_id= srf_id).update(sample_status= result_status, lab_accepted_datetime= asdatetime.now(), samples_rejected= 1, package_sampling_id= None) # test_lab_id= master_lab_data.lab_id)
+
+                get_package_details = Package_Sampling.objects.get(id= package_id)
+                # Package_Sampling.objects.filter(id= package_id).update(samples_count= int(get_package_details.samples_count) - 1)
+
+
+                get_pa_data = Package_Sampling.objects.filter(id= package_id).values()
+
+            else:
+                test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+                master_lab_data = Master_Labs.objects.get(id= test_lab_data.testing_lab_master_id)
+                get_patient_details = Patient.objects.filter(srf_id= srf_id).update(sample_status= result_status, lab_accepted_datetime= asdatetime.now()) # test_lab_id= master_lab_data.lab_id)
+
+        if result_status_comment:
+
+            get_patient_details = Patient.objects.filter(srf_id= srf_id).update(sample_rejected_reason= result_status_comment, lab_accepted_datetime= asdatetime.now())
+
+            get_package_details = Package_Sampling.objects.get(id= package_id)
+            Package_Sampling.objects.filter(id= package_id).update(samples_count= int(get_package_details.samples_count) - 1)
+            
+
+            check_data = Package_Sampling.objects.filter(Q(id= package_id) & Q(samples_count = 0)).delete()
+            
+
+            get_pa_data = Package_Sampling.objects.filter(id= package_id).values()
+
+        # get_added_user_details = Patient.objects.get(srf_id= srf_id)
+
+        # get_roles = Roles.objects.get(role_name= 'PHCMO')
+
+        # get_phcs_user_details = Swab_Collection_Centre.objects.get(Q(user_id= get_added_user_details.added_by))
+
+        # get_phcm_user_details = Swab_Collection_Centre.objects.get(Q(swab_collection_centre_name= get_phcs_user_details.swab_collection_centre_name) & Q(role= get_roles.id))
+
+        return Response('Updated Sucessfully')
+
 
 
 
