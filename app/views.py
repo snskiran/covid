@@ -1610,8 +1610,14 @@ class ContectTestingDateWiseRuralDump(APIView):
                 i['gender_name'] = 'female'
             if i['gender'] == 3:
                 i['gender_name'] = 'others'
+                
+            
 
-            created_ids.append(Contact_Tracing(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], taluk= i['taluk_number'], 
+#             created_ids.append(Contact_Tracing(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], taluk= i['taluk_number'], 
+#                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
+#                                                 taluk_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
+#                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
+            Contact_Tracing.objects.create(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], taluk= i['taluk_number'], 
                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
                                                 taluk_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
@@ -1619,7 +1625,7 @@ class ContectTestingDateWiseRuralDump(APIView):
             cnt_dd += 1
 
         print(created_ids)
-        create_data = Contact_Tracing.objects.bulk_create(created_ids)
+#         create_data = Contact_Tracing.objects.bulk_create(created_ids)
         # return Response({'result':'Updated Sucessfully', 'resp':res_data, 'created_ids':created_ids}, status= status.HTTP_200_OK)
         return Response({'result':'Updated Sucessfully', 'resp':res_data,}, status= status.HTTP_200_OK)
 
