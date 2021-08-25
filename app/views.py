@@ -1577,6 +1577,8 @@ class ContectTestingDateWiseRuralDump(APIView):
 
                     for cmpd in check_master_phc_details:
                         i['phc_id']= cmpd['id']
+                else:
+                    i['phc_id'] = 'None of the PHC matched'
             
             if i['ward_type'] == 1:
                 i['ward_type_name'] = 'urban'
