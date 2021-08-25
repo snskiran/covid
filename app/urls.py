@@ -50,6 +50,7 @@ urlpatterns = [
     path('contact-testing-date-wise-dump/', ContectTestingDateWiseDump.as_view()),
     path('contact-testing-date-wise-urban-dump/', ContectTestingDateWiseUrbanDump.as_view()),
     path('contact-testing-date-wise-rural-dump/', ContectTestingDateWiseRuralDump.as_view()),
+    
     path('get-otp-details/', GetOTPData.as_view()),
     path('collection-status/', CollectionDetailsAndStatus.as_view()),
     path('get-phc-user-added-patients/', GetPHCUseraddedPatients.as_view()),
