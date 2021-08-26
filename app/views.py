@@ -6427,25 +6427,26 @@ class FilterDSOLabsBasedLocation(APIView):
             # print(dist_lon)
 
             for i in lab_data:
-                if dist_lat and dist_lon != 0 and (float(i['gps_lat']) and float(i['gps_lon'])) != 0:
-                    dist_cal = haversine(float(dist_lat), float(dist_lon), float(i['gps_lat']), float(i['gps_lon']))
-                    # print(dist_cal)
+                if i['gps_lat'] and i['gps_lon']:
+                    if dist_lat and dist_lon != 0:# and (float(i['gps_lat']) and float(i['gps_lon'])) != 0:
+                        dist_cal = haversine(float(dist_lat), float(dist_lon), float(i['gps_lat']), float(i['gps_lon']))
+                        # print(dist_cal)
 
-                    if dist_cal < 100:
-                        # if int(i['closing_balance']) >=10:
-                        if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
-                            # if int(i['closing_balance']) == 10 and int(i['closing_balance']) > 0:
-                            dist_inside_hundr.append(i)
-                    if dist_cal > 100 and dist_cal < 200:
-                        # if int(i['closing_balance']) >= 10:
-                        if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
-                            # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
-                            dist_inside_twohund.append(i)
-                    if dist_cal > 200 and dist_cal < 300:
-                        # if int(i['closing_balance']) >= 10:
-                        if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
-                            # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
-                            dist_inside_threehund.append(i)
+                        if dist_cal < 100:
+                            # if int(i['closing_balance']) >=10:
+                            if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
+                                # if int(i['closing_balance']) == 10 and int(i['closing_balance']) > 0:
+                                dist_inside_hundr.append(i)
+                        if dist_cal > 100 and dist_cal < 200:
+                            # if int(i['closing_balance']) >= 10:
+                            if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
+                                # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
+                                dist_inside_twohund.append(i)
+                        if dist_cal > 200 and dist_cal < 300:
+                            # if int(i['closing_balance']) >= 10:
+                            if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
+                                # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
+                                dist_inside_threehund.append(i)
 
         # print(dist_inside_hundr)
         # print(dist_inside_twohund)
