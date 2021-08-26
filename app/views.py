@@ -10467,7 +10467,7 @@ class GetSSUTargetSetup(APIView):
 """
 
 
-
+"""
 #########################      TARGET FOR DSO      #########################
 class GetSSUTargetSetup(APIView):
 
@@ -10537,7 +10537,82 @@ class GetSSUTargetSetup(APIView):
             all_dist_data.append(dist_data_details)
         
         return Response({'result':all_dist_data, 'message':'Sucessfully'}, status=status.HTTP_200_OK)
+"""
+
+
+
+
+#########################      SSU TARGET SETUP      #########################
+class GetSSUTargetSetup(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        date = data.get('target_date')
+
+        mast_dist_data = Master_District.objects.all().values()
+
+        all_dist_data = []
+
+        for i in mast_dist_data:
+
+            if date:
+
+                if datetime.datetime(int(date.split('-')[0]), int(date.split('-')[1]), int(date.split('-')[2])).date() >= asdatetime.now().date():
+                    
+                    print("HHHHHHHHHHHHHHH")
+                    print(asdatetime.now().date())
+                    print(datetime.datetime(int(date.split('-')[0]), int(date.split('-')[1]), int(date.split('-')[2])).date())
+
+                    selected_date = date.split('-')
+                
+                    dist_data_details = {'district_code': i['district_code'], 'district_name_eng':i['district_name_eng']}
+                    dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= datetime.datetime(int(selected_date[0]), int(selected_date[1]), int(selected_date[2])).date()) & Q(district_code= i['district_code'])).values()
+
+                    print(dso_target_data)
+                    print("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+
+                    if dso_target_data:
+                        for j in dso_target_data:
+                            
+                            dist_data_details['id'] = j['id']
+                            dist_data_details['dso_id']= j['dso_id']
+                            dist_data_details['dso_target']= j['dso_target']
+                            dist_data_details['edit'] = True
+                    else:
+                        dist_data_details['id'] = ''
+                        dist_data_details['dso_id']= ''
+                        dist_data_details['dso_target']= ''
+                        dist_data_details['edit'] = False
+                else:
+                    print("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL")
+                    return Response({'result':[], 'message':'Please Select Current Date or Future Dates only'}, status=status.HTTP_200_OK)
+            else:
+
+                dist_data_details = {'district_code': i['district_code'], 'district_name_eng':i['district_name_eng']}
+                dso_target_data = PHCTargetAssignment.objects.filter(Q(dso_created_datetime__date= asdatetime.now().date()) & Q(district_code= i['district_code'])).values()
+
+                if dso_target_data:
+                    for j in dso_target_data:
+                        
+                        dist_data_details['id'] = j['id']
+                        dist_data_details['dso_id']= j['dso_id']
+                        dist_data_details['dso_target']= j['dso_target']
+                        dist_data_details['edit'] = True
+                else:
+                    dist_data_details['id'] = ''
+                    dist_data_details['dso_id']= ''
+                    dist_data_details['dso_target']= ''
+                    dist_data_details['edit'] = False
+
+            all_dist_data.append(dist_data_details)
         
+        return Response({'result':all_dist_data, 'message':'Sucessfully'}, status=status.HTTP_200_OK)
+
+
 
 
 
