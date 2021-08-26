@@ -6628,7 +6628,6 @@ class EditUpdateLabs(APIView):
         max_capacity= data.get('max_capacity')
 
         check_master_labs = Master_Labs.objects.filter(id= id).update(max_capacity= max_capacity)
-
             
         return Response({'result':'Updated Sucessfully'}, status= status.HTTP_200_OK)
 
