@@ -6590,7 +6590,6 @@ class GetEditLabs(APIView):
     def post(self, request):
 
         data = request.data
-
         user_id = data.get('user_id')
 
         check_dso = DSO.objects.filter(user_id= user_id)
@@ -6602,7 +6601,6 @@ class GetEditLabs(APIView):
 
             for i in check_dso:
                 check_master_labs = Master_Labs.objects.filter(Q(district_code= i.district.district_code) | Q(karnataka_districts_id= i.district.district_code)).values()
-
             return Response({'result': check_master_labs}, status= status.HTTP_200_OK)
 
         elif check_ssu:
