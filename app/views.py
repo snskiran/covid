@@ -10959,7 +10959,7 @@ class TargetForTHO(APIView):
                 return Response({'result': 'Target Assigned Sucessfully'})
         else:
             return Response({'result': 'Something went wrong'})
-"""
+
 
 
 
@@ -11002,6 +11002,49 @@ class TargetForTHO(APIView):
                 return Response({'result': 'Target Assigned Sucessfully'})
         else:
             return Response({'result': 'Something went wrong'})
+"""
+
+
+
+#########################      TARGET FOR THO      #########################
+class TargetForTHO(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        taluk_codes = data.get('taluk_code')
+        taluk_targets = data.get('contact_testing_count')
+
+        print(data)
+
+        tal_data = Master_Block.objects.get(block_code= taluk_codes)
+
+        tho_data = THO.objects.get(city_id= tal_data.id)
+
+        
+        dso_data = DSO.objects.get(user_id= user_id)
+        
+        # target_ass_tho = PHCTargetAssignment.objects.create(tho_id= tho_data.id, tho_target= taluk_targets, tho_created_datetime= asdatetime.now().date())
+
+        get_target_ass_tho = PHCTargetAssignment.objects.filter(Q(dso_id= dso_data.id) & Q(dso_created_datetime__date= asdatetime.now().date())).values()
+        print(get_target_ass_tho)
+        if get_target_ass_tho:
+            check_assigned_tgt = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(dso_id= dso_data.id))
+            if check_assigned_tgt:
+                target_ass_tho = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(dso_id= dso_data.id)).update(tho_target= taluk_targets, tho_created_datetime= asdatetime.now())
+                return Response({'result': 'Update Target Assigned Sucessfully'})
+            else:
+                get_target_ass_tho = PHCTargetAssignment.objects.filter(Q(dso_id= dso_data.id) & Q(dso_created_datetime__date= asdatetime.now().date())).values().order_by('id')[:1]
+                print(get_target_ass_tho)
+                for i in get_target_ass_tho:
+                    target_ass_tho = PHCTargetAssignment.objects.create(tho_id= tho_data.id, tho_target= taluk_targets, tho_created_datetime= asdatetime.now(), dso_id= dso_data.id, dso_created_datetime= i['dso_created_datetime'], dso_target= i['dso_target'], district_code= i['district_code'])
+                return Response({'result': 'Target Assigned Sucessfully'})
+        else:
+            return Response({'result': 'Something went wrong'})
+
 
 
 
