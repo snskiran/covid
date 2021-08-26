@@ -6670,6 +6670,8 @@ class get_all_labs(GenericAPIView):
                 'Lab_data'  :   master_lab,
                 'result'    :   'Sucessfully'})  
 
+    
+    
 
 
 class Postdelete(GenericAPIView):
