@@ -8091,8 +8091,9 @@ class DSOTargetvsActualSwabCollection(APIView):
 
                 tho_rep_data['balance']= check_phc_target_cnt - check_phc_swab_coll
                 total_balance += check_phc_target_cnt - check_phc_swab_coll
-
-                rep_data.append(tho_rep_data)
+                
+                if tho_rep_data['daily_target'] and tho_rep_data['no_of_patient_allotted']:
+                    rep_data.append(tho_rep_data)
 
         # rep_data.append({'total_target':total_target, 'total_no_of_patient':total_no_of_patient, 'total_no_of_swab_coll':total_no_of_swab_coll, 'total_balance':total_balance})
             
