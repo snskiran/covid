@@ -11200,7 +11200,7 @@ class TargetForPHC(APIView):
         target_ass_phc = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date())).update(phc_id= get_all_phc.id, phc_target= phc_targets, phc_created_datetime= asdatetime.now())
 
         return Response({'result': 'Target Assigned Sucessfully'})
-"""
+
 
 #########################      TARGET FOR PHC      #########################
 class TargetForPHC(APIView):
@@ -11254,6 +11254,65 @@ class TargetForPHC(APIView):
                 return Response({'result': 'Target Assigned Sucessfully'})
         else:
             return Response({'result': 'Something Went Wrong'})
+"""
+
+
+
+
+#########################      TARGET FOR PHC      #########################
+class TargetForPHC(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+        print("JHHHHHHHHHHHHHHHHHHHHHHH")
+
+        user_id = data.get('user_id')
+
+        phc_codes = data.get('phc_code')
+        phc_targets = data.get('contact_testing_count')
+
+        id = data.get('id')
+        edit_id = data.get('edit_id')
+
+        tho_data = THO.objects.get(user_id= user_id)
+
+        # tal_data = Master_Block.objects.get(block_code= taluk_codes)
+
+        # check_phc = Master_PHC.objects.get(phc_code= phc_codes)
+
+        get_all_phc_ck = Master_PHC.objects.filter(id= id)
+        if get_all_phc_ck:
+
+            get_all_phc = Master_PHC.objects.get(id= id)
+
+            check_assigned_data =  PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(phc_id= get_all_phc.id))
+
+            if check_assigned_data:
+
+                # get_all_phc = Master_PHC.objects.get(id= id)
+                # phc_data = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= get_all_phc))
+                # phc_data = Swab_Collection_Centre.objects.get(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
+                
+                target_ass_phc = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()) & Q(phc_id= get_all_phc.id)).update(phc_target= phc_targets, phc_created_datetime= asdatetime.now())
+
+                return Response({'result': 'Target Updated Sucessfully'})
+
+            else:
+                # get_all_phc = Master_PHC.objects.get(id= phc_data.phc_master_id)
+                # phc_data = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
+                # phc_data = Swab_Collection_Centre.objects.get(Q(tho_id= tho_data.id) & Q(role_id= 6) & Q(phc_master_id= id))
+                # target_ass_phc = PHCTargetAssignment.objects.create(phc_id= get_all_phc.id, phc_target= phc_targets)
+                # target_ass_phc = PHCTargetAssignment.objects.filter(Q(tho_id= tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date())).update(phc_id= get_all_phc.id, phc_target= phc_targets, phc_created_datetime= asdatetime.now())
+                target_ass_phc = PHCTargetAssignment.objects.create(tho_id= tho_data.id, tho_created_datetime= asdatetime.now(), phc_id= get_all_phc.id, phc_target= phc_targets, phc_created_datetime= asdatetime.now())
+
+                return Response({'result': 'Target Assigned Sucessfully'})
+        else:
+            return Response({'result': 'Something Went Wrong'})
+
+
 
 
 
