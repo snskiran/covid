@@ -6428,7 +6428,7 @@ class FilterDSOLabsBasedLocation(APIView):
 
             for i in lab_data:
                 if i['gps_lat'] and i['gps_lon']:
-                    if dist_lat and dist_lon != 0:# and (float(i['gps_lat']) and float(i['gps_lon'])) != 0:
+                    if dist_lat and dist_lon != 0:
                         dist_cal = haversine(float(dist_lat), float(dist_lon), float(i['gps_lat']), float(i['gps_lon']))
                         # print(dist_cal)
 
