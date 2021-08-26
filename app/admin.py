@@ -115,7 +115,7 @@ admin.site.register(Outside_Patient_Address)
 
 @admin.register(Contact_Tracing)
 class WardMasterAdmin(ImportExportModelAdmin):
-	list_display = ('id', 'name', 'mobile_number', 'age', 'gender',)
+	list_display = ('id', 'name', 'mobile_number', 'age', 'gender', 'covid_id')
 
 
 
