@@ -6603,7 +6603,7 @@ class GetEditLabs(APIView):
             for i in check_dso:
                 check_master_labs = Master_Labs.objects.filter(Q(district_code= i.district.district_code) | Q(karnataka_districts_id= i.district.district_code)).values()
 
-            return Response({'result': all_labs_data}, status= status.HTTP_200_OK)
+            return Response({'result': check_master_labs}, status= status.HTTP_200_OK)
 
         elif check_ssu:
             
