@@ -10667,6 +10667,54 @@ class TargetForDSO(APIView):
 
 
 
+"""
+#########################      TARGET FOR DSO      #########################
+class TargetForDSO(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        user_id = data.get('user_id')
+
+        dist_codes = data.get('district_code')
+        dis_targets = data.get('contact_testing_count')
+
+        id = data.get('id')
+        date = data.get('target_date')
+
+        
+
+        dist_data = Master_District.objects.get(district_code= dist_codes)
+
+        dso_data = DSO.objects.get(district_id= dist_data.id)
+
+        if id:
+            if date:
+                print("DDDDDDDDDDDDDDDDDDD", date)
+                split_date = date.split('-')
+
+                PHCTargetAssignment.objects.filter(id= id).update(dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+            else:
+                PHCTargetAssignment.objects.filter(id= id).update(district_code= dist_codes, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
+            # dist_data = Master_District.objects.get(district_code= dist_codes)
+            # dso_data = DSO.objects.get(district_id= dist_data.id)
+            return Response({'result': 'Updated Sucessfully'})
+
+        else:
+            if date:
+                print("DDDDDDDDDDDDDDDDDDD", date)
+                split_date = date.split('-')
+
+                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= datetime.datetime(int(split_date[0]), int(split_date[1]), int(split_date[2])))
+            else:
+                target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
+
+            return Response({'result': 'Target Assigned Sucessfully'})
+"""
+
 
 #########################      TARGET FOR DSO      #########################
 class TargetForDSO(APIView):
@@ -10713,7 +10761,6 @@ class TargetForDSO(APIView):
                 target_ass_dso = PHCTargetAssignment.objects.create(district_code= dist_codes, dso_id= dso_data.id, dso_target= dis_targets, dso_created_datetime= asdatetime.now())
 
             return Response({'result': 'Target Assigned Sucessfully'})
-
 
 
 
