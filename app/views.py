@@ -11076,7 +11076,7 @@ class GetTHOTarget(APIView):
         target_ass_dso = PHCTargetAssignment.objects.filter(Q(tho_id= tho_details.id) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
 
         return Response({'result': get_all_phc, 'tho_target':target_ass_dso}, status=status.HTTP_200_OK)
-"""
+
 
 
 
@@ -11117,6 +11117,51 @@ class GetTHOTarget(APIView):
                 i['edit'] = False
 
         return Response({'result': get_all_phc, 'tho_target':target_asgn_dso}, status=status.HTTP_200_OK)
+"""
+
+
+
+
+#########################      GET THO TARGET      #########################
+class GetTHOTarget(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        tho_details = THO.objects.get(user_id= user_id)
+
+        # swb_coll_data = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_details.id) & Q(role_id= 6)).values()
+
+        # phc_ids = []
+
+        # for i in swb_coll_data:
+        #     phc_ids.append(i['phc_master_id'])
+
+        phc_ids = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_details.id) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
+
+        # check_dist_data = Master_District.objects.get(district_code= dso_details.district_id)
+
+        get_all_phc = Master_PHC.objects.filter(id__in= phc_ids).values()
+
+        target_asgn_dso = PHCTargetAssignment.objects.filter(Q(tho_id= tho_details.id) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
+        
+        for i in get_all_phc:
+            target_assigned_dso = PHCTargetAssignment.objects.filter(Q(tho_id= tho_details.id) & Q(phc_id= i['id']) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
+            if target_assigned_dso:
+                target_assigned_dso_get = PHCTargetAssignment.objects.get(Q(tho_id= tho_details.id) & Q(phc_id= i['id']) & Q(tho_created_datetime__date= asdatetime.now().date()))
+                i['phc_target'] = target_assigned_dso_get.phc_target
+                i['edit'] = True
+            else:
+                i['phc_target'] = 0
+                i['edit'] = False
+
+        return Response({'result': get_all_phc, 'tho_target':target_asgn_dso}, status=status.HTTP_200_OK)
+
+
+
 
 
 
