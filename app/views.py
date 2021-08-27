@@ -1038,6 +1038,8 @@ class ContectTestingOffline(APIView):
     def post(self, request):
 
         lpdata = request.data
+        print("DDDDDDDDD:")
+        print(lpdata)
 
         cnt = 0
         for data in lpdata:
