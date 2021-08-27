@@ -1172,7 +1172,7 @@ class ContectTestingOffline(APIView):
             
             co_morbidity_type_list = []
             
-            check_co_mrobidity = ast.literal_eval(str(co_morbidity))
+            check_co_mrobidity = ast.literal_eval(str(co_morbidity_type))
             if co_morbidity:
                 for i in check_co_mrobidity:
                     print(i)
