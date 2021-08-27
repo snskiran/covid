@@ -1346,6 +1346,8 @@ class ContectTestingOfflineAddPatient(APIView):
             ct_longitude = data.get('ct_longitude')
             swab_collection_status = data.get('swab_collection_status')
             antigen = data.get('antigen')
+            
+            rat_created_id_data = data.get('rat_created_id_data')
 
 
             # mobile_number_belongs_to = data.g et('mobile_number_belongs_to')
