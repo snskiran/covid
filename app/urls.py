@@ -48,6 +48,7 @@ urlpatterns = [
 
     path('add-patient/', AddPatient.as_view()),
     path('contact-testing-offline/', ContectTestingOffline.as_view()),
+    path('add-patient-offline/', ContectTestingOfflineAddPatient.as_view()),
     path('contact-testing-date-wise-dump/', ContectTestingDateWiseDump.as_view()),
     path('contact-testing-date-wise-urban-dump/', ContectTestingDateWiseUrbanDump.as_view()),
     path('contact-testing-date-wise-rural-dump/', ContectTestingDateWiseRuralDump.as_view()),
