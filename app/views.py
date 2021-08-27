@@ -7494,7 +7494,7 @@ class SwabPackageDespatchDetailsCount(APIView):
 
             check_package_created = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
             check_package_received_mo = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_status= 7)).count()
-            check_package_dispatched_lab = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 12)).count()
+            check_package_dispatched_lab = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 15)).count()
             check_package_dispatched_tho = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 13)).count()
 
             package_details['date'] = i['create_timestamp__date']
