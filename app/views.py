@@ -3790,7 +3790,6 @@ class GetPHCUserPackageList(APIView):
         check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
 
 
-
         if check_user:
             check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
             check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
