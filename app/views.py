@@ -5940,8 +5940,8 @@ class GetThoDsoSsuDashboardDetails(APIView):
                 #         short_fall_cnt += cnt_shrt_fall
 
 
-                phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
-                phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+                phc_mo_user_data = Swab_Collection_Centre.objects.filter(Q(user_id__in= phc_user_ids) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
+                phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id__in= phc_mo_user_data)).values_list('user_id'))
                 no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
 
                 no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
@@ -5951,15 +5951,15 @@ class GetThoDsoSsuDashboardDetails(APIView):
                 no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).filter((Q(package_type_status= 2) & Q(package_type_action= 12)) | (Q(package_type_status= 5) & Q(package_type_action= 15))).filter(lab_master__isnull= False).count()
             
             
-                today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False))
-                today_contact_tracing_assigned += Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).count()
+                today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False))
+                today_contact_tracing_assigned += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).count()
                 
-                today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1))
-                today_total_sam_collected_cnt += Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
-              
-                short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True))
-                short_fall_cnt += Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).count()
-               
+                today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1))
+                today_total_sam_collected_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
+                
+                short_fall = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True))
+                short_fall_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).count()
+        
                 return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':no_of_lab_allocation_req, 'no_of_packages_for_dispatch':no_of_package_for_dispatch, 'no_of_packages_dispatched_to_lab':no_of_package_dispatch_to_lab, 'today_contact_tracing_assigned':today_contact_tracing_assigned, 'today_total_sam_collected_cnt':today_total_sam_collected_cnt, 'short_fall_cnt':short_fall_cnt},status= status.HTTP_200_OK)
 
 
