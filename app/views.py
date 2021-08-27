@@ -1068,6 +1068,10 @@ class ContectTestingOffline(APIView):
             age = data.get('age')
             age_type = data.get('age_type')
             idProof_type = data.get('idProof_type')
+            
+            speciman_collection_date = data.get('speciman_collection_date')
+            swab_collection_status = data.get('swab_collection_status')
+            antigen = data.get('antigen')
 
             aadhar_number = data.get('aadhar_number')
             ration_card_number = data.get('ration_card_number')
@@ -1095,6 +1099,7 @@ class ContectTestingOffline(APIView):
             generate_srf = random.randint(100000000, 999999999)
 
             barcode = data.get('barcode')
+            
 
 
             print(reason_testing)
@@ -1236,7 +1241,9 @@ class ContectTestingOffline(APIView):
                                             patient_status = patient_status_type,
                                             # specimen_collection_date= specimen_collection_date, 
                                             #testing_kit_barcode_id= testing_type_ref_data.id,
-                                            # symptoms_list= symptoms, 
+                                            # symptoms_list= symptoms,
+                                            create_timestamp = speciman_collection_date,
+                                            swab_collection_status = swab_collection_status,
                                             symptoms_list= symptoms_list, 
                                             test_type_id= test_type_ref_data.id, 
                                             srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
@@ -1244,8 +1251,9 @@ class ContectTestingOffline(APIView):
                                             rat_created_id= rat_created_id_data, arrival_date= arrival_date
                                         )
             record_create_timestamp = str(patients_data.create_timestamp)
-            # if test_type == 'RAT':
-            #     Patient.objects.filter(id= patients_data.id).update(rat_created_id= patients_data.id)
+            if test_type == 'RAT':
+                # Patient.objects.filter(id= patients_data.id).update(rat_created_id= patients_data.id)
+                Patient_Testing.objects.create(patient_id= patients_data.id, testing_status= antigen)
             rat_created_id = patients_data.id
             # if resident_type == 'Other-state':
             #     Outside_Patient_Address.objects.create(patient_id= patients_data.id, 
