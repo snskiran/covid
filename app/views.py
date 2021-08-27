@@ -1348,6 +1348,7 @@ class ContectTestingOfflineAddPatient(APIView):
             antigen = data.get('antigen')
             
             rat_created_id_data = data.get('rat_created_id_data')
+            print(speciman_collection_date)
 
 
             # mobile_number_belongs_to = data.g et('mobile_number_belongs_to')
@@ -1488,7 +1489,8 @@ class ContectTestingOfflineAddPatient(APIView):
                                             test_type_id= test_type_ref_data.id,
                                             specimen_type_id= specimen_type_ref_data.id,
                                             vaccine_status= vaccine_status,
-                                            create_timestamp = asdatetime.strptime(speciman_collection_date,'%Y-%m-%d %H:%M'),
+#                                             create_timestamp = asdatetime.strptime(speciman_collection_date,'%Y-%m-%d %H:%M'),
+                                            create_timestamp = speciman_collection_date,
                                             aadhar_number= aadhar_number,
                                             swab_collection_status = swab_collection_status,
                                             srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
