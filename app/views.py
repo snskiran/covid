@@ -1306,6 +1306,7 @@ class ContectTestingOfflineAddPatient(APIView):
         lpdata = request.data
         print("ADD PATIENT OFFLINE:")
         print(lpdata)
+        
 
         cnt = 0
         for data in lpdata:
