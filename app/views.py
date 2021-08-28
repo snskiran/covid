@@ -10,7 +10,7 @@ from .models import *
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
-from django.db.models import Q
+from django.db.models import Q, F
 from django.http import JsonResponse, request
 
 from rest_framework.views import APIView
@@ -13008,6 +13008,7 @@ class GetTlabOPSPlateData(APIView):
         for i in get_plate_details:
             master_lab_data = Master_Labs.objects.get(id= i['master_lab_id'])
             i['lab_name'] = master_lab_data.lab_name
+            i['lab_id'] = master_lab_data.lab_id
 
         return Response(get_plate_details)
 
@@ -13093,6 +13094,10 @@ class UpdateGroupSamplesTestResult(APIView):
         else:
             Patient.objects.filter(id= patient_id).update(group_samples_result= 1)
             Patient_Testing.objects.create(Q(id= test_result_id) & Q(patient_id= patient_id)).update(testing_status= result_status)
+            
+        if user_id:
+            check_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+            Master_Labs.objects.filter(id = check_lab_data.testing_lab_master_id).update(closing_balance = F('closing_balance') + 1)
 
         return Response({'result': 'Group Result Updated'})
 
@@ -13198,7 +13203,7 @@ class GetTlabOPSPoolPlatePatientDetails(APIView):
 class UpdatePoolSamplesTestResult(APIView):
 
     def post(self, request):
-
+        
         data = request.data
 
         user_id = data.get('user_id')
@@ -13271,7 +13276,7 @@ class UpdatePoolSamplesTestResult(APIView):
                     #     Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status, last_update_timestamp= asdatetime.now())
                     # else:
                     #     Patient_Testing.objects.create(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status)
-
+            inc_closeing_blc = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id).update(closing_balance = F('closing_balance') + 1)
         return Response({'result': 'Updated'})
 
 
