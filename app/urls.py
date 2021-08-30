@@ -216,6 +216,9 @@ urlpatterns = [
     path('dso-target-vs-actual-swab-collection-view/', DSOTargetvsActualSwabCollectionView.as_view()),
     path('dso-swab-dispatch-details/', DSOSwabDispatchDetails.as_view()),
     path('dso-package-lab-wise-report/', DSOPackageLabWiseReport.as_view()),
+    
+    path('dso-get-date-wise-samples-collection-report/', DSODateWiseSamplesCollectionReport.as_view()),
+    path('dso-get-date-wise-taluk-wise-samples-collection-report/', DSODateWiseTalukDatewiseSamplesCollectionReport.as_view()),
 
     path('ssu-date-wise-total-target-count-report/', SSUDateWiseTotalTargetCountReport.as_view()),
     path('ssu-date-wise-total-target-count-details-report/', SSUViewTotalTargetCountDetails.as_view()),
