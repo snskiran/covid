@@ -8277,6 +8277,65 @@ class THOPackageLabWiseReport(APIView):
         return Response({'result': this_final_data, 'no_of_labs':no_of_labs, 'total_samples':total_samples, 'message': 'Sucess'})
 
 
+    
+
+
+#########################      THO DATE WISE COLLECTED SAMPLES               #########################
+class THODateWiseSamplesCollectionReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+        user_id= data.get('user_id')
+
+        tho_data = THO.objects.filter(user_id= user_id)
+        if tho_data:
+            
+            tho_data_get = THO.objects.get(user_id= user_id)
+
+            uniq_date = Patient.objects.filter(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id= tho_data_get.id).values_list('user_id', flat=True)).values_list('id', flat=True)).values('create_timestamp__date').order_by('-create_timestamp__date').distinct()
+            
+            for i in uniq_date:
+                
+                i['phc_count'] = Swab_Collection_Centre.objects.filter(Q(role_id= 6) & Q(tho_id= tho_data_get.id)).count()
+                i['samples_count'] = Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id= tho_data_get.id).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+
+            return Response({'result':uniq_date}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result': []}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#########################      THO DATE WISE COLLECTED SAMPLES PHC VIEW1               #########################
+class THODateWisePHCWiseSamplesCollectionReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+        user_id= data.get('user_id')
+        date = data.get('date')
+
+        tho_data = THO.objects.filter(user_id= user_id)
+        if tho_data:
+            
+            tho_data_get = THO.objects.get(user_id= user_id)
+
+            scc_data = Swab_Collection_Centre.objects.filter(Q(role_id= 6) & Q(tho_id= tho_data_get.id)).values()
+
+            for i in scc_data:
+                get_phc_data = Master_PHC.objects.get(id= i['phc_master_id'])
+                i['phc_name'] = get_phc_data.phc_name
+                i['samples_count'] = Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(phc_master_id= i['phc_master_id']).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= date)).count()
+                i['date'] = date
+            return Response({'result':scc_data}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result': []}, status=status.HTTP_400_BAD_REQUEST)
+
+     
+    
+    
+    
 
 #########################      DSO TARGET VS ACTUAL SWAB COLLECTION               #########################
 class DSOTargetvsActualSwabCollection(APIView):
