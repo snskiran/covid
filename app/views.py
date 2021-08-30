@@ -13672,7 +13672,6 @@ class ICMRAddPatientRecord(APIView):
 
 
 
-
 #########################          Universal Search          #########################
 class UniversalSearch(APIView):
 
