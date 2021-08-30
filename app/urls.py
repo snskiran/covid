@@ -208,6 +208,9 @@ urlpatterns = [
     path('tho-target-vs-actual-swab-collection/', THOTargetvsActualSwabCollection.as_view()),
     path('tho-swab-dispatch-details/', THOSwabDispatchDetails.as_view()),
     path('tho-package-lab-wise-report/', THOPackageLabWiseReport.as_view()),
+    
+    path('tho-get-date-wise-samples-collection-report/', THODateWiseSamplesCollectionReport.as_view()),
+    path('tho-get-date-wise-phc-wise-samples-collection-report/', THODateWisePHCWiseSamplesCollectionReport.as_view()),
 
     path('dso-target-vs-actual-swab-collection/', DSOTargetvsActualSwabCollection.as_view()),
     path('dso-target-vs-actual-swab-collection-view/', DSOTargetvsActualSwabCollectionView.as_view()),
