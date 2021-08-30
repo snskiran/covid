@@ -13673,6 +13673,150 @@ class ICMRAddPatientRecord(APIView):
 
 
 
+#########################          Universal Search          #########################
+class UniversalSearch(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        srf_id = data.get('srf_id')
+        mobile_number = data.get('mobile_number')
+
+        if srf_id and mobile_number:
+            fil_data = Patient.objects.filter(Q(mobile_number= mobile_number) & Q(srf_id= srf_id)).values()
+
+            for i in fil_data:
+                # loc_add_data = Patient_Address.objects.filter(patient_id = i['id'])
+                # out_add_data = Outside_Patient_Address.objects.filter(patient_id= i['id'])
+
+                # if loc_add_data:
+                #     for j in loc_add_data:
+                #         i['state_name'] = j.state_name
+                #         i['']
+
+                test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+                i['test_type_name'] = test_type_data.test_type_name
+                i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+
+                pt_data = Patient_Testing.objects.filter(patient_id= i['id'])
+                if pt_data:
+                    for j in pt_data:
+                        i['lab_received_date'] = str(j.lab_received_date)
+                        i['rtpcr_test'] = j.rtpcr_test
+                        i['testing_status'] = j.testing_status
+                        i['test_date'] = j.create_timestamp
+                else:
+                    i['lab_received_date'] = '-'
+                    i['rtpcr_test'] = '-'
+                    i['testing_status'] = '-'
+                    i['test_date'] = '-'
+
+                pckg_data = Package_Sampling.objects.filter(id = i['package_sampling_id'])
+                if pckg_data:
+                    for j in pckg_data:
+                        i['package_sampling_name'] = j.package_sampling_name
+                        i['package_sampling_barcode'] = j.package_sampling_barcode
+                        i['package_type_status'] = j.package_type_status
+                        i['package_type_action'] = j.package_type_action
+
+            return Response({'result':fil_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+
+
+        if mobile_number:
+            fil_data = Patient.objects.filter(Q(mobile_number= mobile_number)).values()
+
+            for i in fil_data:
+                # loc_add_data = Patient_Address.objects.filter(patient_id = i['id'])
+                # out_add_data = Outside_Patient_Address.objects.filter(patient_id= i['id'])
+
+                # if loc_add_data:
+                #     for j in loc_add_data:
+                #         i['state_name'] = j.state_name
+                #         i['']
+
+                test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+                i['test_type_name'] = test_type_data.test_type_name
+                i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+
+                pt_data = Patient_Testing.objects.filter(patient_id= i['id'])
+                if pt_data:
+                    for j in pt_data:
+                        i['lab_received_date'] = str(j.lab_received_date)
+                        i['rtpcr_test'] = j.rtpcr_test
+                        i['testing_status'] = j.testing_status
+                        i['test_date'] = j.create_timestamp
+                else:
+                    i['lab_received_date'] = '-'
+                    i['rtpcr_test'] = '-'
+                    i['testing_status'] = '-'
+                    i['test_date'] = '-'
+
+                pckg_data = Package_Sampling.objects.filter(id = i['package_sampling_id'])
+                if pckg_data:
+                    for j in pckg_data:
+                        i['package_sampling_name'] = j.package_sampling_name
+                        i['package_sampling_barcode'] = j.package_sampling_barcode
+                        i['package_type_status'] = j.package_type_status
+                        i['package_type_action'] = j.package_type_action
+
+            return Response({'result':fil_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+
+
+        if srf_id:
+            fil_data = Patient.objects.filter(Q(srf_id= srf_id)).values()
+
+            for i in fil_data:
+                # loc_add_data = Patient_Address.objects.filter(patient_id = i['id'])
+                # out_add_data = Outside_Patient_Address.objects.filter(patient_id= i['id'])
+
+                # if loc_add_data:
+                #     for j in loc_add_data:
+                #         i['state_name'] = j.state_name
+                #         i['']
+
+                test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+                i['test_type_name'] = test_type_data.test_type_name
+                i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+
+                pt_data = Patient_Testing.objects.filter(patient_id= i['id'])
+                if pt_data:
+                    for j in pt_data:
+                        i['lab_received_date'] = str(j.lab_received_date)
+                        i['rtpcr_test'] = j.rtpcr_test
+                        i['testing_status'] = j.testing_status
+                        i['test_date'] = j.create_timestamp
+                else:
+                    i['lab_received_date'] = '-'
+                    i['rtpcr_test'] = '-'
+                    i['testing_status'] = '-'
+                    i['test_date'] = '-'
+
+                pckg_data = Package_Sampling.objects.filter(id = i['package_sampling_id'])
+                if pckg_data:
+                    for j in pckg_data:
+                        i['package_sampling_name'] = j.package_sampling_name
+                        i['package_sampling_barcode'] = j.package_sampling_barcode
+                        i['package_type_status'] = j.package_type_status
+                        i['package_type_action'] = j.package_type_action
+
+            return Response({'result':fil_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result':[], 'message': 'Something went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
 
 
 
