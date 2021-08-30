@@ -8949,6 +8949,187 @@ class SSUDateWiseGeneratedPackageDetailsReport(APIView):
             return Response('Date Required')
 
 
+        
+        
+
+
+#########################      SSU DATE WISE COLLECTED SAMPLES               #########################
+class SSUDateWiseSamplesCollectionReport(APIView):
+
+    def get(self, request):
+
+        data = request.data
+
+        uniq_date = Patient.objects.all().values('create_timestamp__date').order_by('-create_timestamp__date').distinct()
+
+        for i in uniq_date:
+            i['district_count'] = DSO.objects.all().count()
+            dso_details = DSO.objects.all().values()
+
+            dist_samp_cnt = 0
+            for j in dso_details:
+                get_tho_data = THO.objects.filter(dso_id= j['id']).values_list('id', flat=True)
+                print(get_tho_data)
+                
+                dist_samp_cnt += Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id__in= get_tho_data).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+
+            i['samples_collected'] = dist_samp_cnt
+
+        return Response({'result':uniq_date}, status= status.HTTP_200_OK)
+
+
+
+
+#########################      SSU DATE WISE COLLECTED SAMPLES VIEW1               #########################
+class SSUDateWiseDistrictWiseSamplesCollectionCountReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        date = data.get('date')
+
+        dso_smp_details = DSO.objects.all().values()
+
+        for i in dso_smp_details:
+            get_dist_data = Master_District.objects.get(id= i['district_id'])
+            i['district_name'] = get_dist_data.district_name_eng
+            i['taluk_count'] = THO.objects.filter(dso_id= i['id']).count()
+            dist_samp_cnt = 0
+            # get_tho_data = THO.objects.filter(dso_id= i['id']).values_list('id', flat=True)
+            
+            dist_samp_cnt += Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id__in= THO.objects.filter(dso_id= i['id']).values_list('id', flat=True)).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= date)).count()
+
+            i['samples_collected'] = dist_samp_cnt
+            i['date'] = date
+
+        return Response({'result':dso_smp_details}, status= status.HTTP_200_OK)
+        # else:
+
+        #     dso_smp_details = DSO.objects.all().values()
+
+        #     for i in dso_smp_details:
+        #         get_dist_data = Master_District.objects.get(id= i['district_id'])
+        #         i['district_name'] = get_dist_data.district_name_eng
+        #         i['taluk_count'] = THO.objects.filter(dso_id= i['id']).count()
+        #         dist_samp_cnt = 0
+        #         # get_tho_data = THO.objects.filter(dso_id= i['id']).values_list('id', flat=True)
+                
+        #         dist_samp_cnt += Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id__in= THO.objects.filter(dso_id= i['id']).values_list('id', flat=True)).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= date)).count()
+
+        #         i['samples_collected'] = dist_samp_cnt
+        #         i['date'] = date
+
+        #     return Response({'result':dso_smp_details}, status= status.HTTP_200_OK)
+
+
+
+#########################      SSU DATE WISE COLLECTED SAMPLES VIEW2               #########################
+class SSUDateWiseDistrictWiseTalukWiseSamplesCollectionCountReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        date = data.get('date')
+        dso_id = data.get('dso_id')
+
+        tho_smp_details = THO.objects.filter(dso_id= dso_id).values()
+
+        for i in tho_smp_details:
+            get_block_data = Master_Block.objects.get(id= i['city_id'])
+            i['block_name'] = get_block_data.block_name_eng
+            i['phc_count'] = Swab_Collection_Centre.objects.filter(Q(tho_id= i['id']) & Q(role_id= 6)).count()
+            dist_samp_cnt = 0
+            # get_tho_data = THO.objects.filter(dso_id= i['id']).values_list('id', flat=True)
+            
+            dist_samp_cnt += Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id= i['id']).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= date)).count()
+
+            i['samples_collected'] = dist_samp_cnt
+            i['date'] = date
+
+        return Response({'result':tho_smp_details}, status= status.HTTP_200_OK)
+
+
+
+
+#########################      SSU DSO DATE WISE COLLECTED SAMPLES VIEW3               #########################
+class SSUDSODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionCountReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        date = data.get('date')
+        tho_id = data.get('tho_id')
+
+        scc_smp_details = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_id) & Q(role_id= 6)).values()
+
+        for i in scc_smp_details:
+            get_phc_data = Master_PHC.objects.get(id= i['phc_master_id'])
+            i['phc_name'] = get_phc_data.phc_name
+            # i['phc_count'] = Swab_Collection_Centre.objects.filter(Q(tho_id= i['id']) & Q(role_id= 6)).count()
+            dist_samp_cnt = 0
+            # get_tho_data = THO.objects.filter(dso_id= i['id']).values_list('id', flat=True)
+            
+            dist_samp_cnt += Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(phc_master_id= i['phc_master_id']).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= date)).count()
+
+            i['samples_collected'] = dist_samp_cnt
+            i['date'] = date
+
+        return Response({'result':scc_smp_details}, status= status.HTTP_200_OK)
+
+
+
+#########################      SSU DATE WISE COLLECTED SAMPLES VIEW4               #########################
+class SSUDSOTHODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionDetailsReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        date = data.get('date')
+        scc_id = data.get('ssc_id')
+
+        scc_smp_details = Swab_Collection_Centre.objects.filter(Q(id= scc_id) & Q(role_id= 6)).values()
+
+        if scc_smp_details:
+
+            scc_smp_details = Swab_Collection_Centre.objects.get(Q(id= scc_id) & Q(role_id= 6))
+
+            get_phc_data = Master_PHC.objects.get(id= scc_smp_details.phc_master_id)
+
+            patient_details = Patient.objects.none()
+            # i['phc_count'] = Swab_Collection_Centre.objects.filter(Q(tho_id= i['id']) & Q(role_id= 6)).count()
+            # dist_samp_cnt = 0
+            # get_tho_data = THO.objects.filter(dso_id= i['id']).values_list('id', flat=True)
+            
+            patient_details = Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(phc_master_id= scc_smp_details.phc_master_id).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= date)).values()
+
+            for i in patient_details:
+                test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+                i['test_type_name'] = test_type_data.test_type_name
+                i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+                # i['samples_collected'] = dist_samp_cnt
+                i['date'] = date
+
+            return Response({'result':patient_details}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result': 'Something Went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+        
+        
+        
+        
 
 
 #########################      SSU DATE WISE GENERATED PACKAGE REPORT DETAILS               #########################
