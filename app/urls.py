@@ -254,6 +254,8 @@ urlpatterns = [
     ####################      ICMR      ####################
     path('icmr-add-record/', ICMRAddPatientRecord.as_view()),
     path('icmr-access-token/', ICMRGetAccessToken.as_view()),
+    
+    path('universal-search/', UniversalSearch.as_view()),
 
 
 
