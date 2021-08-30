@@ -8574,6 +8574,72 @@ class DSOPackageLabWiseReport(APIView):
         return Response({'result': this_final_data,'no_of_labs':no_of_labs, 'total_samples':total_samples, 'message': 'Sucess'})
 
 
+    
+    
+
+
+#########################      DSO DATE WISE COLLECTED SAMPLES               #########################
+class DSODateWiseSamplesCollectionReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+        user_id= data.get('user_id')
+
+        dso_data = DSO.objects.filter(user_id= user_id)
+        if dso_data:
+            
+            dso_data_get = DSO.objects.get(user_id= user_id)
+
+            uniq_date = Patient.objects.filter( 
+                added_by_id__in= User.objects.filter(
+                    id__in= Swab_Collection_Centre.objects.filter(tho_id__in= THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat=True)).values_list('user_id', flat=True)
+                        ).values_list('id', flat=True)
+                        ).values('create_timestamp__date').order_by('-create_timestamp__date').distinct()
+            
+            for i in uniq_date:
+                
+                i['taluk_count'] = THO.objects.filter(dso_id= dso_data_get.id).count()
+                
+                i['samples_count'] = Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id__in= THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat=True)).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+
+            return Response({'result':uniq_date}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result': []}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#########################      DSO DATE WISE COLLECTED SAMPLES TALUK VIEW1               #########################
+class DSODateWiseTalukDatewiseSamplesCollectionReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+        user_id= data.get('user_id')
+        date = data.get('date')
+
+        dso_data = DSO.objects.filter(user_id= user_id)
+        if dso_data:
+            
+            dso_data_get = DSO.objects.get(user_id= user_id)
+            tho_data = THO.objects.filter(dso_id= dso_data_get.id).values()
+
+            for i in tho_data:
+                master_block = Master_Block.objects.get(id= i['city_id'])
+                i['taluk_name'] = master_block.block_name_eng
+                i['phc_count'] = Swab_Collection_Centre.objects.filter(Q(role_id= 6) & Q(tho_id= i['id'])).count()
+                i['samples_count'] = Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id= i['id']).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= date)).count()
+                i['date'] = date
+
+            return Response({'result':tho_data}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result': []}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    
+    
+    
 
 
 
