@@ -226,11 +226,16 @@ urlpatterns = [
     path('ssu-get-date-wise-generated-package-report/', SSUDateWiseGeneratedPackageReport.as_view()),
     path('ssu-get-date-wise-generated-package-details-report/', SSUDateWiseGeneratedPackageDetailsReport.as_view()),
     
-    path('ssu-get-date-wise-samples-collection-report/', SSUDateWiseSamplesCollectionReport.as_view()),
+    path('ssu-get-date-wise-samples-collection-report/', SSUDateWiseSamplesCollectionReport.as_view()), 
+    
     path('ssu-get-date-wise-district-wise-samples-collection-report/', SSUDateWiseDistrictWiseSamplesCollectionCountReport.as_view()),
+    
     path('ssu-get-date-wise-taluk-wise-samples-collection-report/', SSUDateWiseDistrictWiseTalukWiseSamplesCollectionCountReport.as_view()),
+    
     path('ssu-dso-get-date-wise-taluk-wise-phc_wise-samples-collection-report/', SSUDSODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionCountReport.as_view()),
+    
     path('ssu-dso-tho-get-date-phc_wise-samples-indetails-report/', SSUDSOTHODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionDetailsReport.as_view()),
+    
     
     path('ssu-get-lab-wise-delay-report/', SSUGetLabwiseDelayReport.as_view()),
     path('ssu-get-overall-lab-delay-report/', SSUGetOverallLabDelayD4.as_view()),
