@@ -1338,7 +1338,7 @@ class ContectTestingOfflineAddPatient(APIView):
             main_road_no = data.get('main_road_no')
             pincode = data.get('pincode')
             gender = data.get('gender')
-            age = data.get('age')
+            age_data = data.get('age')
             co_morbidity = data.get('co_morbidity')
             co_morbidity_type = data.get('co_morbidity_type')
             idProof_type = data.get('idProof_type')
@@ -1357,6 +1357,10 @@ class ContectTestingOfflineAddPatient(APIView):
             
             rat_created_id_data = data.get('rat_created_id_data')
             print(speciman_collection_date)
+            
+            age = age_data.split(' ')[0]
+            age_type = age_data.split(' ')[1]
+            
 
 
             # mobile_number_belongs_to = data.g et('mobile_number_belongs_to')
@@ -1504,7 +1508,7 @@ class ContectTestingOfflineAddPatient(APIView):
                                             srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
                                             
                                             # mobile_number_belongs_to= mobile_number_belongs_to,
-                                            # age_type= age_type,
+                                            age_type= age_type,
                                             # vaccine_mobile_registered= vaccine_mobile_registered,
                                             # specimen_collection_date= specimen_collection_date, 
                                             #testing_kit_barcode_id= testing_type_ref_data.id,
