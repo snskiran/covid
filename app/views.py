@@ -7,7 +7,6 @@ from rest_framework import response
 from .serializers import *
 from .models import *
 
-
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
 from django.db.models import Q, F
