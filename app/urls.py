@@ -239,7 +239,6 @@ urlpatterns = [
     path('ssu-get-rat-rtpcr-positivity-report/', SSUGetMasterRatRtpcrPositivityReport.as_view()),
 
 
-
     ####################      TLAB OPS      ####################
     path('tlab-ops-recieve-package/', UpdatePatientLabId.as_view()),
 
