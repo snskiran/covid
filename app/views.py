@@ -1274,22 +1274,61 @@ class ContectTestingOffline(APIView):
             #                                     landmark= landmark
             #                                     )
             # else:
-            Patient_Address.objects.create(patient_id= patients_data.id, 
-                                            state_name= states, 
-                                            district_name= district_name, #district_type= district_type, 
-                                            city_name= city_name,
-                                            zone_type= zone_name, 
-                                            ward_name= ward_name, 
-                                            taluk_name= taluk_name, 
-                                            panchayat_name= panchayat_name, 
-                                            village_name= village_name, 
-                                            resident_type= resident_type, 
-                                            ward_type= ward_type, 
-                                            flat_door_no= flat_door_no, 
-                                            main_road_no= main_road_no,
-                                            pincode= pincode,
-                                            locality= locality,
-                                            landmark= landmark)
+#             Patient_Address.objects.create(patient_id= patients_data.id, 
+#                                             state_name= states, 
+#                                             district_name= district_name, #district_type= district_type, 
+#                                             city_name= city_name,
+#                                             zone_type= zone_name, 
+#                                             ward_name= ward_name, 
+#                                             taluk_name= taluk_name, 
+#                                             panchayat_name= panchayat_name, 
+#                                             village_name= village_name, 
+#                                             resident_type= resident_type, 
+#                                             ward_type= ward_type, 
+#                                             flat_door_no= flat_door_no, 
+#                                             main_road_no= main_road_no,
+#                                             pincode= pincode,
+#                                             locality= locality,
+#                                             landmark= landmark)
+            
+            
+            if resident_type == 'Other State':
+                Outside_Patient_Address.objects.create(patient_id= patients_data.id, 
+                                                state_name= states, 
+                                                district_name= district_name, #district_type= district_type, 
+                                                city_name= city_name,
+                                                zone_type= zone_name, 
+                                                ward_name= ward_name, 
+                                                taluk_name= taluk_name, 
+                                                panchayat_name= panchayat_name, 
+                                                village_name= village_name, 
+                                                resident_type= resident_type, 
+                                                ward_type= ward_type, 
+                                                flat_door_no= flat_door_no, 
+                                                main_road_no= main_road_no,
+                                                pincode= pincode,
+                                                locality= locality,
+                                                landmark= landmark)
+
+            else:
+                Patient_Address.objects.create(patient_id= patients_data.id, 
+                                                state_name= states, 
+                                                district_name= district_name, #district_type= district_type, 
+                                                city_name= city_name,
+                                                zone_type= zone_name, 
+                                                ward_name= ward_name, 
+                                                taluk_name= taluk_name, 
+                                                panchayat_name= panchayat_name, 
+                                                village_name= village_name, 
+                                                resident_type= resident_type, 
+                                                ward_type= ward_type, 
+                                                flat_door_no= flat_door_no, 
+                                                main_road_no= main_road_no,
+                                                pincode= pincode,
+                                                locality= locality,
+                                                landmark= landmark)
+            
+            
 
             # Patient_Testing.objects.create()                                        
 
