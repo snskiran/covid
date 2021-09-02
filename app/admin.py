@@ -68,7 +68,7 @@ class TestingLabAdmin(ImportExportModelAdmin):
 
 @admin.register(Package_Sampling)
 class TestingLabAdmin(ImportExportModelAdmin):
-	list_display = ('id', 'package_sampling_name', 'package_type_status', 'package_type_action', 'test_lab_id', 'created_group_pool_data')
+	list_display = ('id', 'package_sampling_name', 'package_type_status', 'package_type_action', 'test_lab_id', 'created_group_pool_data', 'samples_count')
 
 
 
