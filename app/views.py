@@ -6088,7 +6088,7 @@ class GetThoDsoSsuDashboardDetails(APIView):
 """
 
 
-
+"""
 #########################          GET THO DSO SSU DASHBOARD DETAILS          #########################
 class GetThoDsoSsuDashboardDetails(APIView):
 
@@ -6121,50 +6121,50 @@ class GetThoDsoSsuDashboardDetails(APIView):
                 today_contact_tracing_assigned = 0
                 today_total_sam_collected_cnt = 0
                 short_fall_cnt = 0
-                """
-
-                for i in phc_user_ids:
-                    phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
-                    phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
-                    no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
-
-                    no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
-
-                    no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
-                    no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
-                    no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
-
-                    today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
-                    if today_contact_tracing:
-                        today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
-                        cnt_data = 0
-                        for i in today_contact_tracing_details:
-                            cnt_data += 1
-                        today_contact_tracing_assigned += cnt_data
-
-
-                    today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
-                    if today_total_sam_collected:
-                        today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
-                        cnt_smp_coll = 0
-                        for i in today_sam_collected_details:
-                            cnt_smp_coll+= 1
-                        # today_total_sam_collected_cnt = today_sam_collected_details
-                        today_total_sam_collected_cnt += cnt_smp_coll
-
-
-                    short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
-                    if short_fall:
-                        short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
-                        # short_fall_cnt = short_fall_cnt_details
-
-                        cnt_shrt_fall = 0
-                        for i in short_fall_cnt_details:
-                            cnt_shrt_fall += 1
-
-                        short_fall_cnt += cnt_shrt_fall
                 
-                """
+
+#                 for i in phc_user_ids:
+#                     phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
+#                     phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+#                     no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+#                     no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+#                     no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+#                     no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
+#                     no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
+
+#                     today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+#                     if today_contact_tracing:
+#                         today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+#                         cnt_data = 0
+#                         for i in today_contact_tracing_details:
+#                             cnt_data += 1
+#                         today_contact_tracing_assigned += cnt_data
+
+
+#                     today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
+#                     if today_total_sam_collected:
+#                         today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
+#                         cnt_smp_coll = 0
+#                         for i in today_sam_collected_details:
+#                             cnt_smp_coll+= 1
+#                         # today_total_sam_collected_cnt = today_sam_collected_details
+#                         today_total_sam_collected_cnt += cnt_smp_coll
+
+
+#                     short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
+#                     if short_fall:
+#                         short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
+#                         # short_fall_cnt = short_fall_cnt_details
+
+#                         cnt_shrt_fall = 0
+#                         for i in short_fall_cnt_details:
+#                             cnt_shrt_fall += 1
+
+#                         short_fall_cnt += cnt_shrt_fall
+                
+                
 
 
                 phc_mo_user_data = Swab_Collection_Centre.objects.filter(Q(user_id__in= phc_user_ids) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
@@ -6379,6 +6379,408 @@ class GetThoDsoSsuDashboardDetails(APIView):
         else:
 
             return Response({'message':'Something went wrong'}, status= status.HTTP_400_BAD_REQUEST)
+"""
+
+
+
+#########################          GET THO DSO SSU DASHBOARD DETAILS          #########################
+class GetThoDsoSsuDashboardDetails(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        tho_data = THO.objects.filter(user_id= user_id)
+        dso_data = DSO.objects.filter(user_id= user_id)
+        ssu_data = SSU.objects.filter(user_id= user_id)
+
+
+        if tho_data:
+            from_date = data.get('from_date')
+            to_date = data.get('to_date')
+
+            if from_date and to_date:
+                tho_data_get = THO.objects.get(user_id= user_id)
+
+                no_of_swab_collector = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).count()
+                phc_user_ids = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values_list('user_id', flat=True)
+
+                no_of_packages = 0
+                no_of_samples = 0
+                no_of_lab_allocation_req = 0
+                no_of_package_for_dispatch = 0
+                no_of_package_dispatch_to_lab = 0
+
+                today_contact_tracing_assigned = 0
+                today_total_sam_collected_cnt = 0
+                short_fall_cnt = 0
+                """
+
+                for i in phc_user_ids:
+                    phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
+                    phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+                    no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                    no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                    no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                    no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
+                    no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
+
+                    today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                    if today_contact_tracing:
+                        today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                        cnt_data = 0
+                        for i in today_contact_tracing_details:
+                            cnt_data += 1
+                        today_contact_tracing_assigned += cnt_data
+
+
+                    today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
+                    if today_total_sam_collected:
+                        today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
+                        cnt_smp_coll = 0
+                        for i in today_sam_collected_details:
+                            cnt_smp_coll+= 1
+                        # today_total_sam_collected_cnt = today_sam_collected_details
+                        today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                    short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
+                    if short_fall:
+                        short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
+                        # short_fall_cnt = short_fall_cnt_details
+
+                        cnt_shrt_fall = 0
+                        for i in short_fall_cnt_details:
+                            cnt_shrt_fall += 1
+
+                        short_fall_cnt += cnt_shrt_fall
+                
+                """
+
+
+
+                # for i in phc_user_ids:
+                phc_mo_user_data = Swab_Collection_Centre.objects.filter(Q(user_id__in= phc_user_ids) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
+                phc_all_user_ids = Swab_Collection_Centre.objects.filter(Q(phc_master_id__in= phc_mo_user_data)).values_list('user_id', flat=True)
+                
+                no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
+                
+                # no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & (Q(package_type_status= 2) & Q(package_type_action= 12)) | (Q(package_type_status= 5) & Q(package_type_action= 15))).count()
+                no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).filter((Q(package_type_status= 2) & Q(package_type_action= 12)) | (Q(package_type_status= 5) & Q(package_type_action= 15))).filter(lab_master__isnull= False).count()
+
+                # today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                # if today_contact_tracing:
+                #     today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                #     cnt_data = 0
+                #     for i in today_contact_tracing_details:
+                #         cnt_data += 1
+                #     today_contact_tracing_assigned += cnt_data
+                
+
+                today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                today_contact_tracing_assigned += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).count()
+                # if today_contact_tracing:
+                #     today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                #     cnt_data = 0
+                #     for i in today_contact_tracing_details:
+                #         cnt_data += 1
+                #     today_contact_tracing_assigned += cnt_data
+
+
+                today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
+                today_total_sam_collected_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).count()
+                # if today_total_sam_collected:
+                #     today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
+                #     cnt_smp_coll = 0
+                #     for i in today_sam_collected_details:
+                #         cnt_smp_coll+= 1
+                #     # today_total_sam_collected_cnt = today_sam_collected_details
+                #     today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                short_fall = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
+                short_fall_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).count()
+                # if short_fall:
+                #     short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
+                #     # short_fall_cnt = short_fall_cnt_details
+
+                #     cnt_shrt_fall = 0
+                #     for i in short_fall_cnt_details:
+                #         cnt_shrt_fall += 1
+
+                #     short_fall_cnt += cnt_shrt_fall
+
+
+
+
+                # swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values()
+                # if swab_collectios_details:
+                #     for i in swab_collectios_details:
+                #         print(i)
+                #         # phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id'))
+                #         # print("FFFFFFFFFFFFF",phc_swab_collection_team)
+                #         # for j in phc_swab_collection_team:
+                #         #     ss= Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #         #     print(ss)
+                #         #     no_of_samples += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #         phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id'))
+                      
+                #         ss= Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #         print(ss)
+                #         no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':no_of_lab_allocation_req, 'no_of_packages_for_dispatch':no_of_package_for_dispatch, 'no_of_packages_dispatched_to_lab':no_of_package_dispatch_to_lab, 'today_contact_tracing_assigned':today_contact_tracing_assigned, 'today_total_sam_collected_cnt':today_total_sam_collected_cnt, 'short_fall_cnt':short_fall_cnt},status= status.HTTP_200_OK)
+
+            else:
+
+                tho_data_get = THO.objects.get(user_id= user_id)
+
+                no_of_swab_collector = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).count()
+                
+                phc_user_ids = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values_list('user_id', flat=True)
+
+                no_of_packages = 0
+                no_of_samples = 0
+                no_of_lab_allocation_req = 0
+                no_of_package_for_dispatch = 0
+                no_of_package_dispatch_to_lab = 0
+
+                today_contact_tracing_assigned = 0
+                today_total_sam_collected_cnt = 0 
+                short_fall_cnt = 0
+
+                # for i in phc_user_ids:
+                #     phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
+                #     phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+                #     no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                #     no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                #     no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                #     no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 1)).count()
+                #     no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 2) & Q(package_type_action= 12) | Q(package_type_status= 5) & Q(package_type_action= 15)).count()
+                
+                
+                #     today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False))
+                #     if today_contact_tracing:
+                #         today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).values()
+                #         cnt_data = 0
+                #         for i in today_contact_tracing_details:
+                #             cnt_data += 1
+                #         today_contact_tracing_assigned += cnt_data
+
+
+                #     today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1))
+                #     if today_total_sam_collected:
+                #         today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).values()
+                #         cnt_smp_coll = 0
+                #         for i in today_sam_collected_details:
+                #             cnt_smp_coll+= 1
+                #         today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                #     short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True))
+                #     if short_fall:
+                #         short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).values()
+                #         cnt_shrt_fall = 0
+                #         for i in short_fall_cnt_details:
+                #             cnt_shrt_fall += 1
+                #         short_fall_cnt += cnt_shrt_fall
+
+
+                phc_mo_user_data = Swab_Collection_Centre.objects.filter(Q(user_id__in= phc_user_ids) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
+                phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id__in= phc_mo_user_data)).values_list('user_id'))
+                no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 1)).count()
+                no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).filter((Q(package_type_status= 2) & Q(package_type_action= 12)) | (Q(package_type_status= 5) & Q(package_type_action= 15))).filter(lab_master__isnull= False).count()
+            
+            
+                today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False))
+                today_contact_tracing_assigned += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).count()
+                # if today_contact_tracing:
+                #     today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).values()
+                #     cnt_data = 0
+                #     for i in today_contact_tracing_details:
+                #         cnt_data += 1
+                #     today_contact_tracing_assigned += cnt_data
+
+
+                today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1))
+                today_total_sam_collected_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
+                # if today_total_sam_collected:
+                #     today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).values()
+                #     cnt_smp_coll = 0
+                #     for i in today_sam_collected_details:
+                #         cnt_smp_coll+= 1
+                #     today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                short_fall = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True))
+                short_fall_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).count()
+                # if short_fall:
+                #     short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).values()
+                #     cnt_shrt_fall = 0
+                #     for i in short_fall_cnt_details:
+                #         cnt_shrt_fall += 1
+                #     short_fall_cnt += cnt_shrt_fall
+            
+                return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':no_of_lab_allocation_req, 'no_of_packages_for_dispatch':no_of_package_for_dispatch, 'no_of_packages_dispatched_to_lab':no_of_package_dispatch_to_lab, 'today_contact_tracing_assigned':today_contact_tracing_assigned, 'today_total_sam_collected_cnt':today_total_sam_collected_cnt, 'short_fall_cnt':short_fall_cnt},status= status.HTTP_200_OK)
+
+
+        if dso_data:
+
+            from_date = data.get('from_date')
+            to_date = data.get('to_date')
+
+            if from_date and to_date:
+                
+                dso_data_get = DSO.objects.get(user_id= user_id)
+
+                tho_data_get = THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat= True)
+
+                no_of_swab_collector_team = 0
+                total_samples_collected = 0
+                rat_result_published = 0
+                packeges_dispatched_to_lab = 0
+                request_for_lab_allocation = 0
+
+                """
+                for th in tho_data_get:
+                    no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+
+                    swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                    if swab_collectios_details:
+                        for i in swab_collectios_details:
+                            phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                            # for j in phc_swab_collection_team:
+                            #     total_samples_collected += Patient.objects.filter(added_by_id__in= j['user_id']).count()
+                            #     rat_result_published += Patient.objects.filter(Q(added_by_id__in= j['user_id']) & Q(test_type_id= 1)).count()
+
+                            #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= j['user_id']) & Q(test_lab__isnull= False)).count()
+
+                            #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+                           
+                            total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            
+                            request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                """
+                
+                no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(role_id= 6)).count()
+
+
+                # phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+
+                phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get)).values_list('user_id', flat=True)
+               
+                total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                
+                request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+
+                # for th in tho_data_get:
+                #     no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+
+                #     swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                #     if swab_collectios_details:
+                #         for i in swab_collectios_details:
+                #             phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                #             # for j in phc_swab_collection_team:
+                #             #     total_samples_collected += Patient.objects.filter(added_by_id__in= j['user_id']).count()
+                #             #     rat_result_published += Patient.objects.filter(Q(added_by_id__in= j['user_id']) & Q(test_type_id= 1)).count()
+
+                #             #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= j['user_id']) & Q(test_lab__isnull= False)).count()
+
+                #             #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+                           
+                #             total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            
+                #             request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+
+            else:
+
+                dso_data_get = DSO.objects.get(user_id= user_id)
+
+                tho_data_get = THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat=True)
+
+                no_of_swab_collector_team = 0
+                total_samples_collected = 0
+                rat_result_published = 0
+                packeges_dispatched_to_lab = 0
+                request_for_lab_allocation = 0
+
+                """
+                for th in tho_data_get:
+                    no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+
+                    swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                    if swab_collectios_details:
+                        for i in swab_collectios_details:
+                            # phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values()
+                            # for j in phc_swab_collection_team:
+
+                            #     total_samples_collected += Patient.objects.filter(added_by_id= j['user_id']).count()
+                            #     rat_result_published += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(test_type_id= 1)).count()
+
+                            #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id= j['user_id']) & Q(test_lab__isnull= False)).count()
+
+                            #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+
+                            phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+
+                            total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                            rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                            packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                            request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                """
+
+                no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(role_id= 6)).count()
+
+                # phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get)).values_list('user_id', flat=True)
+
+                total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date=asdatetime.now().date())).count()
+
+            return Response({'no_of_swab_collector_team':no_of_swab_collector_team, 'total_samples_collected':total_samples_collected, 'rat_result_published':rat_result_published, 'packeges_dispatched_to_lab':packeges_dispatched_to_lab, 'request_for_lab_allocation':request_for_lab_allocation},status= status.HTTP_200_OK)
+
+
+        if ssu_data:
+            ssu_data_get = SSU.objects.get(user_id= user_id)
+
+            no_of_lab_requests = 0
+
+            no_of_samples_collected = Patient.objects.filter(create_timestamp__date= asdatetime.now().date()).count()
+
+            no_of_packages_at_lab = Package_Sampling.objects.filter(Q(package_type_status= 5) & Q(package_type_action= 15)).count()
+
+            return Response({'no_of_lab_requests':no_of_lab_requests, 'no_of_samples_collected':no_of_samples_collected, 'no_of_packages_at_lab':no_of_packages_at_lab},status= status.HTTP_200_OK)
+
+
+        else:
+            return Response({'message':'Something went wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
 
 
 
