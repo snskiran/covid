@@ -11897,10 +11897,11 @@ class GetDSOTarget(APIView):
         get_all_thos = Master_PHC.objects.filter(district_code = check_dist_data.district_code).values('block_code', 'block_name_eng').distinct()
 
         # get_thos_data = THO.objects.filter(dso_id= dso_details.id).values_list('id', flat=True)
-
+        print("ALL THO DATA  ",get_all_thos)
         for i in get_all_thos:
 
             if i['block_code'] != ' NULL':
+                print(i['block_code'])
                 taluk_data_data = Master_Block.objects.filter(block_code= i['block_code'])
                 if taluk_data_data:
                     taluk_data = Master_Block.objects.get(block_code= i['block_code'])
