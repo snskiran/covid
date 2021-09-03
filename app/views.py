@@ -11901,28 +11901,30 @@ class GetDSOTarget(APIView):
         for i in get_all_thos:
 
             if i['block_code'] != ' NULL':
-                taluk_data = Master_Block.objects.get(block_code= i['block_code'])
-                print(i['block_code'])
-                get_tho_data_filter = THO.objects.filter(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
-                print(get_tho_data_filter)
-                if get_tho_data_filter:
-                    get_tho_data = THO.objects.get(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
+                taluk_data_data = Master_Block.objects.filter(block_code= i['block_code'])
+                if taluk_data_data:
+                    taluk_data = Master_Block.objects.get(block_code= i['block_code'])
+                    print(i['block_code'])
+                    get_tho_data_filter = THO.objects.filter(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
+                    print(get_tho_data_filter)
+                    if get_tho_data_filter:
+                        get_tho_data = THO.objects.get(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
 
-                    get_already_assigned_tho_targets = PHCTargetAssignment.objects.filter(Q(tho_id= get_tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
+                        get_already_assigned_tho_targets = PHCTargetAssignment.objects.filter(Q(tho_id= get_tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date())).values()
 
-                    print(get_already_assigned_tho_targets)
+                        print(get_already_assigned_tho_targets)
 
-                    if get_already_assigned_tho_targets:
-                        get_already_assigned_tho_targets_get = PHCTargetAssignment.objects.get(Q(tho_id= get_tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()))
-                        print(get_already_assigned_tho_targets_get.tho_target)
-                        i['edit'] = True
-                        i['tho_target'] = get_already_assigned_tho_targets_get.tho_target
+                        if get_already_assigned_tho_targets:
+                            get_already_assigned_tho_targets_get = PHCTargetAssignment.objects.get(Q(tho_id= get_tho_data.id) & Q(tho_created_datetime__date= asdatetime.now().date()))
+                            print(get_already_assigned_tho_targets_get.tho_target)
+                            i['edit'] = True
+                            i['tho_target'] = get_already_assigned_tho_targets_get.tho_target
+                        else:
+                            i['edit'] = False
+                            i['tho_target'] = 0
                     else:
                         i['edit'] = False
                         i['tho_target'] = 0
-                else:
-                    i['edit'] = False
-                    i['tho_target'] = 0
 
         target_ass_dso = PHCTargetAssignment.objects.filter(Q(dso_id= dso_details.id) & Q(dso_created_datetime__date= asdatetime.now().date())).values()
 
