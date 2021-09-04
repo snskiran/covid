@@ -8782,9 +8782,21 @@ class SwabPackageDespatchDetailsCount(APIView):
 
             package_details['date'] = i['create_timestamp__date']
             package_details['no_of_package_created'] = check_package_created
-            package_details['no_of_package_accepted_mo'] = check_package_received_mo
-            package_details['no_of_package_dispatched_lab'] = check_package_dispatched_lab
-            package_details['no_of_package_dispatched_tho'] = check_package_dispatched_tho
+            
+            if check_package_received_mo != 0:
+                package_details['no_of_package_accepted_mo'] = check_package_received_mo
+            else:
+                package_details['no_of_package_accepted_mo'] = '-'
+
+            if check_package_dispatched_lab != 0:
+                package_details['no_of_package_dispatched_lab'] = check_package_dispatched_lab
+            else:
+                package_details['no_of_package_dispatched_lab'] = '-'
+
+            if check_package_dispatched_tho != 0:
+                package_details['no_of_package_dispatched_tho'] = check_package_dispatched_tho
+            else:
+                package_details['no_of_package_dispatched_tho'] = '-'
 
             total_package_created += check_package_created
             total_package_acc_mo += check_package_received_mo
