@@ -127,6 +127,7 @@ urlpatterns = [
     ####################     Dashboard Urls     ####################
     path('phc-dashboard-count/', GetPHCDashboardDetails.as_view()),
     path('get-tho-dso-ssu-dashboard-details/', GetThoDsoSsuDashboardDetails.as_view()),
+    path('get-tlab-tlabops-dashboard-details/', GetTlabTlapOPSDashboardDetails.as_view()),
    
 
 
