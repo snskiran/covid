@@ -84,7 +84,7 @@ class TestTypeRefSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Test_Type_Ref
-        fields = ('user_id', 'role')
+        fields = '__all__'
 
 
 class SwabCollectionStatusRefSerializer(serializers.ModelSerializer):
