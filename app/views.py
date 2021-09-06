@@ -12673,7 +12673,7 @@ class SSUGetMasterSysAsym(APIView):
 
 
 
-
+"""
 #########################      RAT RTPCR POSITIVITY RATE REPORT              #########################
 class SSUGetMasterRatRtpcrPositivityReport(APIView):
 
@@ -12980,6 +12980,333 @@ class SSUGetMasterRatRtpcrPositivityReport(APIView):
         else:
             return Response("user not found")
 
+"""        
+        
+    
+    
+
+#########################      RAT RTPCR POSITIVITY RATE REPORT              #########################
+class SSUGetMasterRatRtpcrPositivityReport(APIView):
+
+    def get (self,request):
+        Arr=[]
+        id=0
+        new_id=0
+        master_dist =   Master_District.objects.all()
+        for i in master_dist:
+            dist_cnt  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+            patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+            for j in patientObj:
+                id=j.patient.pk
+            new_id=id
+            # print(new_id)
+            antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+            print(antigen,'antigen')
+            RTPCR_other  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+            print(RTPCR_other,'RTPCR_other')
+
+            #!-------------------------------------------------------------------------------------------------------------------------------------
+            Total_test          =  antigen+RTPCR_other
+            Test_done_antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+
+
+            try:
+                RAT_vs_T          =   Test_done_antigen/Total_test
+            except ZeroDivisionError:
+                RAT_vs_T  =  0
+            RAT_vs_T_per      =   "{:.0%}".format(RAT_vs_T)
+
+
+            Antigen_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)& Q(testing_status__in=[1,3])).count()
+            try:
+                Total_Antigen_positivity      =   Antigen_positivity/Total_test
+            except ZeroDivisionError:
+                Total_Antigen_positivity  =  0
+            Total_Antigen_positivity_per  =   "{:.0%}".format(Total_Antigen_positivity)
+
+            # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+            Test_done_RTPCR_other   =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+
+            try:
+                RTPCR_other_vs_T          =   Test_done_RTPCR_other/Total_test
+            except ZeroDivisionError:
+                RTPCR_other_vs_T  =  0
+            RTPCR_other_vs_T_per      =   "{:.0%}".format(RTPCR_other_vs_T)
+
+
+            RTPCR_other_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))& Q(testing_status__in=[1,3])).count()
+            try:
+                Total_RTPCR_other_positivity      =   RTPCR_other_positivity/Total_test
+            except ZeroDivisionError:
+                Total_RTPCR_other_positivity  =  0
+            Total_RTPCR_other_positivity_per  =   "{:.0%}".format(Total_RTPCR_other_positivity)
+
+            # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+            Positives_total                  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & Q(testing_status__in=[1,3])).count()
+
+            try:
+                Total_positivity        =   Positives_total/Total_test
+            except ZeroDivisionError:
+                Total_positivity  =  0
+
+            Total_positivity_per    =   "{:.0%}".format(Total_positivity)
+
+
+
+
+
+
+            Arr.append({
+            'District_name':i.district_name_eng,
+            'District_repeated_count':dist_cnt,
+            'Total_Test':Total_test,
+            'Test_done_antigen':Test_done_antigen,
+            'RAT_vs_T_per':RAT_vs_T_per,
+            'Antigen_positivity':Antigen_positivity,
+            'Total_Antigen_positivity_per':Total_Antigen_positivity_per,
+
+            'Test_done_RTPCR_other':Test_done_RTPCR_other,
+            'RTPCR_other_vs_T_per':RTPCR_other_vs_T_per,
+            'RTPCR_other_positivity':RTPCR_other_positivity,
+            'Total_RTPCR_other_positivity_per':Total_RTPCR_other_positivity_per,
+
+            'Total_Positives':Positives_total,
+            'Total_positivity_per':Total_positivity_per
+
+            })
+        return Response({
+
+            'data':Arr,
+            'result':' Sucessfully'})
+
+
+    def post (self,request):
+
+        data = request.data
+        id = data.get('user_id')
+        datef = data.get('from_date')
+        datet = data.get('to_date')
+
+        page_no = data.get('page_no')
+        print(page_no)
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        if data.get('user_id') is '':
+            return Response("user id required ")
+
+        elif User.objects.filter(id=id).exists():
+            if datef and datet:
+                date_to= datetime.strptime(datet,'%Y-%m-%d')
+                datet= date_to+timedelta(days=1)
+                datef= datetime.strptime(datef,'%Y-%m-%d')
+                Arr=[]
+                id=0
+                new_id=0
+
+                master_dist =   Master_District.objects.all()
+                master_dist_count =   Master_District.objects.all().count()
+
+                print(selected_page_no)
+                master_dist_details = paginatorCreation(master_dist_count, selected_page_no)
+
+                for i in master_dist_details:
+                    dist_cnt  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet))
+                    for j in patientObj:
+                        id=j.patient.pk
+
+                    new_id=id
+                    # print(new_id)
+                    antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+                    print(antigen,'antigen')
+                    RTPCR_other  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+                    print(RTPCR_other,'RTPCR_other')
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    Total_test          =  antigen+RTPCR_other
+                    Test_done_antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+
+
+                    try:
+                        RAT_vs_T          =   Test_done_antigen/Total_test
+                    except ZeroDivisionError:
+                        RAT_vs_T  =  0
+                    RAT_vs_T_per      =   "{:.0%}".format(RAT_vs_T)
+
+
+                    Antigen_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_Antigen_positivity      =   Antigen_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_Antigen_positivity  =  0
+                    Total_Antigen_positivity_per  =   "{:.0%}".format(Total_Antigen_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Test_done_RTPCR_other   =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+
+                    try:
+                        RTPCR_other_vs_T          =   Test_done_RTPCR_other/Total_test
+                    except ZeroDivisionError:
+                        RTPCR_other_vs_T  =  0
+                    RTPCR_other_vs_T_per      =   "{:.0%}".format(RTPCR_other_vs_T)
+
+
+                    RTPCR_other_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_RTPCR_other_positivity      =   RTPCR_other_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_RTPCR_other_positivity  =  0
+                    Total_RTPCR_other_positivity_per  =   "{:.0%}".format(Total_RTPCR_other_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Positives_total                  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & Q(testing_status__in=[1,3])).count()
+
+                    try:
+                        Total_positivity        =   Positives_total/Total_test
+                    except ZeroDivisionError:
+                        Total_positivity  =  0
+
+                    Total_positivity_per    =   "{:.0%}".format(Total_positivity)
+
+
+
+
+
+
+                    Arr.append({
+                    'District_name':i.district_name_eng,
+                    'District_repeated_count':dist_cnt,
+                    'Total_Test':Total_test,
+                    'Test_done_antigen':Test_done_antigen,
+                    'RAT_vs_T_per':RAT_vs_T_per,
+                    'Antigen_positivity':Antigen_positivity,
+                    'Total_Antigen_positivity_per':Total_Antigen_positivity_per,
+
+                    'Test_done_RTPCR_other':Test_done_RTPCR_other,
+                    'RTPCR_other_vs_T_per':RTPCR_other_vs_T_per,
+                    'RTPCR_other_positivity':RTPCR_other_positivity,
+                    'Total_RTPCR_other_positivity_per':Total_RTPCR_other_positivity_per,
+
+                    'Total_Positives':Positives_total,
+                    'Total_positivity_per':Total_positivity_per
+
+                    })
+                return Response({
+                    'data':Arr,
+                    'total_pg_count': master_dist_count,
+                    'result':' Sucessfully'})
+
+            else:
+                Arr=[]
+                id=0
+                new_id=0
+                
+                master_dist =   Master_District.objects.all()
+                master_dist_count =   Master_District.objects.all().count()
+
+                master_dist_details = paginatorCreation(master_dist, selected_page_no)
+
+                for i in master_dist_details:
+                    dist_cnt  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+                    # print(patientObj,'obj')
+                    for j in patientObj:
+                        id=j.patient.pk
+
+                    new_id=id
+                    # print(new_id)
+                    antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+                    print(antigen,'antigen')
+                    RTPCR_other  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+                    print(RTPCR_other,'RTPCR_other')
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    Total_test          =  antigen+RTPCR_other
+                    Test_done_antigen  =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)).count()
+
+
+                    try:
+                        RAT_vs_T          =   Test_done_antigen/Total_test
+                    except ZeroDivisionError:
+                        RAT_vs_T  =  0
+                    RAT_vs_T_per      =   "{:.0%}".format(RAT_vs_T)
+
+
+                    Antigen_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id)& Q(rtpcr_test= 0)& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_Antigen_positivity      =   Antigen_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_Antigen_positivity  =  0
+                    Total_Antigen_positivity_per  =   "{:.0%}".format(Total_Antigen_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Test_done_RTPCR_other   =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))).count()
+
+                    try:
+                        RTPCR_other_vs_T          =   Test_done_RTPCR_other/Total_test
+                    except ZeroDivisionError:
+                        RTPCR_other_vs_T  =  0
+                    RTPCR_other_vs_T_per      =   "{:.0%}".format(RTPCR_other_vs_T)
+
+
+                    RTPCR_other_positivity             =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & (~Q(rtpcr_test= 0))& Q(testing_status__in=[1,3])).count()
+                    try:
+                        Total_RTPCR_other_positivity      =   RTPCR_other_positivity/Total_test
+                    except ZeroDivisionError:
+                        Total_RTPCR_other_positivity  =  0
+                    Total_RTPCR_other_positivity_per  =   "{:.0%}".format(Total_RTPCR_other_positivity)
+
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+
+                    Positives_total                  =   Patient_Testing.objects.filter(Q(patient__pk=new_id) & Q(testing_status__in=[1,3])).count()
+
+                    try:
+                        Total_positivity        =   Positives_total/Total_test
+                    except ZeroDivisionError:
+                        Total_positivity  =  0
+
+                    Total_positivity_per    =   "{:.0%}".format(Total_positivity)
+
+
+                    Arr.append({
+                    'District_name':i.district_name_eng,
+                    'District_repeated_count':dist_cnt,
+                    'Total_Test':Total_test,
+                    'Test_done_antigen':Test_done_antigen,
+                    'RAT_vs_T_per':RAT_vs_T_per,
+                    'Antigen_positivity':Antigen_positivity,
+                    'Total_Antigen_positivity_per':Total_Antigen_positivity_per,
+
+                    'Test_done_RTPCR_other':Test_done_RTPCR_other,
+                    'RTPCR_other_vs_T_per':RTPCR_other_vs_T_per,
+                    'RTPCR_other_positivity':RTPCR_other_positivity,
+                    'Total_RTPCR_other_positivity_per':Total_RTPCR_other_positivity_per,
+
+                    'Total_Positives':Positives_total,
+                    'Total_positivity_per':Total_positivity_per
+
+                    })
+                return Response({
+                    'data':Arr,
+                    'total_pg_count': master_dist_count,
+                    'result':' Sucessfully'})
+
+
+        else:
+            return Response("user not found")
+
+    
+    
+    
+        
 
 
 # #!########################      PackageLabWiseReport               #########################
