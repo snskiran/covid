@@ -9,7 +9,7 @@ from .models import *
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
-from django.db.models import Q, F
+from django.db.models import Q, F, Count, Sum
 from django.http import JsonResponse, request
 
 from rest_framework.views import APIView
