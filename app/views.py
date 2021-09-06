@@ -12075,7 +12075,7 @@ class SSUGetOverallLabDelayD4(GenericAPIView):
 
 
 
-
+"""
 #########################      SYMPTOMATIC  ASYMPTOMATIC POSITIVITY RATE REPORT              #########################
 class SSUGetMasterSysAsym(GenericAPIView):
 
@@ -12358,6 +12358,319 @@ class SSUGetMasterSysAsym(GenericAPIView):
 
         else:
             return Response("user not found")
+"""
+
+
+
+
+#########################      SYMPTOMATIC  ASYMPTOMATIC POSITIVITY RATE REPORT              #########################
+# class SSUGetMasterSysAsym(GenericAPIView):
+class SSUGetMasterSysAsym(APIView):
+
+    def get (self,request):
+
+        page_no = self.request.query_params.get('page_no')
+
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        Arr=[]
+        id=0
+        new_id=0
+        master_dist =   Master_District.objects.all()
+        master_dist_count = Master_District.objects.all().count()
+
+        master_dist_details = paginatorCreation(master_dist, selected_page_no)
+
+        for i in master_dist_details:
+            total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+            patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+            for j in patientObj:
+                id=j.patient.pk
+            new_id=id
+            # print(new_id)
+            District_name=i.district_code
+            total_Test_District=total_test
+            #!--------------------------------  Symptomatic  -----------------------------------------------------------------------------------------------------
+
+            #!-------------------------------------------------------------------------------------------------------------------------------------
+            tested_symptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Symptomatic')).count()
+            try:
+                tested_sym          =   tested_symptomatic/total_test
+            except ZeroDivisionError:
+                tested_sym  =  0
+            tested_sym_per      =   "{:.0%}".format(tested_sym)
+
+            #!-------------------------------------------------------------------------------------------------------------------------------------
+            sym_pos             =   Patient_Testing.objects.filter(Q(patient__patient_status='Symptomatic')&Q(testing_status__in=['1','3'])&Q(patient__pk=new_id)).count()
+            print(sym_pos,'sysPo')
+            # sym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Symptomatic')).count()
+
+            # print(sym_pos,'sys')
+            try:
+                sym_positivity      =   sym_pos/total_test
+            except ZeroDivisionError:
+                sym_positivity  =  0
+            sym_positivity_per  =   "{:.0%}".format(sym_positivity)
+
+            # #!--------------------------------- ASymptomatic ----------------------------------------------------------------------------------------------------
+
+
+            tested_Asymptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Asymptomatic')).count()
+            try:
+                tested_asym          =   tested_Asymptomatic/total_test
+            except ZeroDivisionError:
+                tested_asym  =  0
+            tested_asym_per      =   "{:.0%}".format(tested_asym)
+
+            asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=[1,3]) & Q(patient__patient_status='Asymptomatic')&Q(patient__pk=new_id)).count()
+            # asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Asymptomatic')).count()
+            try:
+                asym_positivity      =   asym_pos/total_test
+            except ZeroDivisionError:
+                asym_positivity  =  0
+            asym_positivity_per  =   "{:.0%}".format(asym_positivity)
+            try:
+                total_positivity        =   (sym_positivity+asym_positivity)/total_test
+                print(total_positivity,'pos')
+            except ZeroDivisionError:
+                total_positivity  =  0
+
+            total_positivity_per    =   "{:.0%}".format(total_positivity)
+
+            Arr.append({
+            'District_name':i.district_name_eng,
+            # 'District_repeated_count':dist_cnt,
+            'Total_Test_District':total_test,
+
+            'Symptomatic_tested':tested_symptomatic,
+            'Symptomatic_tested_per':tested_sym_per,
+            'Symptomatic_positives':sym_pos,
+            'Symptomatic_positives_per':sym_positivity_per,
+
+            'Asymptomatic_tested':tested_Asymptomatic,
+            'Asymptomatic_tested_per':tested_asym_per,
+            'Asymptomatic_positives':asym_pos,
+            'Asymptomatic_positives_per':asym_positivity_per,
+
+            # 'Positives_without_Sym_Asym':pos,
+            'Total_Positivity_per':total_positivity_per
+            })
+        return Response({'data':Arr, 'total_pg_count':master_dist_count,'result':' Sucessfully'})
+
+    def post (self,request):
+        data        = request.data
+        id   = data.get('user_id')
+        datef   = data.get('from_date')
+        datet   = data.get('to_date')
+
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+
+        if data.get('user_id') is '':
+            return Response("user id required ")
+
+        elif User.objects.filter(id=id).exists():
+
+            if datef and datet:
+                date_to= datetime.strptime(datet,'%Y-%m-%d')
+                datet= date_to+timedelta(days=1)
+                datef= datetime.strptime(datef,'%Y-%m-%d')
+                Arr=[]
+                id=0
+                new_id=0
+
+                master_dist =   Master_District.objects.all()
+                master_dist_count = Master_District.objects.all().count()
+
+                master_dist_details = paginatorCreation(master_dist, selected_page_no)
+
+                for i in master_dist_details:
+                    total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet))
+                    for j in patientObj:
+                        id=j.patient.pk
+                    new_id=id
+                    print(new_id,'iii')
+                    District_name=i.district_code
+                    total_Test_District=total_test
+                    #!--------------------------------  Symptomatic  -----------------------------------------------------------------------------------------------------
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    tested_symptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Symptomatic')&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    try:
+                        tested_sym          =   tested_symptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_sym  =  0
+                    tested_sym_per      =   "{:.0%}".format(tested_sym)
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    sym_pos             =   Patient_Testing.objects.filter(Q(patient__patient_status='Symptomatic')&Q(testing_status__in=['1','3'])&Q(patient__pk=new_id)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    print(sym_pos,'sysPo')
+                    # sym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Symptomatic')).count()
+
+                    # print(sym_pos,'sys')
+                    try:
+                        sym_positivity      =   sym_pos/total_test
+                    except ZeroDivisionError:
+                        sym_positivity  =  0
+                    sym_positivity_per  =   "{:.0%}".format(sym_positivity)
+
+                    # #!--------------------------------- ASymptomatic ----------------------------------------------------------------------------------------------------
+
+
+                    tested_Asymptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Asymptomatic')&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    try:
+                        tested_asym          =   tested_Asymptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_asym  =  0
+                    tested_asym_per      =   "{:.0%}".format(tested_asym)
+
+                    asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=[1,3]) & Q(patient__patient_status='Asymptomatic')&Q(patient__pk=new_id)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+                    # asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Asymptomatic')).count()
+                    # print(asym_pos,'asys')
+                    try:
+                        asym_positivity      =   asym_pos/total_test
+                    except ZeroDivisionError:
+                        asym_positivity  =  0
+                    asym_positivity_per  =   "{:.0%}".format(asym_positivity)
+
+                    try:
+                        # total_positivity        =   (pos+tested_symptomatic+tested_Asymptomatic)/total_test
+                        total_positivity        =   (sym_positivity+asym_positivity)/total_test
+                        print(total_positivity,'pos')
+                    except ZeroDivisionError:
+                        total_positivity  =  0
+
+                    total_positivity_per    =   "{:.0%}".format(total_positivity)
+
+                    Arr.append({
+                    'District_name':i.district_name_eng,
+                    # 'District_repeated_count':dist_cnt,
+                    'Total_Test_District':total_test,
+
+                    'Symptomatic_tested':tested_symptomatic,
+                    'Symptomatic_tested_per':tested_sym_per,
+                    'Symptomatic_positives':sym_pos,
+                    'Symptomatic_positives_per':sym_positivity_per,
+
+                    'Asymptomatic_tested':tested_Asymptomatic,
+                    'Asymptomatic_tested_per':tested_asym_per,
+                    'Asymptomatic_positives':asym_pos,
+                    'Asymptomatic_positives_per':asym_positivity_per,
+
+                    # 'Positives_without_Sym_Asym':pos,
+                    'Total_Positivity_per':total_positivity_per
+                    })
+                
+                return Response({
+                        'data':Arr,
+                        'total_pg_count':master_dist_count,
+                        'result':' Sucessfully'})
+
+            else:
+                Arr=[]
+                id=0
+                new_id=0
+
+                master_dist =   Master_District.objects.all()
+                master_dist_count = Master_District.objects.all().count()
+
+                master_dist_details = paginatorCreation(master_dist, selected_page_no)
+
+                for i in master_dist_details:
+                    total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+                    patientObj  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code))
+                    for j in patientObj:
+                        id=j.patient.pk
+                    new_id=id
+                    District_name=i.district_code
+                    total_Test_District=total_test
+                    #!--------------------------------  Symptomatic  -----------------------------------------------------------------------------------------------------
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    tested_symptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Symptomatic')).count()
+                    try:
+                        tested_sym          =   tested_symptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_sym  =  0
+                    tested_sym_per      =   "{:.0%}".format(tested_sym)
+
+                    #!-------------------------------------------------------------------------------------------------------------------------------------
+                    sym_pos             =   Patient_Testing.objects.filter(Q(patient__patient_status='Symptomatic')&Q(testing_status__in=['1','3'])&Q(patient__pk=new_id)).count()
+                    print(sym_pos,'sysPo')
+                    # sym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Symptomatic')).count()
+
+                    # print(sym_pos,'sys')
+                    try:
+                        sym_positivity      =   sym_pos/total_test
+                    except ZeroDivisionError:
+                        sym_positivity  =  0
+                    sym_positivity_per  =   "{:.0%}".format(sym_positivity)
+
+                    # #!--------------------------------- ASymptomatic ----------------------------------------------------------------------------------------------------
+
+
+                    tested_Asymptomatic  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code) & Q(patient__patient_status='Asymptomatic')).count()
+                    try:
+                        tested_asym          =   tested_Asymptomatic/total_test
+                    except ZeroDivisionError:
+                        tested_asym  =  0
+                    tested_asym_per      =   "{:.0%}".format(tested_asym)
+
+                    asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=[1,3]) & Q(patient__patient_status='Asymptomatic')&Q(patient__pk=new_id)).count()
+                    # asym_pos             =   Patient_Testing.objects.filter(Q(testing_status__in=['1','3']) & Q(patient__patient_status='Asymptomatic')).count()
+                    # print(asym_pos,'asys')
+                    try:
+                        asym_positivity      =   asym_pos/total_test
+                    except ZeroDivisionError:
+                        asym_positivity  =  0
+                    asym_positivity_per  =   "{:.0%}".format(asym_positivity)
+
+                    try:
+                        # total_positivity        =   (pos+tested_symptomatic+tested_Asymptomatic)/total_test
+                        total_positivity        =   (sym_positivity+asym_positivity)/total_test
+                        print(total_positivity,'pos')
+                    except ZeroDivisionError:
+                        total_positivity  =  0
+
+                    total_positivity_per    =   "{:.0%}".format(total_positivity)
+
+                    Arr.append({
+                                    'District_name':i.district_name_eng,
+                                    # 'District_repeated_count':dist_cnt,
+                                    'Total_Test_District':total_test,
+
+                                    'Symptomatic_tested':tested_symptomatic,
+                                    'Symptomatic_tested_per':tested_sym_per,
+                                    'Symptomatic_positives':sym_pos,
+                                    'Symptomatic_positives_per':sym_positivity_per,
+
+                                    'Asymptomatic_tested':tested_Asymptomatic,
+                                    'Asymptomatic_tested_per':tested_asym_per,
+                                    'Asymptomatic_positives':asym_pos,
+                                    'Asymptomatic_positives_per':asym_positivity_per,
+
+                                    # 'Positives_without_Sym_Asym':pos,
+                                    'Total_Positivity_per':total_positivity_per
+                                })
+                return Response({
+                        'data':Arr,
+                        'total_pg_count':master_dist_count,
+                        'result':' Sucessfully'})
+
+        else:
+            return Response("user not found")
+
+
+
 
 
 
