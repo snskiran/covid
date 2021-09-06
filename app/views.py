@@ -3797,7 +3797,7 @@ class CollectionDetailsAndStatus(APIView):
         return Response(current_sco_patient_details)
 
 
-
+"""
 #########################          GET PHC ADDED PATIENTS          #########################
 class GetPHCUseraddedPatients(APIView):
 
@@ -3885,6 +3885,105 @@ class GetPHCUseraddedPatients(APIView):
                 return Response({'patient_details':patient_details,'result': 'successfull'})
         else:
             return Response({'result': 'Something Went Wrong'})
+"""
+
+
+
+
+#########################          GET PHC ADDED PATIENTS          #########################
+class GetPHCUseraddedPatients(APIView):
+
+    def post(self, request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+
+        if check_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
+
+            if check_user_roles.role_name == 'PHCMO':
+
+                check_all_slab_collector = Swab_Collection_Centre.objects.filter(phc_master_id= check_user_data.phc_master_id).values_list('user_id', flat=True)
+            
+                patient_data = Patient.objects.filter(Q(added_by_id__in= check_all_slab_collector)  & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id')
+                patient_details_count = Patient.objects.filter(Q(added_by_id__in= check_all_slab_collector)  & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+                
+                for pd in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= pd['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_tkb:
+                        pd['test_kit_name'] = check_tkb[0]
+                    else:
+                        pd['test_kit_name'] = 21
+
+                    pd['patient_type_name'] = patient_type_data.patient_type_name
+                    pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    pd['test_type_name']= patient_test_type_data.test_type_name
+
+                    if patient_test_type_data.test_type_name == 'RAT':
+
+                        lab_test_data = Patient_Testing.objects.filter(patient_id= pd['id']).values_list('testing_status', flat=True)
+                        if lab_test_data:
+                            pd['test_result'] = lab_test_data[0]
+                        else:
+                            pd['test_result'] = 2
+
+                return Response({'patient_details':LIST(patient_details), 'total_pg_count': patient_details_count,'result': 'successfull'})
+
+            if check_user_roles.role_name == 'PHCS':
+                # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 1) & Q(package_sampling_id__isnull = True)).values()
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31)  & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                patient_details_count = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31)  & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_tkb:
+                        i['test_kit_name'] = check_tkb[0]
+                    else:
+                        i['test_kit_name'] = 21
+
+                    if patient_test_type_data.test_type_name == 'RAT':
+                        lab_test_data = Patient_Testing.objects.filter(patient_id= i['id']).values_list('testing_status', flat=True)
+                        if lab_test_data:
+                            i['test_result'] = lab_test_data[0]
+                        else:
+                            i['test_result'] = 2
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_details_count,'result': 'successfull'})
+        else:
+            return Response({'result': 'Something Went Wrong'})
+
+
+
+
 
 
 
