@@ -7866,7 +7866,7 @@ class Postlabs(APIView):
 
     
 
-
+"""
 #########################          EDIT LABS          #########################
 class GetEditLabs(APIView):
 
@@ -7894,6 +7894,97 @@ class GetEditLabs(APIView):
 
         else:
             return Response({'result':[]}, status= status.HTTP_400_BAD_REQUEST)
+"""
+
+
+
+
+#########################          EDIT LABS          #########################
+class GetEditLabs(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_dso = DSO.objects.filter(user_id= user_id)
+        check_ssu = SSU.objects.filter(user_id= user_id)
+
+        if check_dso:
+            
+            check_master_labs_details = Master_Labs.objects.none()
+            lab_counts = Master_Labs.objects.none().count()
+            for i in check_dso:
+                check_master_labs_details = Master_Labs.objects.filter(Q(active= 1) & Q(district_code= i.district.district_code) | Q(karnataka_districts_id= i.district.district_code)).values()
+                lab_counts = Master_Labs.objects.filter(Q(active= 1) & Q(district_code= i.district.district_code) | Q(karnataka_districts_id= i.district.district_code)).count()
+
+                check_master_labs = paginatorCreation(check_master_labs_details, selected_page_no)
+
+                # paginator = Paginator(check_master_labs_details, 10)
+                # try:
+                #     check_master_labs = paginator.page(selected_page_no)
+                # except PageNotAnInteger:
+                #     check_master_labs = paginator.page(1)
+                # except EmptyPage:
+                #     check_master_labs = paginator.page(paginator.num_pages)
+
+            for i in check_master_labs:
+                check_dist = Master_District.objects.filter(district_code= i['karnataka_districts_id']).values_list('district_name_eng', flat= True)
+                check_block = Master_Block.objects.filter(block_code= i['karnataka_blocks_id']).values_list('block_name_eng', flat= True)
+
+                if check_dist:
+                    i['district_name'] = check_dist[0]
+                else:
+                    i['district_name'] = '-'
+
+                if check_block:
+                    i['taluk_name'] = check_block[0]
+                else:
+                    i['taluk_name'] = '-'
+            
+            return Response({'result': list(check_master_labs), 'total_lab_count': lab_counts}, status= status.HTTP_200_OK)
+
+        elif check_ssu:
+            
+            all_labs_details = Master_Labs.objects.filter(active= 1).values()
+            lab_counts = Master_Labs.objects.filter(active= 1).count()
+
+            all_labs_data = paginatorCreation(all_labs_details, selected_page_no)
+
+            # paginator = Paginator(all_labs_details, 10)
+            # try:
+            #     all_labs_data = paginator.page(selected_page_no)
+            # except PageNotAnInteger:
+            #     all_labs_data = paginator.page(1)
+            # except EmptyPage:
+            #     all_labs_data = paginator.page(paginator.num_pages)
+
+            for i in all_labs_data:
+                check_dist = Master_District.objects.filter(district_code= i['karnataka_districts_id']).values_list('district_name_eng', flat= True)
+                check_block = Master_Block.objects.filter(block_code= i['karnataka_blocks_id']).values_list('block_name_eng', flat= True)
+
+                if check_dist:
+                    i['district_name'] = check_dist[0]
+                else:
+                    i['district_name'] = '-'
+
+                if check_block:
+                    i['taluk_name'] = check_block[0]
+                else:
+                    i['taluk_name'] = '-'
+
+            return Response({'result': list(all_labs_data), 'total_lab_count': lab_counts}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':[]}, status= status.HTTP_400_BAD_REQUEST)
+
+
 
 
 
