@@ -9901,7 +9901,7 @@ class SSUViewTotalTargetCountDetails(GenericAPIView):
             return Response('Date Required')
 
 
-
+"""
 #########################      SSU SWAB COLLECTION TEAM               #########################
 class SSUSwabCollectorsTeam(APIView):
 
@@ -9940,6 +9940,59 @@ class SSUSwabCollectorsTeam(APIView):
                 i['phc_team_count'] = 0
 
         return Response({'result':master_dist_data}, status=status.HTTP_200_OK)
+"""
+
+
+#########################      SSU SWAB COLLECTION TEAM               #########################
+class SSUSwabCollectorsTeam(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        master_dist_data = Master_District.objects.all().values()
+        master_dist_data_count = Master_District.objects.all().count()
+
+        master_dist_details = paginatorCreation(master_dist_data, selected_page_no)
+
+        for i in master_dist_details:
+            
+            filter_dso = DSO.objects.filter(district_id= i['id'])
+            if filter_dso:
+                get_dso_details = DSO.objects.get(district_id= i['id'])
+                filter_tho = THO.objects.filter(dso_id= get_dso_details.id).values()
+                i['no_of_tho'] = THO.objects.filter(dso_id= get_dso_details.id).count()
+
+                if filter_tho:
+                    for j in filter_tho:
+                        filter_no_phc = Swab_Collection_Centre.objects.filter(Q(tho_id= j['id']) & Q(role_id= 6))
+                        if filter_no_phc:
+                            i['no_of_phc'] = Swab_Collection_Centre.objects.filter(Q(tho_id= j['id']) & Q(role_id= 6)).count()
+                            i['phc_team_count'] = Swab_Collection_Centre.objects.filter(Q(tho_id= j['id'])).count()
+                        else:
+                            i['no_of_phc'] = 0
+                            i['phc_team_count'] = 0
+                else:
+                    i['no_of_phc'] = 0
+                    i['phc_team_count'] = 0
+            
+            else:
+                i['no_of_tho'] = 0
+                i['no_of_phc'] = 0
+                i['phc_team_count'] = 0
+
+        return Response({'result':list(master_dist_details), 'total_pg_count':master_dist_data_count}, status=status.HTTP_200_OK)
+
+
+
 
 
 
