@@ -13063,9 +13063,13 @@ class PHCTargets(APIView):
         get_user = Swab_Collection_Centre.objects.get(user_id = user_id)
 
 
-        target_assign_contact_tracing =  Contact_Tracing.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date=asdatetime.now().date())).count()
+#         target_assign_contact_tracing =  Contact_Tracing.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date=asdatetime.now().date())).count()
 
-        target_assign_ili          =  ILI.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date= asdatetime.now().date())).count()
+#         target_assign_ili          =  ILI.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date= asdatetime.now().date())).count()
+
+        target_assign_contact_tracing =  Contact_Tracing.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(assigned_date__date=asdatetime.now().date())).count()
+
+        target_assign_ili          =  ILI.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(assigned_date__date= asdatetime.now().date())).count()
 
         # total_phc_target    =   PHCTargetAssignment.objects.filter(Q(phc_id=get_user.phc_master_id) & Q(created_datetime__date= asdatetime.now().date()))
         total_phc_target    =   PHCTargetAssignment.objects.filter(Q(phc_id=get_user.phc_master_id) & Q(phc_created_datetime__date= asdatetime.now().date()))
