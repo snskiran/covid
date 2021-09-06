@@ -10230,7 +10230,7 @@ class SSUDateWiseGeneratedPackageDetailsReport(APIView):
         
         
 
-
+"""
 #########################      SSU DATE WISE COLLECTED SAMPLES               #########################
 class SSUDateWiseSamplesCollectionReport(APIView):
 
@@ -10254,6 +10254,51 @@ class SSUDateWiseSamplesCollectionReport(APIView):
             i['samples_collected'] = dist_samp_cnt
 
         return Response({'result':uniq_date}, status= status.HTTP_200_OK)
+"""
+
+
+
+
+#########################      SSU DATE WISE COLLECTED SAMPLES               #########################
+class SSUDateWiseSamplesCollectionReport(APIView):
+
+    def get(self, request):
+
+        page_no = self.request.query_params.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        uniq_date = Patient.objects.all().values('create_timestamp__date').order_by('-create_timestamp__date').distinct()
+        all_data_count = Patient.objects.all().values('create_timestamp__date').order_by('-create_timestamp__date').distinct().count()
+        
+        uniq_details = paginatorCreation(uniq_date, selected_page_no)
+
+        # paginator = Paginator(uniq_date, 10)
+        # try:
+        #     uniq_details = paginator.page(selected_page_no)
+        # except PageNotAnInteger:
+        #     uniq_details = paginator.page(1)
+        # except EmptyPage:
+        #     uniq_details = paginator.page(paginator.num_pages)
+
+        for i in uniq_details:
+            i['district_count'] = DSO.objects.all().count()
+            dso_details = DSO.objects.all().values()
+
+            dist_samp_cnt = 0
+            for j in dso_details:
+                get_tho_data = THO.objects.filter(dso_id= j['id']).values_list('id', flat=True)
+                print(get_tho_data)
+                
+                dist_samp_cnt += Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id__in= get_tho_data).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+
+            i['samples_collected'] = dist_samp_cnt
+
+        return Response({'result':list(uniq_details), 'total_pg_count':all_data_count}, status= status.HTTP_200_OK)
+
+
 
 
 
