@@ -8668,7 +8668,7 @@ class UserTargetAssignedCounts(APIView):
 
 ####################################################################            REPORT             #####################################################################
 
-
+"""
 #########################          PHC ADDED PATIENTS REPORT          #########################
 class GetPHCUseraddedPatientsReport(APIView):
 
@@ -8742,6 +8742,102 @@ class GetPHCUseraddedPatientsReport(APIView):
 
         else:
             return Response({'result': 'Something Went Wrong'})
+"""
+
+
+
+#########################          PHC ADDED PATIENTS REPORT          #########################
+class GetPHCUseraddedPatientsReport(APIView):
+
+    def post(self, request):
+        
+        data = request.data
+        user_id      = data.get('user_id')
+        from_date      = data.get('startdate')
+        to_date      = data.get('endDate')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+
+        if check_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+            if from_date and to_date:
+
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).values().order_by('-id',)
+                patient_data_count = Patient.objects.filter(Q(added_by=user_id) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_tkb:
+                        # check_tkb_get = Testing_Kit_Barcode.objects.get(id= i['testing_kit_barcode_id'])
+                        # i['test_kit_name'] = check_tkb_get.testing_kit_barcode_name
+                        i['test_kit_name'] = check_tkb[0]
+                    else:
+                        i['test_kit_name'] = 21
+
+                    if patient_test_type_data.test_type_name == 'RAT':
+                        lab_test_data = Patient_Testing.objects.filter(patient_id= i['id']).values_list('testing_status', flat=True)
+                        if lab_test_data:
+                            # lab_test_data_get = Patient_Testing.objects.get(patient_id= i['id'])
+                            # i['test_result'] = lab_test_data_get.testing_status
+                            i['test_result'] = lab_test_data[0]
+                        else:
+                            i['test_result'] = 2
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_data_count,'result': 'successfull'})
+            
+            else:
+
+                patient_data = Patient.objects.filter(Q(added_by=user_id)).values().order_by('-id',)
+                patient_data_count = Patient.objects.filter(Q(added_by=user_id)).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_tkb:
+                        # check_tkb_get = Testing_Kit_Barcode.objects.get(id= i['testing_kit_barcode_id'])
+                        # i['test_kit_name'] = check_tkb_get.testing_kit_barcode_name
+                        i['test_kit_name'] = check_tkb[0]
+                    else:
+                        i['test_kit_name'] = 21
+
+                    if patient_test_type_data.test_type_name == 'RAT':
+                        lab_test_data = Patient_Testing.objects.filter(patient_id= i['id']).values_list('testing_status', flat=True)
+                        if lab_test_data:
+                            # lab_test_data_get = Patient_Testing.objects.get(patient_id= i['id'])
+                            # i['test_result'] = lab_test_data_get.testing_status
+                            i['test_result'] = lab_test_data[0]
+                        else:
+                            i['test_result'] = 2
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_data_count,'result': 'successfull'})
+
+        else:
+            return Response({'result': 'Something Went Wrong'})
+
 
 
 
