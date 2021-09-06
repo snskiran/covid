@@ -10417,7 +10417,7 @@ class SSUDSOTHODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionDetailsRepor
 
 
 #########################      LAB WISE DELAY REPORT               #########################
-class SSUGetLabwiseDelayReport(APIView):
+class SSUGetLabwiseDelayReportTest(APIView):
 
     """def get (self,request):
         Arr=[]
@@ -10873,6 +10873,474 @@ class SSUGetLabwiseDelayReport(APIView):
         else:
             return Response("user not found")"""
 
+            
+
+
+#########################      LAB WISE DELAY REPORT               #########################
+class SSUGetLabwiseDelayReport(APIView):
+
+    """def get (self,request):
+        Arr=[]
+        timeStamp=0
+        new_time=0
+        master_lab =   Master_Labs.objects.all()
+        print(master_lab)
+        for i in master_lab:
+    
+            Total_test_entered          =   Patient.objects.filter(Q(lab_master__lab_name__icontains=i.lab_name)).count()
+            print(Total_test_entered,'ttt')
+            lab_name=i.lab_name
+            lab_type=i.lab_type
+            Total_test_entered=Total_test_entered
+    
+    
+            D1=  Patient.objects.filter(Q(lab_master__lab_name__icontains=i.lab_name))
+            patient_testing_Obj=Patient_Testing.objects.filter(Q(patient__lab_master=i.pk))
+            for i in patient_testing_Obj:
+                timeStamp=i.create_timestamp
+            new_time=timeStamp
+            hour=0
+            seconds=0
+            minutes=0
+            ste_var = set()
+            max_Delay=0
+            min_Delay=0
+            avg_Delay=0
+            count1=0
+            t_count1=0
+            count2=0
+            t_count2=0
+            count3=0
+            t_count3=0
+            avg_day=0
+            avg_day1=0
+            avg1=0
+            avg=0
+            delay_pect=0
+            delay_pect1=0
+            for i in D1:
+                t_count=count1
+                t_count2=count2
+                t_count3=count3
+                D1_calculation=[]
+                new=[]
+                D1_cal= i.create_timestamp - new_time
+                days = D1_cal.days
+                seconds = D1_cal.seconds
+                hours = seconds//3600
+                minutes = (seconds//60)%60
+                seconds %= 60
+    
+                D1_data=[days,'days',hours,'hours',minutes,'mint',seconds,'sec']
+    
+                for i in D1_data:
+                    D1_calculation.append(i)
+                    new.append(D1_calculation)
+    
+                if new[1][2]>=0:
+                    count1=count1+new[1][2]
+    
+                avg=(count1/Total_test_entered)if Total_test_entered != 0 else 0
+                # ="{:.1%}".format(h_48)
+                avg1=("%.2f" %avg)
+    
+                if new[1][0]>=0:
+                    count2=count2+new[1][0]
+                avg_day=(count2/Total_test_entered)if Total_test_entered != 0 else 0
+                avg_day1=("%.2f" %avg_day)
+    
+                if new[1][6]>0:
+                    count3=count3+1
+                delay_pect=(count3/Total_test_entered)if Total_test_entered != 0 else 0
+                delay_pect1="{:.1%}".format(delay_pect)
+    
+            Arr.append({
+                        'Lab_name':lab_name,
+                        'Lab_type':lab_type,
+                        'Total_test_entered':Total_test_entered,
+                        'max_days_of_delay_by_the_lab':max_Delay,
+                        'avg_time_taken_for_all_the_test_hours':avg1,
+                        'no_of_delay_report':count3,
+                        'per_of_delay_report':delay_pect1,
+                        'avg_delay_day':avg_day1,
+                      })
+        return Response({'data':Arr,'result':' Sucessfully'})"""
+
+    def post (self,request):
+
+        data        = request.data
+        id   = data.get('user_id')
+        datef   = data.get('from_date')
+        datet   = data.get('to_date')
+        if data.get('id') is '':
+            return Response("user id required ")
+
+        elif User.objects.filter(id=id).exists():
+
+            if datet and datef:
+                date_to= datetime.strptime(datet,'%Y-%m-%d')
+                datet=date_to+timedelta(days=1)
+                datef= datetime.strptime(datef,'%Y-%m-%d')
+                Arr=[]
+                timeStamp=0
+                new_time=0
+
+                master_lab =   Master_Labs.objects.all()
+                
+                for i in master_lab:
+
+                    Total_test_entered = Patient.objects.filter(Q(create_timestamp__gte=datef,create_timestamp__lt=datet)& Q(lab_master__lab_name__icontains=i.lab_name)).count()
+                    
+                    lab_name=i.lab_name
+                    lab_type=i.lab_type
+                    Total_test_entered=Total_test_entered
+                    
+                    D1=  Patient.objects.filter(Q(create_timestamp__gte=datef,create_timestamp__lt=datet)& Q(lab_master__lab_name__icontains=i.lab_name))
+                    
+                    patient_testing_Obj=Patient_Testing.objects.filter(Q(patient__lab_master=i.pk))
+                    for i in patient_testing_Obj:
+                        timeStamp=i.create_timestamp
+                    new_time=timeStamp
+                    
+                    hour=0
+                    seconds=0
+                    minutes=0
+                    ste_var = set()
+                    max_Delay=0
+                    min_Delay=0
+                    avg_Delay=0
+                    count1=0
+                    t_count1=0
+                    count2=0
+                    t_count2=0
+                    count3=0
+                    t_count3=0
+                    avg_day=0
+                    avg_day1=0
+                    avg1=0
+                    avg=0
+                    delay_pect=0
+                    delay_pect1=0
+                    for i in D1:
+                        t_count=count1
+                        t_count2=count2
+                        t_count3=count3
+                        D1_calculation=[]
+                        new=[]
+                        D1_cal= i.create_timestamp - new_time
+                        days = D1_cal.days
+                        seconds = D1_cal.seconds
+                        hours = seconds//3600
+                        minutes = (seconds//60)%60
+                        seconds %= 60
+
+                        D1_data=[days,'days',hours,'hours',minutes,'mint',seconds,'sec']
+
+                        for i in D1_data:
+                            D1_calculation.append(i)
+                            new.append(D1_calculation)
+
+                        if new[1][2]>=0:
+                            count1=count1+new[1][2]
+
+                        avg=(count1/Total_test_entered)if Total_test_entered != 0 else 0
+                        
+                        avg1=("%.2f" %avg)
+
+                        if new[1][0]>=0:
+                            count2=count2+new[1][0]
+                        avg_day=(count2/Total_test_entered)if Total_test_entered != 0 else 0
+                        avg_day1=("%.2f" %avg_day)
+
+                        if new[1][6]>0:
+                            count3=count3+1
+                        delay_pect=(count3/Total_test_entered)if Total_test_entered != 0 else 0
+                        delay_pect1="{:.1%}".format(delay_pect)
+                    
+                    if Total_test_entered != 0:       
+                        Arr.append({
+                                    'Lab_name':lab_name,
+                                    'Lab_type':lab_type,
+                                    'Total_test_entered':Total_test_entered,
+                                    'max_days_of_delay_by_the_lab':max_Delay,
+                                    'avg_time_taken_for_all_the_test_hours':avg1,
+                                    'no_of_delay_report':count3,
+                                    'per_of_delay_report':delay_pect1,
+                                    'avg_delay_day':avg_day1,
+                                    })
+                return Response({'data':Arr,'result':' Sucessfully'})
+
+            else:
+                Arr=[]
+                timeStamp=0
+                new_time=0
+                master_lab =   Master_Labs.objects.all()
+                
+                for i in master_lab:
+
+                    Total_test_entered          =   Patient.objects.filter(Q(lab_master__lab_name__icontains=i.lab_name)).count()
+                    
+                    lab_name=i.lab_name
+                    lab_type=i.lab_type
+                    Total_test_entered=Total_test_entered
+                    
+                    D1=  Patient.objects.filter(Q(lab_master__lab_name__icontains=i.lab_name))
+                    
+                    patient_testing_Obj=Patient_Testing.objects.filter(Q(patient__lab_master=i.pk))
+                    for i in patient_testing_Obj:
+                        timeStamp=i.create_timestamp
+                    new_time=timeStamp
+                    hour=0
+                    seconds=0
+                    minutes=0
+                    ste_var = set()
+                    max_Delay=0
+                    min_Delay=0
+                    avg_Delay=0
+                    count1=0
+                    t_count1=0
+                    count2=0
+                    t_count2=0
+                    count3=0
+                    t_count3=0
+                    avg_day=0
+                    avg_day1=0
+                    avg1=0
+                    avg=0
+                    delay_pect=0
+                    delay_pect1=0
+                    for i in D1:
+                        t_count=count1
+                        t_count2=count2
+                        t_count3=count3
+                        D1_calculation=[]
+                        new=[]
+                        D1_cal= i.create_timestamp - new_time
+                        days = D1_cal.days
+                        seconds = D1_cal.seconds
+                        hours = seconds//3600
+                        minutes = (seconds//60)%60
+                        seconds %= 60
+                        D1_data=[days,'days',hours,'hours',minutes,'mint',seconds,'sec']
+                        for i in D1_data:
+                            D1_calculation.append(i)
+                            new.append(D1_calculation)
+                        if new[1][2]>=0:
+                            count1=count1+new[1][2]
+
+                        avg=(count1/Total_test_entered)if Total_test_entered != 0 else 0
+                        # ="{:.1%}".format(h_48)
+                        avg1=("%.2f" %avg)
+                        if new[1][0]>=0:
+                            count2=count2+new[1][0]
+                        avg_day=(count2/Total_test_entered)if Total_test_entered != 0 else 0
+                        avg_day1=("%.2f" %avg_day)
+                        if new[1][6]>0:
+                            count3=count3+1
+                        delay_pect=(count3/Total_test_entered)if Total_test_entered != 0 else 0
+                        delay_pect1="{:.1%}".format(delay_pect)
+                        # delay_pect1=("%.2f" %delay_pect)
+                    if Total_test_entered != 0:
+                        Arr.append({
+                                    'Lab_name':lab_name, 'Lab_type':lab_type, 'Total_test_entered':Total_test_entered,
+                                    'max_days_of_delay_by_the_lab':max_Delay, 'avg_time_taken_for_all_the_test_hours':avg1,
+                                    'no_of_delay_report':count3, 'per_of_delay_report':delay_pect1, 'avg_delay_day':avg_day1,
+                                    })
+                return Response({'data':Arr,'result':' Sucessfully'})                
+        else:
+            return Response("user not found")
+
+
+
+
+
+            """if data.get('from_date') is None:
+                print('111111')
+                Arr=[]
+                timeStamp=0
+                new_time=0
+                master_lab =   Master_Labs.objects.all()
+                print(master_lab)
+                for i in master_lab:
+
+                    Total_test_entered          =   Patient.objects.filter(Q(lab_master__lab_name__icontains=i.lab_name)).count()
+                    print(Total_test_entered,'ttt')
+                    lab_name=i.lab_name
+                    lab_type=i.lab_type
+                    Total_test_entered=Total_test_entered
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+                    D1=  Patient.objects.filter(Q(lab_master__lab_name__icontains=i.lab_name))
+                    print(i.lab_name)
+                    patient_testing_Obj=Patient_Testing.objects.filter(Q(patient__lab_master=i.pk))
+                    for i in patient_testing_Obj:
+                        timeStamp=i.create_timestamp
+                    new_time=timeStamp
+                    print(new_time,'gfgf')
+                    hour=0
+                    seconds=0
+                    minutes=0
+                    ste_var = set()
+                    max_Delay=0
+                    min_Delay=0
+                    avg_Delay=0
+                    count1=0
+                    t_count1=0
+                    count2=0
+                    t_count2=0
+                    count3=0
+                    t_count3=0
+                    avg_day=0
+                    avg_day1=0
+                    avg1=0
+                    avg=0
+                    delay_pect=0
+                    delay_pect1=0
+                    for i in D1:
+                        t_count=count1
+                        t_count2=count2
+                        t_count3=count3
+                        D1_calculation=[]
+                        new=[]
+                        D1_cal= i.create_timestamp - new_time
+                        days = D1_cal.days
+                        seconds = D1_cal.seconds
+                        hours = seconds//3600
+                        minutes = (seconds//60)%60
+                        seconds %= 60
+                        D1_data=[days,'days',hours,'hours',minutes,'mint',seconds,'sec']
+                        for i in D1_data:
+                            D1_calculation.append(i)
+                            new.append(D1_calculation)
+                        if new[1][2]>=0:
+                            count1=count1+new[1][2]
+
+                        avg=(count1/Total_test_entered)if Total_test_entered != 0 else 0
+                        # ="{:.1%}".format(h_48)
+                        avg1=("%.2f" %avg)
+                        if new[1][0]>=0:
+                            count2=count2+new[1][0]
+                        avg_day=(count2/Total_test_entered)if Total_test_entered != 0 else 0
+                        avg_day1=("%.2f" %avg_day)
+                        if new[1][6]>0:
+                            count3=count3+1
+                        delay_pect=(count3/Total_test_entered)if Total_test_entered != 0 else 0
+                        delay_pect1="{:.1%}".format(delay_pect)
+                        # delay_pect1=("%.2f" %delay_pect)
+                    Arr.append({
+                    'Lab_name':lab_name,
+                    'Lab_type':lab_type,
+                    'Total_test_entered':Total_test_entered,
+                    'max_days_of_delay_by_the_lab':max_Delay,
+                    'avg_time_taken_for_all_the_test_hours':avg1,
+                    'no_of_delay_report':count3,
+                    'per_of_delay_report':delay_pect1,
+                    'avg_delay_day':avg_day1,
+                            })
+                return Response({
+                'data':Arr,
+                'result':' Sucessfully'
+                })
+            else:
+                print('else')
+                date_to= datetime.strptime(datet,'%Y-%m-%d')
+                datet=date_to+timedelta(days=1)
+                datef= datetime.strptime(datef,'%Y-%m-%d')
+                Arr=[]
+                timeStamp=0
+                new_time=0
+                master_lab =   Master_Labs.objects.all()
+                print(master_lab)
+                for i in master_lab:
+
+                    Total_test_entered          =   Patient.objects.filter(Q(create_timestamp__gte=datef,create_timestamp__lt=datet)& Q(lab_master__lab_name__icontains=i.lab_name)).count()
+                    print(Total_test_entered,'ttt')
+                    lab_name=i.lab_name
+                    lab_type=i.lab_type
+                    Total_test_entered=Total_test_entered
+                    # #!-------------------------------------------------------------------------------------------------------------------------------------
+                    D1=  Patient.objects.filter(Q(create_timestamp__gte=datef,create_timestamp__lt=datet)& Q(lab_master__lab_name__icontains=i.lab_name))
+                    print(i.lab_name)
+                    patient_testing_Obj=Patient_Testing.objects.filter(Q(patient__lab_master=i.pk))
+                    for i in patient_testing_Obj:
+                        timeStamp=i.create_timestamp
+                    new_time=timeStamp
+                    print(new_time,'gfgf')
+                    hour=0
+                    seconds=0
+                    minutes=0
+                    ste_var = set()
+                    max_Delay=0
+                    min_Delay=0
+                    avg_Delay=0
+                    count1=0
+                    t_count1=0
+                    count2=0
+                    t_count2=0
+                    count3=0
+                    t_count3=0
+                    avg_day=0
+                    avg_day1=0
+                    avg1=0
+                    avg=0
+                    delay_pect=0
+                    delay_pect1=0
+                    for i in D1:
+                        t_count=count1
+                        t_count2=count2
+                        t_count3=count3
+                        D1_calculation=[]
+                        new=[]
+                        D1_cal= i.create_timestamp - new_time
+                        days = D1_cal.days
+                        seconds = D1_cal.seconds
+                        hours = seconds//3600
+                        minutes = (seconds//60)%60
+                        seconds %= 60
+
+                        D1_data=[days,'days',hours,'hours',minutes,'mint',seconds,'sec']
+
+                        for i in D1_data:
+                            D1_calculation.append(i)
+                            new.append(D1_calculation)
+
+                        if new[1][2]>=0:
+                            count1=count1+new[1][2]
+
+                        avg=(count1/Total_test_entered)if Total_test_entered != 0 else 0
+                        # ="{:.1%}".format(h_48)
+                        avg1=("%.2f" %avg)
+
+                        if new[1][0]>=0:
+                            count2=count2+new[1][0]
+                        avg_day=(count2/Total_test_entered)if Total_test_entered != 0 else 0
+                        avg_day1=("%.2f" %avg_day)
+
+                        if new[1][6]>0:
+                            count3=count3+1
+                        delay_pect=(count3/Total_test_entered)if Total_test_entered != 0 else 0
+                        delay_pect1="{:.1%}".format(delay_pect)
+                        # delay_pect1=("%.2f" %delay_pect)
+                    Arr.append({
+                    'Lab_name':lab_name,
+                    'Lab_type':lab_type,
+                    'Total_test_entered':Total_test_entered,
+                    'max_days_of_delay_by_the_lab':max_Delay,
+                    'avg_time_taken_for_all_the_test_hours':avg1,
+                    'no_of_delay_report':count3,
+                    'per_of_delay_report':delay_pect1,
+                    'avg_delay_day':avg_day1,
+                            })
+                return Response({
+                'data':Arr,
+                'result':' Sucessfully'
+                })
+        else:
+            return Response("user not found")"""
+
+            
+            
+            
+            
 
 
 """
