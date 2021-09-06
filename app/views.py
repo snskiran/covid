@@ -439,6 +439,23 @@ class DistrictModelView(viewsets.ModelViewSet):
             pass
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+    
+    
+    
+
+def paginatorCreation(query_data, page_no):
+
+    paginator = Paginator(query_data, 10)
+    try:
+        paginator_data = paginator.page(page_no)
+    except PageNotAnInteger:
+        paginator_data = paginator.page(1)
+    except EmptyPage:
+        paginator_data = paginator.page(paginator.num_pages)
+
+    return paginator_data    
+    
+    
 
 
 #########################          LOGIN          #########################
