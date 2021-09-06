@@ -8127,7 +8127,7 @@ class get_all_patients(GenericAPIView):
         return Response({'Lab_data':all_patient, 'result':'Sucessfully'})
 
 
-
+"""
 class get_all_contact_testing(GenericAPIView):
     def get(self,request):
         
@@ -8146,7 +8146,34 @@ class get_all_contact_testing(GenericAPIView):
                 i['msc_name'] = check_user_name.first_name
 
         return Response({'result':all_contact_tracing}, status= status.HTTP_200_OK)
+"""
 
+class get_all_contact_testing(APIView):
+
+    def get(self,request):
+
+        page_no = self.request.query_params.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        all_contact_tracing = Contact_Tracing.objects.all().values()
+        all_contact_tracing_count = Contact_Tracing.objects.all().count()
+
+        all_contact_tracing_details = paginatorCreation(all_contact_tracing, selected_page_no)
+
+        for i in all_contact_tracing_details:
+
+            if i['assigned_msc_user_id'] == None:
+                i['status'] = 0
+                i['msc_name'] = 'N/A'
+            else:
+                i['status'] = 1
+                check_user_name = User.objects.get(id= i['assigned_msc_user_id'])
+                i['msc_name'] = check_user_name.first_name
+
+        return Response({'result':list(all_contact_tracing_details), 'total_pg_count':all_contact_tracing_count}, status= status.HTTP_200_OK)
 
 
 
