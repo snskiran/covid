@@ -11896,7 +11896,7 @@ class SSUGetLabwiseDelayReport(APIView):
 
 """
 
-
+"""
 #########################      OVERALL LAB WISE DELAY REPORT               #########################
 class SSUGetOverallLabDelayD4(GenericAPIView):
 
@@ -12117,6 +12117,251 @@ class SSUGetOverallLabDelayD4(GenericAPIView):
 
         else:
             return Response("user not found")
+"""
+
+
+
+
+#########################      OVERALL LAB WISE DELAY REPORT               #########################
+# class SSUGetOverallLabDelayD4(GenericAPIView):
+class SSUGetOverallLabDelayD4(APIView):
+
+    def post (self,request):
+        data        = request.data
+
+
+        id   = data.get('user_id')
+        datef   = data.get('from_date')
+        datet   = data.get('to_date')
+
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        if data.get('user_id') is '':
+
+            return Response("user id required ")
+
+        elif User.objects.filter(id=id).exists():
+            if datef and datet:
+                print('1111')
+                date_to= datetime.strptime(datet,'%Y-%m-%d')
+                datet= date_to+timedelta(days=1)
+                datef= datetime.strptime(datef,'%Y-%m-%d')
+                Arr=[]
+                new_time=0
+                timeStamp=0
+                timeStamps=0
+                new_times_temp=0
+                new_times_temps=0
+
+                master_dist =   Master_District.objects.all()
+                master_dist_count = Master_District.objects.all().count()
+
+                master_dist_details = paginatorCreation(master_dist, selected_page_no)
+                
+                for i in master_dist_details:
+                    total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet)).count()
+
+                    District_name=i.district_code
+                    total_Test_District=total_test
+
+                    D1=  Patient_Address.objects.filter(Q(district_name=i.district_code)&Q(patient__create_timestamp__gte=datef,patient__create_timestamp__lt=datet))
+                    print(D1,"D")
+                    hour=0
+                    seconds=0
+                    minutes=0
+                    ste_var = list()
+                    count1=0
+                    t_count1=0
+                    count2=0
+                    t_count2=0
+                    count3=0
+                    t_count3=0
+                    count4=0
+                    t_count4=0
+                    h_24=0
+                    h1_24=0
+                    h_24_48=0
+                    h1_24_48=0
+                    h_48=0
+                    h1_48=0
+                    pk_value=0
+                    for i in D1:
+                        # print("UUUUUUUUUUUUUUUUUUUU", i.patient.pk)
+                        patient_sample_created_date=Patient.objects.filter( Q(id= i.patient.pk))
+                        print(patient_sample_created_date,'obj')
+                        for j in patient_sample_created_date:
+                            new_times_temp=j.create_timestamp
+                        new_time=new_times_temp
+                        print(new_time,'fd')
+
+                        patient_testing_created_date = Patient_Testing.objects.filter(Q(patient__pk= i.patient.pk))
+                        for k in patient_testing_created_date:
+                            new_times_temps=k.create_timestamp
+                        new_times= new_times_temps
+                        print(new_times,'fd')
+                        # if patient_testing_created_date:
+                        t_count1=count1
+                        t_count2=count2
+                        t_count3=count3
+                        t_count4=count4
+                        D1_calculation=[]
+                        new=[]
+                        D1_cal=new_times - new_time
+                        days = D1_cal.days
+                        seconds = D1_cal.seconds
+                        hours = seconds//3600
+                        minutes = (seconds//60)%60
+                        seconds %= 60
+                        D1_data=[days,'days',hours,'hours',minutes,'mint',seconds,'sec']
+                        for l in D1_data:
+                            D1_calculation.append(l)
+                            new.append(D1_calculation)
+                        if new[1][0]==0:
+                            count1=count1+1
+                        h_24=(count1/total_test)if total_test != 0 else 0
+                        h1_24="{:.1%}".format(h_24)
+                        if new[1][0]==1:
+                            count2=count2+1
+                        h_24_48=(count2/total_test)if total_test != 0 else 0
+                        h1_24_48="{:.1%}".format(h_24_48)
+                        if new[1][0]>=2:
+                            count3=count3+1
+                        h_48=(count3/total_test)if total_test != 0 else 0
+                        h1_48="{:.1%}".format(h_48)
+                        if new[1][0]>=0:
+                            count4=count4+new[1][0]
+
+                    Arr.append({
+                    'district_name':District_name,
+                    'total_Test_District':total_Test_District,
+                    'result_given_with_in_24hours':count1,
+                    'per_of_result_given_within_24hours':h1_24,
+                    'result_given_in_24_to_48hours':count2,
+                    'per_of_result_given_in_24_to_48hours':h1_24_48,
+                    'result_given_after_48hours':count3,
+                    'per_of_result_given_after_48hours':h1_48,
+                    'overall_time_taken_and_providing_report_in_Days':count4
+                            })
+
+                return Response({'data':Arr,'total_pg_count':master_dist_count,'result':' Sucessfully'})
+
+            else:
+                print('else')
+                Arr=[]
+                new_time=0
+                timeStamp=0
+                timeStamps=0
+                new_times_temp=0
+                new_times_temps=0
+
+                master_dist =   Master_District.objects.all()
+                master_dist_count = Master_District.objects.all().count()
+
+                master_dist_details = paginatorCreation(master_dist, selected_page_no)
+
+                for i in master_dist_details:
+                    total_test  =   Patient_Address.objects.filter(Q(district_name__icontains=i.district_code)).count()
+                    District_name=i.district_code
+                    total_Test_District=total_test
+                    D1=  Patient_Address.objects.filter(Q(district_name=i.district_code))
+                    print(D1,"D")
+                    hour=0
+                    seconds=0
+                    minutes=0
+                    ste_var = list()
+                    count1=0
+                    t_count1=0
+                    count2=0
+                    t_count2=0
+                    count3=0
+                    t_count3=0
+                    count4=0
+                    t_count4=0
+                    h_24=0
+                    h1_24=0
+                    h_24_48=0
+                    h1_24_48=0
+                    h_48=0
+                    h1_48=0
+                    pk_value=0
+                    for i in D1:
+                        # print("UUUUUUUUUUUUUUUUUUUU", i.patient.pk)
+                        patient_sample_created_date= Patient.objects.filter(Q(id= i.patient.pk))
+                        # new_time_temp = datetime.now()
+                        for j in patient_sample_created_date:
+                            new_times_temp=j.create_timestamp
+                        new_time=new_times_temp
+
+                        # print("UUUUUUUUUUUUUUUUUUUU", new_time)
+
+
+                        patient_testing_created_date = Patient_Testing.objects.filter(Q(patient__pk= i.patient.pk))
+                        # print(patient_testing_created_date,'/')
+                        # new_times_temps = datetime.now()
+                        for k in patient_testing_created_date:
+                            new_times_temps=k.create_timestamp
+                        new_times= new_times_temps
+                        print("UUUUUUUUUUUUUUUUUUUU", new_times)
+
+
+                        # if patient_testing_created_date:
+                        t_count1=count1
+                        t_count2=count2
+                        t_count3=count3
+                        t_count4=count4
+                        D1_calculation=[]
+                        new=[]
+                        D1_cal=new_time - new_times
+                        days = D1_cal.days
+                        seconds = D1_cal.seconds
+                        hours = seconds//3600
+                        minutes = (seconds//60)%60
+                        seconds %= 60
+
+                        D1_data=[days,'days',hours,'hours',minutes,'mint',seconds,'sec']
+                        for l in D1_data:
+                            D1_calculation.append(l)
+                            new.append(D1_calculation)
+                        if new[1][0]==0:
+                            count1=count1+1
+                        h_24=(count1/total_test)if total_test != 0 else 0
+                        h1_24="{:.1%}".format(h_24)
+                        if new[1][0]==1:
+                            count2=count2+1
+                        h_24_48=(count2/total_test)if total_test != 0 else 0
+                        h1_24_48="{:.1%}".format(h_24_48)
+                        if new[1][0]>=2:
+                            count3=count3+1
+                        h_48=(count3/total_test)if total_test != 0 else 0
+                        h1_48="{:.1%}".format(h_48)
+                        if new[1][0]>=0:
+                            count4=count4+new[1][0]
+
+                    Arr.append({
+                    'district_name':District_name,
+                    'total_Test_District':total_Test_District,
+                    'result_given_with_in_24hours':count1,
+                    'per_of_result_given_within_24hours':h1_24,
+                    'result_given_in_24_to_48hours':count2,
+                    'per_of_result_given_in_24_to_48hours':h1_24_48,
+                    'result_given_after_48hours':count3,
+                    'per_of_result_given_after_48hours':h1_48,
+                    'overall_time_taken_and_providing_report_in_Days':count4
+                            })
+
+
+                return Response({'data':Arr,'total_pg_count':master_dist_count,'result':' Sucessfully'})
+
+        else:
+            return Response("user not found")
+
+
+
+
 
 
 
