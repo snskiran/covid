@@ -8203,7 +8203,7 @@ class get_all_generated_package(GenericAPIView):
 #?-----------------       LAB ALLOCATION               -----------------------------------------------------------------------------------
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  
-
+"""
 class get_all_lab_allocation(GenericAPIView):
     def get(self,request):
         
@@ -8224,6 +8224,47 @@ class get_all_lab_allocation(GenericAPIView):
         return Response({
                 'Lab_data'  :   all_lab_allocation,
                 'result'    :   'Sucessfully'}) 
+"""
+
+
+class get_all_lab_allocation(APIView):
+    
+    def get(self,request):
+
+        page_no = self.request.query_params.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        all_lab_allocation_details = Package_Sampling.objects.all().values()
+        all_lab_allocation_count = Package_Sampling.objects.all().count()
+
+        all_lab_allocation = paginatorCreation(all_lab_allocation_details, selected_page_no)
+
+        # paginator = Paginator(all_lab_allocation_details, 10)
+        # try:
+        #     all_lab_allocation = paginator.page(selected_page_no)
+        # except PageNotAnInteger:
+        #     all_lab_allocation = paginator.page(1)
+        # except EmptyPage:
+        #     all_lab_allocation = paginator.page(paginator.num_pages)
+
+        for i in all_lab_allocation:
+            
+            lab_name               =   Testing_Lab_Facility.objects.filter(Q(id = i['test_lab_id'])).values()
+            if lab_name:
+                lab_name_data           =   Testing_Lab_Facility.objects.get(Q(id = i['test_lab_id']))
+                i['lab_name']      =   lab_name_data.testing_lab_facility_name
+            else:
+                i['lab_name'] = '-'
+            
+            i['create_timestamp']           = str(i['create_timestamp'])
+            i['last_update_timestamp']      = str(i['last_update_timestamp'])
+
+        return Response({'Lab_data':list(all_lab_allocation), 'all_lab_allocation_count':all_lab_allocation_count,'result':'Sucessfully'}) 
+
+
 
 
 
