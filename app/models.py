@@ -672,6 +672,7 @@ class Contact_Tracing(models.Model):
     village_name_eng = models.CharField(max_length=150, blank=True, null=True)
     town = models.CharField(max_length=150, blank=True, null=True)
     town_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    ward_type = models.CharField(max_length=150, blank=True, null=True)
     ward = models.CharField(max_length=150, blank=True, null=True)
     ward_name_eng = models.CharField(max_length=150, blank=True, null=True)
     taluk = models.CharField(max_length=150, blank=True, null=True)
