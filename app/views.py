@@ -1984,7 +1984,7 @@ class ContectTestingDateWiseRuralDump(APIView):
         print(created_ids)
 #         create_data = Contact_Tracing.objects.bulk_create(created_ids)
         # return Response({'result':'Updated Sucessfully', 'resp':res_data, 'created_ids':created_ids}, status= status.HTTP_200_OK)
-        return Response({'result':'Updated Sucessfully', 'resp':res_data,}, status= status.HTTP_200_OK)
+        return Response({'result':'Updated Sucessfully', 'resp':ct_dmp_data,}, status= status.HTTP_200_OK)
 
     
     
