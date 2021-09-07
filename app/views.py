@@ -1920,6 +1920,8 @@ class ContectTestingDateWiseRuralDump(APIView):
         cnt_dd = 0
         for i in res_data:
             
+            print(i)
+            
 
             if i['district_number']:
                 check_dist_data = Master_District.objects.get(Q(district_code= i['district_number']))
