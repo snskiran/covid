@@ -1902,6 +1902,7 @@ class ContectTestingDateWiseRuralDump(APIView):
 
         acc_token_res = acc_tok_res.json()
         body_hdr = acc_token_res['access_token']
+        print(body_hdr)
 
         header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
         json_header = json.dumps(header)
@@ -1915,8 +1916,8 @@ class ContectTestingDateWiseRuralDump(APIView):
 
         ct_dmp_data = check_contact_testing_dump_response.json()
         res_data = ct_dmp_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA_DATEWISE']
-#         print("RESPONSE DATA", res_data[0])
         print("RESPONSE DATA", ct_dmp_data['TOTAL_COUNT'])
+        print("RESPONSE MESSAGE  ",ct_dmp_data['RESPONSE_MESSAGE'])
         created_ids= []
         cnt_dd = 0
         for i in res_data:
