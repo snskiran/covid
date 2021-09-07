@@ -1889,6 +1889,8 @@ class ContectTestingDateWiseRuralDump(APIView):
     def post(self, request):
 
         data = request.data
+        
+        print("CONTACT TESTING   ",data)
 
         from_date = data.get('from_date')
         to_date = data.get('to_date')
@@ -1967,7 +1969,8 @@ class ContectTestingDateWiseRuralDump(APIView):
 #                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
 #                                                 taluk_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
 #                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
-            Contact_Tracing.objects.create(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], taluk= i['taluk_number'], 
+            Contact_Tracing.objects.create(covid_id = str(cnt_dd).zfill(5), name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], 
+                                                taluk= i['taluk_number'], mobile_number = i['mobile_number'],
                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
                                                 taluk_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'], door_no = i['flat_door_no'], street= i['main_road_no'])
