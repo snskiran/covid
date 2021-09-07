@@ -1915,7 +1915,7 @@ class ContectTestingDateWiseRuralDump(APIView):
 
         ct_dmp_data = check_contact_testing_dump_response.json()
         res_data = ct_dmp_data['RESPONSE_REC_RESULT']['REC_RESPONCE_DATA_DATEWISE']
-        print("RESPONSE DATA", res_data[0])
+#         print("RESPONSE DATA", res_data[0])
         print("RESPONSE DATA", ct_dmp_data['TOTAL_COUNT'])
         created_ids= []
         cnt_dd = 0
