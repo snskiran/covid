@@ -1639,7 +1639,16 @@ class ContectTestingOfflineAddPatient(APIView):
                                                 locality= '',
                                                 landmark= '')
                 
-                
+             
+            print(patient_status_type)
+            print(test_type)
+            print(rtpcr_sample)
+            print(antigen)
+            
+            print(type(patient_status_type))
+            print(type(test_type))
+            print(type(rtpcr_sample))
+            print(type(antigen))
             if (patient_status_type == 'Symptomatic' and test_type == 'RAT' and rtpcr_sample == 'true' and antigen == '0'):
                 
                 print("HELOO HELLO HELLO HELLO HELLO")
