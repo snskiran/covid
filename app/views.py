@@ -1639,7 +1639,7 @@ class ContectTestingOfflineAddPatient(APIView):
                                                 landmark= '')
                 
                 
-            if (patient_status == 'Symptomatic' and test_type == 'RAT' and rtpcr_sample == 'true' and antigen == '0'):
+            if (patient_status_type == 'Symptomatic' and test_type == 'RAT' and rtpcr_sample == 'true' and antigen == '0'):
                 
                 last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
 
