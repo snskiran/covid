@@ -1641,6 +1641,8 @@ class ContectTestingOfflineAddPatient(APIView):
                 
             if (patient_status_type == 'Symptomatic' and test_type == 'RAT' and rtpcr_sample == 'true' and antigen == '0'):
                 
+                print("HELOO HELLO HELLO HELLO HELLO")
+                
                 last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
 
                 if last_srf_id:
