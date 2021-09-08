@@ -1414,7 +1414,8 @@ class ContectTestingOfflineAddPatient(APIView):
             swab_collection_status = data.get('swab_collection_status')
             antigen = data.get('antigen')
             
-            rtpcr_sample = data.get('rtpcr_sample')
+            rtpcr_sample = data.get('rtpct_sample')
+            print(rtpcr_sample)
             
             rat_created_id_data = data.get('rat_created_id_data')
             print(speciman_collection_date)
