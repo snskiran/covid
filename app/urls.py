@@ -98,6 +98,11 @@ urlpatterns = [
 
     path('group-samples/', GroupSmaples.as_view()),
     path('pool-samples/', PoolSmaples.as_view()),
+    
+    path('submit-for-individual-testing/', SubmitForIndividualTesting.as_view()),
+    path('submit-for-pool-testing/', SubmitForPoolTesting.as_view()),
+
+    path('get-depool-patient-samples-details/', GetDesampledPatientDetails.as_view()),
 
 
     ####################     User related Urls     ####################
