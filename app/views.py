@@ -16780,6 +16780,44 @@ class PoolSmaples(APIView):
         return Response({'result':res_list, 'total_no_of_pool_samples':total_no_of_single_samples * 5, 'last_plate_no':last_plate_no, 'patient_ids':patient_ids, 'plate_ids':plate_ids})
 
 
+    
+    
+
+#########################          SUBMIT FOR INDIVIDUAL TESTING          #########################
+class SubmitForIndividualTesting(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        patient_ids = data.get('patient_ids')
+
+        patient_details = Patient.objects.filter(id__in= patient_ids).update(submit_for_individual_testing= 1)
+
+        return Response({'result':'Plate Submitted For Testing'}, status= status.HTTP_200_OK)
+
+
+
+
+#########################          SUBMIT FOR POOL TESTING          #########################
+class SubmitForPoolTesting(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        patient_ids = data.get('patient_ids')
+        pool_ids = data.get('pool_ids')
+
+        patient_details = Patient.objects.filter(id__in= patient_ids).update(submit_for_pool_testing= 1)
+        patient_details = PoolSamples.objects.filter(plate_id__in= pool_ids).update(submit_for_pool_testing= 1)
+
+        return Response({'result':'Plate Submitted For Testing'}, status= status.HTTP_200_OK)
+
+    
+    
+    
+    
 
 
 
