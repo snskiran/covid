@@ -17111,7 +17111,7 @@ class GetTlabOPSPoolPlatePatientDetails(APIView):
         return Response(get_pool_plate_details)
 
 
-
+"""
 #########################      UPDATE POOL SAMPLES TEST RESULT       #########################
 class UpdatePoolSamplesTestResult(APIView):
 
@@ -17191,6 +17191,137 @@ class UpdatePoolSamplesTestResult(APIView):
                     #     Patient_Testing.objects.create(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status)
             inc_closeing_blc = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id).update(closing_balance = F('closing_balance') + 1)
         return Response({'result': 'Updated'})
+"""
+
+
+
+
+#########################      UPDATE POOL SAMPLES TEST RESULT       #########################
+class UpdatePoolSamplesTestResult(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        pool_id = data.get('pool_id')
+        plate_id = data.get('plate_id')
+        test_result_id = data.get('test_result_id')
+        result_status= data.get('result_status')
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        master_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+        check_data = PoolPlate.objects.filter(id= plate_id)
+
+        test_pool_patients = PoolSamples.objects.filter(Q(plate_id= plate_id) & Q(pool_id= pool_id)).update(test_result= result_status)
+
+        test_pool_patients = PoolSamples.objects.filter(Q(plate_id= plate_id) & Q(pool_id= pool_id)).values()
+
+
+        for i in test_pool_patients:
+
+            if int(result_status) == 2:
+
+                check_data = Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= i['patient_id']))
+
+                if check_data:
+                    Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status, last_update_timestamp= asdatetime.now())
+                    Patient.objects.filter(id= i['patient_id']).update(pool_samples_result= 1)
+                else:
+                    Patient_Testing.objects.create(patient_id= i['patient_id'], testing_status= result_status)
+                    Patient.objects.filter(id= i['patient_id']).update(pool_samples_result= 1)
+            
+            if int(result_status) == 3:
+
+                print(i['patient_id'])
+                print("PATIENT IDE")
+
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+                    print("IF MAX LAB REACHED")
+                    patient_data_update = Patient.objects.filter(id= i['patient_id']).update(lab_master_id= master_lab_data.id, test_lab_id= master_lab_data.last_genearte_lab_id, last_update_timestamp= asdatetime.now(), group_samples= 1, pool_samples_result= 1, submit_for_pool_testing =0)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_lab_id= 'A0001')
+                
+                else:
+                    print("HELLO HELLO HELLO")
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    patient_data_update = Patient.objects.filter(id= i['patient_id']).update(lab_master_id= master_lab_data.id, test_lab_id= last_lab_id, last_update_timestamp= asdatetime.now(), group_samples= 1, pool_samples_result= 1, submit_for_pool_testing =0)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_lab_id= last_lab_id)
+
+                    # check_data = Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= i['patient_id']))
+                    # if check_data:
+                    #     Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status, last_update_timestamp= asdatetime.now())
+                    # else:
+                    #     Patient_Testing.objects.create(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status)
+
+
+            # inc_closeing_blc = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id).update(closing_balance = F('closing_balance') + 1)
+
+        return Response({'result': 'Updated'})
+
+
+    
+    
+    
+
+#########################          GET DE-SAMPLED PATIENT DETAILS          #########################
+class GetDesampledPatientDetails(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        get_patient_data = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(lab_ops_received_datetime__isnull= False) & Q(group_samples= 1) & Q(pool_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples_result = 1) & Q(submit_for_individual_testing= 1) & Q(group_samples_result= 0)).values()
+        get_patient_data_count = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(lab_ops_received_datetime__isnull= False) & Q(group_samples= 1) & Q(pool_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples_result = 1) & Q(submit_for_individual_testing= 1) & Q(group_samples_result= 0)).count()
+
+        get_patient_details = paginatorCreation(get_patient_data, selected_page_no)
+
+        for i in get_patient_details:
+            check_patient_test_result = list(Patient_Testing.objects.filter(Q(patient_id= i['id'])).values('testing_status','id'))
+            print(check_patient_test_result)
+            if check_patient_test_result:
+                i['test_result'] = check_patient_test_result[0]['testing_status']
+                i['test_result_id'] = check_patient_test_result[0]['id']
+            else:
+                test_result_create = Patient_Testing.objects.create(patient_id= i['id'], testing_status= 4, rtpcr_test= 1)
+                
+                i['test_result'] = 4
+                i['test_result_id'] = test_result_create.id
+
+
+        return Response({'patient_details':list(get_patient_details), 'total_pg_count':get_patient_data_count}, status= status.HTTP_200_OK)
+
+    
+    
+    
+
+
 
 
 
