@@ -16127,7 +16127,7 @@ class GroupSmaples(APIView):
 """
 
 
-
+"""
 #########################          GROUP SAMPLES          #########################
 class GroupSmaples(APIView):
 
@@ -16339,10 +16339,142 @@ class GroupSmaples(APIView):
             print(len(i))
 
         return Response({'result':res_list, 'total_no_of_single_samples':total_no_of_single_samples, 'last_plate_no':last_plate_no})
+"""
 
 
 
 
+#########################          GROUP SAMPLES          #########################
+class GroupSmaples(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        test_lab_data_get = Testing_Lab_Facility.objects.get(user_id= user_id)
+        # master_lab_data = Master_Labs.objects.get(id= test_lab_data_get.testing_lab_master_id)
+
+        get_patient = Patient.objects.filter(Q(lab_master_id= test_lab_data_get.testing_lab_master_id) & Q(lab_ops_received_datetime__isnull= False) & Q(group_samples= 1) & Q(group_samples_result= 0) & Q(submit_for_individual_testing = 0)).values()[:94]#.order_by('-lab_ops_received_datetime')[:93]
+
+        last_plate_no_details = GroupPlate.objects.filter(Q(test_lab_id= test_lab_data_get.id) & Q(master_lab_id= test_lab_data_get.testing_lab_master_id)).order_by('-id')[:1]
+
+        last_plate_no = '0'
+        if last_plate_no_details:
+            for i in last_plate_no_details:
+                last_plate_no = str(int(i.plate_no) + 1).zfill(3)
+        else:
+            last_plate_no = str(1).zfill(3)
+
+        res_list = []
+        static_apl_data = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',]
+
+        total_no_of_single_samples = 0
+
+        sub_lis_data = []
+        obj_data = {}
+
+        key_names = ['name1', 'name2', 'name3', 'name4', 'name5', 'name6', 'name7', 'name8', 'name9', 'name10', 'name11', 'name12', 'name13', 'name14']
+
+        key_cnt = 0
+
+        cnt = 1
+        loop_count = 0
+        for i in get_patient:
+            if cnt <= 96:
+                if (cnt == 1):
+                    obj_data[key_names[loop_count]] = 'EC'
+
+                    cnt += 1
+                    loop_count += 1
+
+                    obj_data[key_names[loop_count]] = i['test_lab_id']
+                    total_no_of_single_samples += 1
+
+                    cnt += 1
+                    loop_count += 1
+                
+                elif (cnt == 96):
+                    obj_data[key_names[loop_count]] = 'PC'
+
+                    cnt += 1
+                    loop_count += 1
+
+                else:
+                    obj_data[key_names[loop_count]] = i['test_lab_id']
+                    total_no_of_single_samples += 1
+
+                    cnt += 1
+                    loop_count += 1
+
+                if loop_count == 12:
+                    sub_lis_data.append(obj_data)
+                    res_list.append(sub_lis_data)
+                    sub_lis_data = []
+                    obj_data = {}
+                    loop_count = 0
+            else:
+                break
+
+        flag = True
+        if cnt <= 96:
+            while flag:
+                if cnt <= 96:
+                    if cnt == 1:
+                        obj_data[key_names[loop_count]] = 'EC'
+
+                        cnt += 1
+                        loop_count += 1
+
+                        obj_data[key_names[loop_count]] = ''
+
+                        cnt += 1
+                        loop_count += 1
+                    
+                    if cnt == 96:
+                        obj_data[key_names[loop_count]] = 'PC'
+
+                        cnt += 1
+                        loop_count += 1
+
+                        flag = False
+                    else:
+                        obj_data[key_names[loop_count]] = ''
+
+                        cnt += 1
+                        loop_count += 1
+
+                    if loop_count == 12:
+                        sub_lis_data.append(obj_data)
+                        res_list.append(sub_lis_data)
+                        sub_lis_data = []
+                        obj_data = {}
+                        loop_count = 0
+
+                else:
+                    flag = False
+
+
+        alp_cnt = 0
+        for i in res_list:
+            i[0]['name'] = static_apl_data[alp_cnt]
+            alp_cnt += 1
+
+
+        get_patient_ids = Patient.objects.filter(Q(lab_master_id= test_lab_data_get.testing_lab_master_id) & Q(lab_ops_received_datetime__isnull= False) & Q(group_samples= 1) & Q(group_samples_result= 0) & Q(submit_for_individual_testing = 0)).values_list('id', flat=True)[:94]
+        print(get_patient_ids)
+        return Response({'result':res_list, 'total_no_of_single_samples':total_no_of_single_samples, 'last_plate_no':last_plate_no, 'get_patient_ids':get_patient_ids})
+
+
+
+
+
+
+
+
+
+"""
 #########################          POOL SAMPLES          #########################
 class PoolSmaples(APIView):
 
@@ -16501,6 +16633,154 @@ class PoolSmaples(APIView):
             print(len(i))
 
         return Response({'result':res_list, 'total_no_of_pool_samples':total_no_of_single_samples, 'last_plate_no':last_plate_no})
+"""
+
+
+
+
+#########################          POOL SAMPLES          #########################
+class PoolSmaples(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        test_lab_data_get = Testing_Lab_Facility.objects.get(user_id= user_id)
+        master_lab_data = Master_Labs.objects.get(id= test_lab_data_get.testing_lab_master_id)
+
+        # get_patient = Patient.objects.filter(Q(lab_master_id= master_lab_data.id) & Q(lab_ops_received_datetime__isnull= False) & Q(group_samples= 0)).values()#.order_by('-lab_ops_received_datetime')[:93]
+
+        # get_pool_data = PoolSamples.objects.filter(Q(test_lab_id= test_lab_data_get.id) & Q(master_lab_id= master_lab_data.id) & Q(test_result__isnull= True)).values('plate_id', 'pool_id').distinct()
+        get_patient = PoolSamples.objects.filter(Q(test_lab_id= test_lab_data_get.id) & Q(master_lab_id= master_lab_data.id) & Q(test_result__isnull= True) & Q(submit_for_pool_testing= 0)).values('plate_id', 'pool_id').distinct()
+
+
+        print("KKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+        print(get_patient)
+        print(len(get_patient))
+
+        last_plate_no_details = PoolPlate.objects.filter(Q(test_lab_id= test_lab_data_get.id) & Q(master_lab_id= master_lab_data.id)).order_by('-id')[:1]
+
+        last_plate_no = '0'
+        if last_plate_no_details:
+            for i in last_plate_no_details:
+                last_plate_no = str(int(i.plate_no) + 1).zfill(3)
+        else:
+            last_plate_no = str(1).zfill(3)
+
+        
+        res_list = []
+
+        static_apl_data = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',]
+        total_no_of_single_samples = 0
+
+        sub_lis_data = []
+        obj_data = {}
+
+        key_names = ['name1', 'name2', 'name3', 'name4', 'name5', 'name6', 'name7', 'name8', 'name9', 'name10', 'name11', 'name12', 'name13', 'name14']
+
+        key_cnt = 0
+        cnt= 1
+        loop_count = 0
+
+        patient_ids = []
+        plate_ids = []
+
+        for i in get_patient:
+            if cnt <= 96:
+                if (cnt == 1):
+                    obj_data[key_names[loop_count]] = 'EC'
+
+                    cnt += 1
+                    loop_count += 1
+
+                    obj_data[key_names[loop_count]] = i['pool_id']
+                    total_no_of_single_samples += 1
+
+                    patient_id_details = PoolSamples.objects.filter(plate_id = i['plate_id']).values_list('patient_id', flat= True)
+                    patient_ids.extend(patient_id_details)
+                    plate_ids.append(i['plate_id'])
+
+                    cnt += 1
+                    loop_count += 1
+                
+                elif (cnt == 96):
+                    obj_data[key_names[loop_count]] = 'PC'
+
+                    cnt += 1
+                    loop_count += 1
+
+                else:
+                    obj_data[key_names[loop_count]] = i['pool_id']
+                    total_no_of_single_samples += 1
+
+                    patient_id_details = PoolSamples.objects.filter(plate_id = i['plate_id']).values_list('patient_id', flat= True)
+                    patient_ids.extend(patient_id_details)
+                    plate_ids.append(i['plate_id'])
+
+                    cnt += 1
+                    loop_count += 1
+
+                if loop_count == 12:
+                    sub_lis_data.append(obj_data)
+                    res_list.append(sub_lis_data)
+                    sub_lis_data = []
+                    obj_data = {}
+                    loop_count = 0
+            else:
+                break
+
+        
+        flag = True
+        if cnt <= 96:
+            while flag:
+                if cnt <= 96:
+                    if cnt == 1:
+                        obj_data[key_names[loop_count]] = 'EC'
+
+                        cnt += 1
+                        loop_count += 1
+
+                        obj_data[key_names[loop_count]] = ''
+
+                        cnt += 1
+                        loop_count += 1
+                    
+                    if cnt == 96:
+                        obj_data[key_names[loop_count]] = 'PC'
+
+                        cnt += 1
+                        loop_count += 1
+
+                        flag = False
+                    else:
+                        obj_data[key_names[loop_count]] = ''
+
+                        cnt += 1
+                        loop_count += 1
+
+                    if loop_count == 12:
+                        sub_lis_data.append(obj_data)
+                        res_list.append(sub_lis_data)
+                        sub_lis_data = []
+                        obj_data = {}
+                        loop_count = 0
+
+                else:
+                    flag = False
+
+
+        alp_cnt = 0
+        for i in res_list:
+            i[0]['name'] = static_apl_data[alp_cnt]
+            alp_cnt += 1
+
+
+        return Response({'result':res_list, 'total_no_of_pool_samples':total_no_of_single_samples * 5, 'last_plate_no':last_plate_no, 'patient_ids':patient_ids, 'plate_ids':plate_ids})
+
+
+
 
 
 
