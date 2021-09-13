@@ -9131,6 +9131,16 @@ class PHCDateWiseContectTestingStatusReport(APIView):
             col_rnd_samp_cnt = Patient.objects.filter(Q(added_by_id__in= get_scc_users) & Q(create_timestamp__date= i['phc_created_datetime__date'])).count()
 
             phc_target_count = phc_created_datetime.phc_target
+            
+            if contact_testing:
+                contact_testing = contact_testing
+            else:
+                contact_testing = 0
+                
+            if ili:
+                ili = ili
+            else:
+                ili = 0
 
             random = phc_target_count - contact_testing - ili
 
