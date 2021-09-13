@@ -543,6 +543,9 @@ class Patient(models.Model):
     rat_created_id = models.CharField(max_length=120, blank=True, null=True)
 
     arrival_date = models.CharField(max_length=120, blank=True, null=True)
+    
+    submit_for_individual_testing = models.IntegerField(default=0, blank=True, null=True)
+    submit_for_pool_testing = models.IntegerField(default=0, blank=True, null=True)
 
     group_samples = models.IntegerField(default=0, blank=True, null=True)
     pool_samples = models.IntegerField(default=0, blank=True, null=True)
@@ -893,6 +896,7 @@ class PoolSamples(models.Model):
     pool_id = models.CharField(max_length=150, blank=True, null=True)
     # plate_no = models.IntegerField(blank=True, null=True)
     test_result = models.IntegerField(blank=True, null=True)
+    submit_for_pool_testing = models.IntegerField(default=0, blank=True, null=True)
     create_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 
