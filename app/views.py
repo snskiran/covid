@@ -9132,6 +9132,11 @@ class PHCDateWiseContectTestingStatusReport(APIView):
 
             phc_target_count = phc_created_datetime.phc_target
             
+            if phc_target_count:
+                phc_target_count = phc_target_count
+            else:
+                phc_target_count = 0
+            
             if contact_testing:
                 contact_testing = contact_testing
             else:
