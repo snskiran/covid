@@ -9328,7 +9328,7 @@ class GetPHCUseraddedPatientsReport(APIView):
 
 
 
-
+"""
 #########################      PHC DATE WISE COLLECTION STATUS AND RESULT TOTAL COUNT               #########################
 class PHCDateWiseCollectionStatusAndResultTotalCount(APIView):
 
@@ -9363,6 +9363,59 @@ class PHCDateWiseCollectionStatusAndResultTotalCount(APIView):
                     swab_col_rep_data.append({'user_id':j, 'name':user_data.first_name, 'username':user_data.username,'date': i['create_timestamp__date'], 'total_collection_count':samp_collected_cnt})
 
         return Response({'result': swab_col_rep_data, 'message': 'Sucess'})
+"""
+
+
+#########################      PHC DATE WISE COLLECTION STATUS AND RESULT TOTAL COUNT               #########################
+class PHCDateWiseCollectionStatusAndResultTotalCount(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        # check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values()
+
+        check_all_swab_collector_data = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id', flat=True)
+        # check_all_swab_collector_data_count = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id', flat=True).count()
+
+        # phc_user_ids = []
+
+        # for i in check_all_swab_collector:
+        #     if i['user_id'] not in phc_user_ids:
+        #         phc_user_ids.append(i['user_id'])
+
+
+        patient_data = Patient.objects.filter(added_by_id__in= check_all_swab_collector_data).values('create_timestamp__date').distinct()
+        patient_data_count = Patient.objects.filter(added_by_id__in= check_all_swab_collector_data).values('create_timestamp__date').distinct().count()
+
+        # patient_details = paginatorCreation(patient_data, selected_page_no)
+        swab_col_rep_data = []
+
+
+
+        for i in patient_data:
+            # for j in phc_user_ids:
+            for j in check_all_swab_collector_data:
+                user_data = User.objects.get(id= j)
+                samp_collected_cnt = Patient.objects.filter(Q(added_by_id= j) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+                check_cnt = samp_collected_cnt
+                if samp_collected_cnt > 0:
+                    swab_col_rep_data.append({'user_id':j, 'name':user_data.first_name, 'username':user_data.username,'date': i['create_timestamp__date'], 'total_collection_count':samp_collected_cnt})
+                    
+        return Response({'result': swab_col_rep_data, 'total_pg_count': patient_data_count, 'message': 'Sucess'})
+
+
+
+
 
 
 
