@@ -471,6 +471,28 @@ def paginatorCreation(query_data, page_no):
 
     return paginator_data    
     
+
+    
+    
+    
+def getToken():
+
+    acc_url = auth_token_url
+    token_body = {'grant_type': auth_token_grant_type ,'username': auth_token_username, 'password': auth_token_password}
+    acc_json_data = json.dumps(token_body)
+    acc_tok_res = requests.post(acc_url, data= token_body)
+
+    acc_token_res = acc_tok_res.json()
+    body_hdr = acc_token_res['access_token']
+
+
+    header = {"Authorization": "Bearer "+body_hdr +"", "Content-Type":"application/json"}
+    json_header = json.dumps(header)
+
+    return header    
+
+    
+    
     
 
 
