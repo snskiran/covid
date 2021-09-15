@@ -41,7 +41,7 @@ from math import radians, cos, sin, asin, sqrt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
-from urls_variables import *
+# from urls_variables import *
 
 
 class AccessENVData(APIView):
