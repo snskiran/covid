@@ -10224,7 +10224,7 @@ class SwabPackageDespatchDetails(APIView):
 
 
 
-
+"""
 #########################      PHC PACKAGE LAB WISE REPORT               #########################
 class PHCPackageLabWiseReport(APIView):
 
@@ -10286,6 +10286,84 @@ class PHCPackageLabWiseReport(APIView):
         # package_lab_details.append({'total_lab_created':total_lab_created, 'total_samples':total_samples})
         print("MMMMMMMMMMMM", package_lab_details)
         return Response({'result': package_lab_details, 'total_lab_created':total_lab_created, 'total_samples':total_samples, 'message': 'Sucess'})
+"""
+
+
+
+#########################      PHC PACKAGE LAB WISE REPORT               #########################
+class PHCPackageLabWiseReport(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id', flat=True)
+
+        get_all_pack = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(test_lab__isnull= False)).values('create_timestamp__date').distinct().order_by('-create_timestamp__date')
+        get_all_pack_count = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(test_lab__isnull= False)).values('create_timestamp__date').distinct().count()
+
+
+        get_all_pack_details = paginatorCreation(get_all_pack, selected_page_no)
+
+        package_lab_details = []
+
+        total_lab_created = 0
+        total_samples = 0
+
+        for i in get_all_pack_details:
+            
+            lab_package_details = {}
+
+            lab_package_details['date'] = i['create_timestamp__date']
+
+            # check_package_dis_lab = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 5)).values()
+            # print(check_package_dis_lab)
+
+            check_package_dis_lab = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(test_lab__isnull= False)).values('test_lab_id').distinct()
+
+            if check_package_dis_lab:
+                for j in check_package_dis_lab:
+
+                    
+                    check_test_lab = Testing_Lab_Facility.objects.get(id= j['test_lab_id'])
+                    lab_name_data = Master_Labs.objects.get(id= check_test_lab.testing_lab_master_id)
+
+                    lab_package_details['lab_name'] = lab_name_data.lab_name
+                    
+                    total_lab_created += 1
+
+                    check_package_sam_count = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(test_lab_id= j['test_lab_id'])).values()
+
+                    if check_package_sam_count:
+                        sample_count = 0
+                        for k in check_package_sam_count:
+                            sample_count += int(k['samples_count'])
+                            total_samples += int(k['samples_count'])
+                        lab_package_details['sample_count'] = sample_count
+                    else:
+                        lab_package_details['sample_count'] = 0
+            else:
+                lab_package_details['lab_name'] = '-'
+                lab_package_details['sample_count'] = 0
+
+            package_lab_details.append(lab_package_details)
+        
+        # package_lab_details.append({'total_lab_created':total_lab_created, 'total_samples':total_samples})
+
+
+        return Response({'result': package_lab_details, 'total_lab_created':total_lab_created, 'total_samples':total_samples, 'total_pg_count': get_all_pack_count,'message': 'Sucess'})
+
+
+
 
 
 
