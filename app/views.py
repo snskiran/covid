@@ -10138,6 +10138,68 @@ class SwabCollectionBySwabCollector(APIView):
 """
 
 
+"""
+#########################      SWAB COLLECTION BY SWAB COLLECTOR               #########################
+class SwabCollectionBySwabCollector(APIView):
+
+    def post(self,request):
+        
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+
+        check_all_swab_collector_data = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id) & Q(role_id= 8)).values()
+        check_all_swab_collector_data_count = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id) & Q(role_id= 8)).count()
+
+        check_all_swab_collector_details = paginatorCreation(check_all_swab_collector_data, selected_page_no)
+
+        swab_col_rep_data = []
+
+        total_swab_coll = 0
+        total_swab_alloted = 0
+        total_swab_collected = 0
+        total_balance = 0
+        
+        for i in check_all_swab_collector_details:
+
+            swab_col_rep_details = {}
+
+            check_user = User.objects.get(id= i['user_id'])
+            no_of_patient_alloted = Contact_Tracing.objects.filter(Q(assigned_msc_user= i['user_id']) & Q(assigned_date__date= asdatetime.now().date())).count()
+            no_of_swab_collected = Contact_Tracing.objects.filter(Q(assigned_msc_user= i['user_id']) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
+
+            swab_col_rep_details['name_of_swab_collector'] = check_user.first_name
+            swab_col_rep_details['swab_collector_user_id'] = check_user.id
+            swab_col_rep_details['no_of_patient_allotted'] = no_of_patient_alloted
+            swab_col_rep_details['no_of_swab_collected'] = no_of_swab_collected
+            swab_col_rep_details['balance'] = no_of_patient_alloted - no_of_swab_collected
+            
+            
+            # if (no_of_patient_alloted != 0 and no_of_swab_collected != 0):
+            if (no_of_patient_alloted != 0):
+                swab_col_rep_data.append(swab_col_rep_details)
+                total_swab_coll += 1
+                total_swab_alloted += no_of_patient_alloted
+                total_swab_collected += no_of_swab_collected
+                total_balance += no_of_patient_alloted - no_of_swab_collected
+
+        # swab_col_rep_data.append({'total_swab_coll':total_swab_coll, 'total_swab_alloted':total_swab_alloted, 'total_swab_collected':total_swab_collected, 'total_balance':total_balance})
+
+        return Response({'result': swab_col_rep_data, 'total_pg_count': check_all_swab_collector_data_count, 'total_swab_coll':total_swab_coll, 'total_swab_alloted':total_swab_alloted, 'total_swab_collected':total_swab_collected, 'total_balance':total_balance, 'total_pg_count': check_all_swab_collector_data_count, 'message': 'Sucess'})
+"""
+
+
+
+
 
 #########################      SWAB COLLECTION BY SWAB COLLECTOR               #########################
 class SwabCollectionBySwabCollector(APIView):
@@ -10195,6 +10257,8 @@ class SwabCollectionBySwabCollector(APIView):
         # swab_col_rep_data.append({'total_swab_coll':total_swab_coll, 'total_swab_alloted':total_swab_alloted, 'total_swab_collected':total_swab_collected, 'total_balance':total_balance})
 
         return Response({'result': swab_col_rep_data, 'total_pg_count': check_all_swab_collector_data_count, 'total_swab_coll':total_swab_coll, 'total_swab_alloted':total_swab_alloted, 'total_swab_collected':total_swab_collected, 'total_balance':total_balance, 'total_pg_count': check_all_swab_collector_data_count, 'message': 'Sucess'})
+
+
 
 
 
