@@ -4615,7 +4615,7 @@ class GetPHCUserPackageList(APIView):
 
 
 
-
+"""
 #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 class GetTHOPackageData(APIView):
 
@@ -4642,7 +4642,44 @@ class GetTHOPackageData(APIView):
         print(len(check_tho_lab_details))
         
         return Response({'details':check_tho_lab_details,'result': 'successfull'})
-            
+"""
+
+
+
+#&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+class GetTHOPackageData(APIView):
+
+    def post(self, request):
+        data = request.data
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        tho_data = THO.objects.get(user_id= user_id)
+
+        check_tho_lab_data = Package_Sampling.objects.filter(tho_id=tho_data.id).values()
+        check_tho_lab_data_count = Package_Sampling.objects.filter(tho_id=tho_data.id).count()
+
+        check_tho_lab_details = paginatorCreation(check_tho_lab_data, selected_page_no)
+
+        for i in check_tho_lab_details:
+            check_lab = Testing_Lab_Facility.objects.filter(id=  i['test_lab_id'])
+            if check_lab:
+                check_lab = Testing_Lab_Facility.objects.get(id=  i['test_lab_id'])
+                lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
+                i['lab_name'] = lab_master_data.lab_name
+            else:
+                i['lab_name'] = '-'
+                
+        return Response({'details':list(check_tho_lab_details), 'total_pg_count': check_tho_lab_data_count,'result': 'successfull'})
+
+
+
+
+
 
 class GetDSOPackageData(APIView):
     def post(self, request):
