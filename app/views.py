@@ -9740,7 +9740,7 @@ class PHCDateWiseSampleRejectedIndetailReport(APIView):
 
 
 
-
+"""
 #########################      PHC TARGET VS ACTUAL SWAB COLLECTION               #########################
 class PHCTargetvsActualSwabCollection(APIView):
 
@@ -9773,6 +9773,51 @@ class PHCTargetvsActualSwabCollection(APIView):
             rep_data.append(rep_details)
         
         return Response({'result': rep_data, 'message': 'Sucess'})
+"""
+
+
+
+#########################      PHC TARGET VS ACTUAL SWAB COLLECTION               #########################
+class PHCTargetvsActualSwabCollection(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        all_targets  = PHCTargetAssignment.objects.filter(phc_id= check_user.phc_master_id).values('phc_created_datetime__date').distinct()
+        all_targets_count  = PHCTargetAssignment.objects.filter(phc_id= check_user.phc_master_id).values('phc_created_datetime__date').distinct().count()
+        
+        all_targets_details = paginatorCreation(all_targets, selected_page_no)
+
+        rep_data = []
+
+        for i in all_targets_details:
+
+            rep_details = {}
+            all_targets  = PHCTargetAssignment.objects.get(Q(phc_id= check_user.phc_master_id) & Q(phc_created_datetime__date= i['phc_created_datetime__date']))
+            rep_details['date']= i['phc_created_datetime__date']
+            rep_details['daily_target'] = all_targets.phc_target
+
+            no_of_patient_alloted = Contact_Tracing.objects.filter(Q(assigned_phc= check_user.phc_master_id) & Q(assigned_date__date= i['phc_created_datetime__date'])).count()
+            no_of_swab_collected = Contact_Tracing.objects.filter(Q(assigned_phc= check_user.phc_master_id) & Q(assigned_date__date= i['phc_created_datetime__date']) & Q(sample_collected= 1)).count()
+            rep_details['no_of_patient_alloted'] = no_of_patient_alloted
+            rep_details['no_of_swab_collected'] = no_of_swab_collected
+            rep_details['balance'] = no_of_patient_alloted - no_of_swab_collected
+
+            rep_data.append(rep_details)
+        
+        return Response({'result': rep_data, 'total_pg_count': all_targets_count, 'message': 'Sucess'})
+
+
 
 
 
