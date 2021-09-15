@@ -11563,7 +11563,7 @@ class DSOSwabDispatchDetails(APIView):
 
 
 
-
+"""
 #########################      DSO PACKAGE LAB WISE REPORT               #########################
 class DSOPackageLabWiseReport(APIView):
 
@@ -11641,6 +11641,99 @@ class DSOPackageLabWiseReport(APIView):
         # this_final_data.append({'no_of_labs':no_of_labs, 'total_samples':total_samples})
 
         return Response({'result': this_final_data,'no_of_labs':no_of_labs, 'total_samples':total_samples, 'message': 'Sucess'})
+"""
+
+
+
+
+#########################      DSO PACKAGE LAB WISE REPORT               #########################
+class DSOPackageLabWiseReport(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        dso_data = DSO.objects.get(user_id= user_id)
+
+        check_dso_tho = THO.objects.filter(dso_id= dso_data.id).values()
+        check_dso_tho_count = THO.objects.filter(dso_id= dso_data.id).count()
+
+        check_dso_tho_details = paginatorCreation(check_dso_tho, selected_page_no)
+
+        no_of_labs = 0
+        total_samples = 0
+
+        rep_data = []
+        this_final_data = []
+
+        for cdt in check_dso_tho_details:
+
+            check_tho = THO.objects.get(user_id= cdt['user_id'])
+
+            check_all_phc_details = Swab_Collection_Centre.objects.filter(Q(tho_id = check_tho.id) & Q(role_id= 6)).values()
+
+
+            for i in check_all_phc_details:
+                
+                master_phc_details = Master_PHC.objects.get(id= i['phc_master_id'])
+
+                check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= i['phc_master_id'])).values()
+
+                swab_col_users = []
+
+                for j in check_all_swab_collector:
+                    if j['user_id'] not in swab_col_users:
+                        swab_col_users.append(j['user_id'])
+
+                get_all_pack = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users)).values('test_lab_id').distinct()
+
+                
+                for k in get_all_pack:
+
+                    if k['test_lab_id']:
+                        tho_rep_data = {}
+                        tho_rep_data['phc_name'] = master_phc_details.phc_name
+
+                        no_of_labs += 1
+                        lab_name = '-'
+                        sample_count = 0
+
+                        check_package_dis_lab = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(package_type_action= 15) & Q(test_lab_id= k['test_lab_id'])).values()
+
+                        if check_package_dis_lab:
+                            
+                            for l in check_package_dis_lab:
+
+                                check_test_lab = Testing_Lab_Facility.objects.get(id= l['test_lab_id'])
+                                lab_name_data = Master_Labs.objects.get(id= check_test_lab.testing_lab_master_id)
+
+                                lab_name = lab_name_data.lab_name
+
+                                check_package_sam_count = Package_Sampling.objects.filter(Q(user_id__in= swab_col_users) & Q(package_type_action= 15) & Q(test_lab_id= l['test_lab_id'])).values()
+
+                                if check_package_sam_count:
+                                    for m in check_package_sam_count:
+                                        sample_count += int(m['samples_count'])
+                                        total_samples += int(m['samples_count'])
+                        
+                        tho_rep_data['lab_name'] = lab_name
+                        tho_rep_data['sample_count'] = sample_count
+                        
+                        this_final_data.append(tho_rep_data)
+            
+        # this_final_data.append({'no_of_labs':no_of_labs, 'total_samples':total_samples})
+
+        return Response({'result': this_final_data, 'total_pg_count': check_dso_tho_count, 'no_of_labs':no_of_labs, 'total_samples':total_samples, 'message': 'Sucess'})
+
+
+
 
 
     
