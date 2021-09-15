@@ -10051,7 +10051,7 @@ class SwabCollectionBySwabCollectorSwabcollectorView(APIView):
         # return Response({'result': swab_col_rep_data, 'total_swab_coll':total_swab_coll, 'total_swab_alloted':total_swab_alloted, 'total_swab_collected':total_swab_collected, 'total_balance':total_balance, 'message': 'Sucess'})
 
 
-
+"""
 #########################      SWAB PACKAGE DISPATCH DETAILS               #########################
 class SwabPackageDespatchDetailsCount(APIView):
 
@@ -10118,6 +10118,91 @@ class SwabPackageDespatchDetailsCount(APIView):
 
 
         return Response({'result': package_sts_details, 'total_package_created':total_package_created, 'total_package_acc_mo':total_package_acc_mo, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho,'message': 'Sucess'})
+"""
+
+
+
+#########################      SWAB PACKAGE DISPATCH DETAILS               #########################
+class SwabPackageDespatchDetailsCount(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+
+        check_user = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        # check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values()
+        check_all_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id', flat=True)
+
+        # swab_col_users = []
+
+        # for i in check_all_swab_collector:
+        #     if i['user_id'] not in swab_col_users:
+        #         swab_col_users.append(i['user_id'])
+
+        get_all_pack = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector)).values('create_timestamp__date').distinct()
+        get_all_pack_count = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector)).values('create_timestamp__date').distinct().count()
+
+        package_sts_details = []
+
+        total_package_created = 0
+        total_package_acc_mo = 0
+        total_package_dispatched_lab = 0
+        total_package_dispatched_to_tho = 0
+
+        get_all_pack_details = paginatorCreation(get_all_pack, selected_page_no)
+
+        for i in get_all_pack_details:
+            
+            package_details = {}
+
+            check_package_created = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+            check_package_received_mo = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_status= 7)).count()
+            check_package_dispatched_lab = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 15)).count()
+            check_package_dispatched_tho = Package_Sampling.objects.filter(Q(user_id__in= check_all_swab_collector) & Q(create_timestamp__date= i['create_timestamp__date']) & Q(package_type_action= 13)).count()
+
+            package_details['date'] = i['create_timestamp__date']
+            package_details['no_of_package_created'] = check_package_created
+
+            if check_package_received_mo != 0:
+                package_details['no_of_package_accepted_mo'] = check_package_received_mo
+            else:
+                package_details['no_of_package_accepted_mo'] = '-'
+
+            if check_package_dispatched_lab != 0:
+                package_details['no_of_package_dispatched_lab'] = check_package_dispatched_lab
+            else:
+                package_details['no_of_package_dispatched_lab'] = '-'
+
+            if check_package_dispatched_tho != 0:
+                package_details['no_of_package_dispatched_tho'] = check_package_dispatched_tho
+            else:
+                package_details['no_of_package_dispatched_tho'] = '-'
+            
+            
+
+            total_package_created += check_package_created
+            total_package_acc_mo += check_package_received_mo
+            total_package_dispatched_lab += check_package_dispatched_lab
+            total_package_dispatched_to_tho += check_package_dispatched_tho
+
+            package_sts_details.append(package_details)
+
+        # package_sts_details.append({'total_package_created':total_package_created, 'total_package_acc_mo':total_package_acc_mo, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho})
+
+
+        return Response({'result': package_sts_details, 'total_pg_count': get_all_pack_count, 'total_package_created':total_package_created, 'total_package_acc_mo':total_package_acc_mo, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho,'message': 'Sucess'})
+
+
+
 
 
 
