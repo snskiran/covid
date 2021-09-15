@@ -278,6 +278,9 @@ urlpatterns = [
     path('icmr-access-token/', ICMRGetAccessToken.as_view()),
     
     path('universal-search/', UniversalSearch.as_view()),
+    
+    
+    path('access-envdata/', AccessENVData.as_view()),
 
 
 
