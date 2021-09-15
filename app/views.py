@@ -4760,7 +4760,7 @@ class GetSSUPackageData(APIView):
         return Response({'details':sc,'result': 'successfull '})
 
 
-
+"""
 #########################          GET TESTING LAB PACKAGE DETAILS          #########################
 class GetTLCPackageData(APIView):
     def post(self, request):
@@ -4781,6 +4781,39 @@ class GetTLCPackageData(APIView):
             i['phc_name'] = phc_data.phc_name
         
         return Response({'details':sc,'result': 'successfull '})
+"""
+
+
+
+
+#########################          GET TESTING LAB PACKAGE DETAILS          #########################
+class GetTLCPackageData(APIView):
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        # sc = Package_Sampling.objects.filter(test_lab_id=user_id).values()
+        test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+        sc_data = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id).values()
+        sc_count = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id).count()
+        
+        sc_details = paginatorCreation(sc_data, selected_page_no)
+
+        for i in sc_details:
+            i['testing_lab_name'] = test_lab_data.testing_lab_facility_name
+            check_swb_col = Swab_Collection_Centre.objects.get(id= i['swab_cc_id'])
+            phc_data = Master_PHC.objects.get(id= check_swb_col.phc_master_id)
+            i['phc_name'] = phc_data.phc_name
+        
+        return Response({'details':list(sc_details), 'total_pg_count': sc_count,'result':'successfull '})
+
+
 
 
 
