@@ -3779,7 +3779,7 @@ class PHCUseTestTypeFilter(APIView):
             return Response({'result': 'Something Went Wrong'})
 
 
-
+"""
 #########################          Upadate Patient Testing Status  RAT RTPCR          #########################
 class UpdatePatientTestingResult(APIView):
 
@@ -3795,8 +3795,6 @@ class UpdatePatientTestingResult(APIView):
         id = data.get('id')
         user_id = data.get('user_id')
 
-        print("KKKKKKKKKKKKKKKKK")
-        print(data)
 
         test  = Test_Type_Ref.objects.none()
 
@@ -3877,6 +3875,256 @@ class UpdatePatientTestingResult(APIView):
                     test_kit_details_update = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id= get_swab_detail.phc_master_id) & Q(active= 1) & Q(test_kit_id= rat_Lab_testkit_id)).update(capacity= int(test_kit_detail_data.capacity)-1)
 
         return Response({'result':"Updated Sucessfully"}, status= status.HTTP_200_OK)
+"""
+
+#########################          Upadate Patient Testing Status  RAT RTPCR          #########################
+class UpdatePatientTestingResult(APIView):
+
+    def post(self, request):
+
+        data = request.data
+
+        test_type = data.get('test_type')
+        test_result = data.get('test_result')
+        rat_Lab_testkit_id = data.get('rat_Lab_testkit_id')
+        patient_id = data.get('patient_id')
+        srf_id = data.get('srf_id')
+        id = data.get('id')
+        user_id = data.get('user_id')
+
+
+        test  = Test_Type_Ref.objects.none()
+
+        patient_data = Patient.objects.get(Q(id= id))
+        patient_data_fil = Patient.objects.filter(Q(id= id)).update(testing_kit_barcode_id= rat_Lab_testkit_id)
+
+        check_patient_data = Patient_Testing.objects.filter(patient_id= id)
+        if check_patient_data:
+            lab_test_result_update = Patient_Testing.objects.filter(patient_id= id).update(testing_status= test_result)
+            if test_result == '0':
+                # generate_srf = random.randint(100000000, 999999999)
+
+                user_dist_status = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+                get_user_master_dist_code = Master_PHC.objects.get(id= user_dist_status.phc_master_id)
+
+                srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+                yr = str(asdatetime.now().year)[2:]
+                mn = str(asdatetime.now().month).zfill(2)
+                dd = str(asdatetime.now().day)
+
+                srf_data = srf_dist_code+yr+mn+dd
+
+                last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+                if last_srf_id:
+                    srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+                else:
+                    srf_data = srf_data + '1'.zfill(5)
+
+                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).update(srf_id= srf_data)
+                # print("Antigen Negative", check_rtpcr_data)
+
+            if test_result == '1':
+                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).delete()
+                # print("Antigen Positive", check_rtpcr_data)
+        else:
+            lab_test_result_update = Patient_Testing.objects.create(patient_id= id, testing_status= test_result)
+
+            if test_result == '0':
+                # generate_srf = random.randint(100000000, 999999999)
+                
+                user_dist_status = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+                get_user_master_dist_code = Master_PHC.objects.get(id= user_dist_status.phc_master_id)
+
+                srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+                yr = str(asdatetime.now().year)[2:]
+                mn = str(asdatetime.now().month).zfill(2)
+                dd = str(asdatetime.now().day)
+
+                srf_data = srf_dist_code+yr+mn+dd
+
+                last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+                if last_srf_id:
+                    srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+                else:
+                    srf_data = srf_data + '1'.zfill(5)
+
+                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).update(srf_id= srf_data)
+                # print("Antigen Negative DATA", check_rtpcr_data)
+
+            if test_result == '1':
+                check_rtpcr_data = Patient.objects.filter(rat_created_id= id).delete()
+                # print("Antigen Positive DATA", check_rtpcr_data)
+
+        if test_type == 'RAT':
+            get_swab_detail = Swab_Collection_Centre.objects.get(user_id= user_id)
+            test_kit_details = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id= get_swab_detail.phc_master_id) & Q(active= 1))
+            if test_kit_details:
+                test_kit_detail_data = Phc_Id_Test_Kit_Id.objects.get(Q(phc_id= get_swab_detail.phc_master_id) & Q(active= 1))
+                if int(test_kit_detail_data.capacity)-1 == 0:
+                    test_kit_details_update = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id= get_swab_detail.phc_master_id) & Q(active= 1) & Q(test_kit_id= rat_Lab_testkit_id)).delete()
+                else:
+                    test_kit_details_update = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id= get_swab_detail.phc_master_id) & Q(active= 1) & Q(test_kit_id= rat_Lab_testkit_id)).update(capacity= int(test_kit_detail_data.capacity)-1)
+
+        header = getToken()
+
+        get_patient_details = list(Patient.objects.filter(id= id).values('patient_name', 'age', 'age_type', 'gender', 
+        'srf_id', 'mobile_number', 'test_type__test_type_name', 'lab_master__lab_id', 
+        'id_proof_type', 'aadhar_number', 'ration_card_number', 'mobile_number_belongs_to', ))
+
+        get_patient_add_details = list(Patient_Address.objects.filter(patient_id= id).values('state_name', 'district_name', 'city_name', 'ward_name', 'taluk_name', 'panchayat_name', 'village_name', 'resident_type', 'zone_type', 'ward_type', 'flat_door_no', 'main_road_no', 'locality', 'landmark', 'pincode'))
+
+        get_patient_outside_add_details = list(Outside_Patient_Address.objects.filter(patient_id= id).values('state_name', 
+        'district_name', 'city_name', 'ward_name', 'taluk_name', 'panchayat_name', 'village_name', 'resident_type', 'zone_type', 'ward_type', 
+        'flat_door_no', 'main_road_no', 'locality', 'landmark', 'pincode'))
+
+        address_details = None
+
+        district_name_eng = ''
+        taluk_name_eng = ''
+        panchayat_name_eng = ''
+        village_name_eng = ''
+        ward_name_eng = ''
+        zone_name_eng = ''
+        city_name_eng = ''
+            
+            
+
+        if get_patient_add_details:
+            address_details = get_patient_add_details
+            if address_details[0]['district_name']:
+                district_name = (Master_District.objects.filter(district_code= address_details[0]['district_name']).values_list('district_name_eng', flat=True))[0]
+            if address_details[0]['taluk_name']:
+                taluk_name = (Master_Block.objects.filter(block_code= address_details[0]['taluk_name']).values_list('block_name_eng', flat=True))[0]
+            if address_details[0]['panchayat_name']:                
+                panchayat_name = (Master_Panchayat.objects.filter(panchayat_code= address_details[0]['panchayat_name']).values_list('panchayat_name_eng', flat=True))[0]
+            if address_details[0]['village_name']:                
+                village_name = (Master_Village.objects.filter(village_code= address_details[0]['village_name']).values_list('village_name_eng', flat=True))[0]
+            if address_details[0]['ward_name']:                
+                ward_name = (Master_Ward.objects.filter(ward_no= address_details[0]['ward_name']).values_list('ward_name', flat=True))[0]
+            if address_details[0]['zone_type']:                
+                zone_name = (Master_Zone.objects.filter(bbmp_zone_no_ksrsac= address_details[0]['zone_type']).values_list('zone_name', flat=True))[0]
+            if address_details[0]['city_name']:                
+                city_name = (Master_Ward.objects.filter(district_code= address_details[0]['city_name']).values_list('town_name', flat=True))[0]
+        
+        if get_patient_outside_add_details:
+            address_details = get_patient_outside_add_details
+
+        res_str_name = ''
+        if test_result == '0':
+            res_str_name = 'Negative'
+        if test_result == '1':
+            res_str_name = 'Positive'
+
+
+        test_positive_url = "https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_InsertTestResultForSMS"
+        pos_input_data = {
+                            "Name": str(get_patient_details[0]['patient_name']),
+                            "Age": str(get_patient_details[0]['age']),
+                            "AgeIn": str(get_patient_details[0]['age_type']),
+                            "Gender": str(get_patient_details[0]['gender']),
+                            "SRFID": str(get_patient_details[0]['srf_id']),
+                            "MobileNumber": str(get_patient_details[0]['mobile_number']),
+                            "TestType": str(get_patient_details[0]['test_type__test_type_name']),
+                            "TestResult": res_str_name,
+                            "TestLab": str(get_patient_details[0]['lab_master__lab_id'])
+                        }
+        post_sms_input_json_data = json.dumps(pos_input_data, indent=4)
+        check_sms_data_response = requests.post(test_positive_url, data= post_sms_input_json_data, headers= header)
+        sms_j_data = check_sms_data_response.json()
+        print(sms_j_data)
+
+        if test_result == '1':
+
+            test_positive_url = "https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_InsertPositiveTestResult"
+            
+            pos_lin_input_data = {
+                                "patient_name": str(get_patient_details[0]['patient_name']),
+                                "srf_id": str(get_patient_details[0]['srf_id']),
+                                "age": int(get_patient_details[0]['age']),
+                                "age_in": str(get_patient_details[0]['age_type']),
+                                "gender": str(get_patient_details[0]['gender']), 
+                                "id_proof_type": str(get_patient_details[0]['id_proof_type']),
+                                "aadhar_number": str(get_patient_details[0]['aadhar_number']),
+                                "ration_card_number": str(get_patient_details[0]['ration_card_number']),
+                                "mobile_number": int(get_patient_details[0]['mobile_number']),
+                                "mobile_number_belongs_to": str(get_patient_details[0]['mobile_number_belongs_to']),
+                                "resident_type": 11,
+                                "flat_door_no": str(address_details[0]['flat_door_no']),
+                                "main_road_no": str(address_details[0]['main_road_no']),
+                                "locality": str(address_details[0]['locality']),
+                                "landmark": str(address_details[0]['landmark']),
+                                "pincode": str(address_details[0]['pincode']),
+                                "state_name": str(address_details[0]['state_name']),
+                                "ward_type": str(address_details[0]['ward_type']),
+                                "district_id": str(address_details[0]['district_name']),
+                                "district_name": district_name_eng,
+                                "taluk_id": str(address_details[0]['taluk_name']),
+                                "taluk_name": taluk_name_eng,
+                                "town_id": str(address_details[0]['city_name']),
+                                "town_name": city_name_eng,
+                                "ward_id": str(address_details[0]['ward_name']),
+                                "ward_name": ward_name_eng,
+                                "zone_id": str(address_details[0]['zone_type']),
+                                "zone_name": zone_name_eng,
+                                "panchayat_id": str(address_details[0]['panchayat_name']),
+                                "panchayat_name": panchayat_name_eng,
+                                "village_id": str(address_details[0]['village_name']),
+                                "village_name": village_name_eng,
+                                "symp_asymp": True,
+                                "symp_fever": False,
+                                "symp_cough": False,
+                                "symp_breathness": False,
+                                "symp_ILI": False,
+                                "symp_SARI": False,
+                                "sysp_cold_nasaldischarge": False,
+                                "symp_sore_throat": False,
+                                "symp_diarahea": False,
+                                "symp_nausea_vomating": False,
+                                "symp_bodyache": False,
+                                "symp_loss_of_smell": False,
+                                "symp_loss_of_taste": False,
+                                "symp_chestpain": False,
+                                "symp_other": False,
+                                "symp_other_desc": "sample string 48",
+                                "combdties_diabties": False,
+                                "combdties_heartproblem": False,
+                                "combdties_hiv": False,
+                                "combdties_hypertension": False,
+                                "combdties_malignancy": False,
+                                "combdties_tb": False,
+                                "combdties_kidneydesies": False,
+                                "combdties_copd": False,
+                                "combdties_liverdesiese": False,
+                                "combdties_pregnancy": False,
+                                "combdties_lactating": False,
+                                "combdties_cancer": False,
+                                "combdties_other": False,
+                                "combdties_otherdesc": "",
+                                "testingLabName": "LBID",
+                                "test_method": "RAT",
+                                "result_date": "2021-08-13T17:55:58.3095284+05:30",
+                                "isVaccinated": True,
+                                "TypeOFVaccine": "",
+                                "DateOfVaccination": ""
+                                }
+            post_sms_input_json_data = json.dumps(pos_lin_input_data, indent=4)
+
+            check_ln_data_response = requests.post(test_positive_url, data= post_sms_input_json_data, headers= header)
+
+            ln_j_data = check_ln_data_response.json()
+            print(ln_j_data)
+
+        return Response({'result':"Updated Sucessfully"}, status= status.HTTP_200_OK)
+
+
+
+
 
 
 
