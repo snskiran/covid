@@ -11244,7 +11244,7 @@ class THODateWisePHCWiseSamplesCollectionReport(APIView):
     
     
     
-
+"""
 #########################      DSO TARGET VS ACTUAL SWAB COLLECTION               #########################
 class DSOTargetvsActualSwabCollection(APIView):
 
@@ -11311,6 +11311,84 @@ class DSOTargetvsActualSwabCollection(APIView):
         # rep_data.append({'total_target':total_target, 'total_no_of_patient':total_no_of_patient, 'total_no_of_swab_coll':total_no_of_swab_coll, 'total_balance':total_balance})
             
         return Response({'result': rep_data, 'total_target':total_target, 'total_no_of_patient':total_no_of_patient, 'total_no_of_swab_coll':total_no_of_swab_coll, 'total_balance':total_balance, 'message': 'Sucess'})
+"""
+
+
+
+
+#########################      DSO TARGET VS ACTUAL SWAB COLLECTION               #########################
+class DSOTargetvsActualSwabCollection(APIView):
+
+    def post(self,request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        rep_data = []
+
+        total_target = 0
+        total_no_of_patient = 0
+        total_no_of_swab_coll = 0
+        total_balance = 0
+
+        dso_data = DSO.objects.get(user_id= user_id)
+
+        check_dso_tho = THO.objects.filter(dso_id= dso_data.id).values()
+        total_pg_count = THO.objects.filter(dso_id= dso_data.id).count()
+
+        for cdt in check_dso_tho:
+
+            check_tho = THO.objects.get(user_id= cdt['user_id'])
+
+            check_all_phc_data = Swab_Collection_Centre.objects.filter(Q(tho_id = check_tho.id) & Q(role_id= 6)).values()
+
+            check_all_phc_details = paginatorCreation(check_all_phc_data, selected_page_no)
+
+            for i in check_all_phc_details:
+                
+                tho_rep_data = {}
+
+                master_phc_details = Master_PHC.objects.get(id= i['phc_master_id'])
+
+                tho_rep_data['phc_name'] = master_phc_details.phc_name
+                tho_rep_data['phc_id'] = i['phc_master_id']
+
+                phc_target = PHCTargetAssignment.objects.filter(Q(tho_id= cdt['user_id']) & Q(phc_id= i['phc_master_id']) & Q(created_datetime__date= asdatetime.now().date())).values()
+                if phc_target:
+                    phc_target_cnt = PHCTargetAssignment.objects.filter(Q(tho_id= cdt['user_id']) & Q(phc_id= i['phc_master_id']) & Q(created_datetime__date= asdatetime.now().date())).count()
+                    tho_rep_data['daily_target'] = phc_target_cnt
+                    total_target += phc_target_cnt
+                else:
+                    tho_rep_data['daily_target'] = 0
+
+                check_phc_target_cnt = Contact_Tracing.objects.filter(Q(assigned_phc = i['phc_master_id']) & Q(assigned_date= asdatetime.now().date())).count()
+                tho_rep_data['no_of_patient_allotted'] = check_phc_target_cnt
+                total_no_of_patient += check_phc_target_cnt
+
+                check_phc_swab_coll = Contact_Tracing.objects.filter(Q(assigned_phc = i['phc_master_id']) & Q(assigned_date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
+                tho_rep_data['no_of_patient_swab_collected'] = check_phc_swab_coll
+                total_no_of_swab_coll += check_phc_swab_coll
+
+                tho_rep_data['balance']= check_phc_target_cnt - check_phc_swab_coll
+                total_balance += check_phc_target_cnt - check_phc_swab_coll
+
+                if tho_rep_data['daily_target'] and tho_rep_data['no_of_patient_allotted']:
+
+                    rep_data.append(tho_rep_data)
+
+        # rep_data.append({'total_target':total_target, 'total_no_of_patient':total_no_of_patient, 'total_no_of_swab_coll':total_no_of_swab_coll, 'total_balance':total_balance})
+            
+        return Response({'result': rep_data, 'total_pg_count': total_pg_count, 'total_target':total_target, 'total_no_of_patient':total_no_of_patient, 'total_no_of_swab_coll':total_no_of_swab_coll, 'total_balance':total_balance, 'message': 'Sucess'})
+
+
+
+
 
 
 
