@@ -41,6 +41,19 @@ from math import radians, cos, sin, asin, sqrt
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
+from urls_variables import *
+
+
+class AccessENVData(APIView):
+
+    def get(self, request):
+
+
+        print("HELLOOOO     ", auth_token_username)
+        print("HELLOOOO     ", auth_token_username)
+        print("HELLOOOO     ", token_url)
+
+
 
 # Create your views here.
 
