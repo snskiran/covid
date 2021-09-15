@@ -11382,7 +11382,7 @@ class DSOPackageLabWiseReport(APIView):
     
     
 
-
+"""
 #########################      DSO DATE WISE COLLECTED SAMPLES               #########################
 class DSODateWiseSamplesCollectionReport(APIView):
 
@@ -11411,6 +11411,54 @@ class DSODateWiseSamplesCollectionReport(APIView):
             return Response({'result':uniq_date}, status= status.HTTP_200_OK)
         else:
             return Response({'result': []}, status=status.HTTP_400_BAD_REQUEST)
+"""
+
+
+
+
+#########################      DSO DATE WISE COLLECTED SAMPLES               #########################
+class DSODateWiseSamplesCollectionReport(APIView):
+
+    def post(self, request):
+
+        data = request.data
+        user_id= data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+
+        dso_data = DSO.objects.filter(user_id= user_id)
+        if dso_data:
+            
+            dso_data_get = DSO.objects.get(user_id= user_id)
+
+            uniq_date_data = Patient.objects.filter( 
+                added_by_id__in= User.objects.filter(
+                    id__in= Swab_Collection_Centre.objects.filter(tho_id__in= THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat=True)).values_list('user_id', flat=True)
+                        ).values_list('id', flat=True)
+                        ).values('create_timestamp__date').order_by('-create_timestamp__date').distinct()
+            
+            uniq_date_data_count = Patient.objects.filter( 
+                added_by_id__in= User.objects.filter(
+                    id__in= Swab_Collection_Centre.objects.filter(tho_id__in= THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat=True)).values_list('user_id', flat=True)
+                        ).values_list('id', flat=True)
+                        ).values('create_timestamp__date').order_by('-create_timestamp__date').distinct().count()
+            
+            uniq_date_details = paginatorCreation(uniq_date_data, selected_page_no)
+
+            for i in uniq_date_details:
+                
+                i['taluk_count'] = THO.objects.filter(dso_id= dso_data_get.id).count()
+                i['samples_count'] = Patient.objects.filter(Q(added_by_id__in= User.objects.filter(id__in= Swab_Collection_Centre.objects.filter(tho_id__in= THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat=True)).values_list('user_id', flat=True)).values_list('id', flat=True)) & Q(create_timestamp__date= i['create_timestamp__date'])).count()
+
+            return Response({'result':list(uniq_date_details), 'total_pg_count': uniq_date_data_count}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result': [], 'total_pg_count':0}, status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 
