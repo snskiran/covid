@@ -4680,7 +4680,7 @@ class GetTHOPackageData(APIView):
 
 
 
-
+"""
 class GetDSOPackageData(APIView):
     def post(self, request):
         data = request.data
@@ -4701,7 +4701,42 @@ class GetDSOPackageData(APIView):
                 i['lab_name'] = '-'
         
         return Response({'details':sc,'result': 'successfull '})
-            
+"""
+
+
+
+class GetDSOPackageData(APIView):
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        # sc = Package_Sampling.objects.filter(dso_id=user_id).values()
+        dso_data = DSO.objects.get(user_id= user_id)
+        sc_data = Package_Sampling.objects.filter(Q(dso_id=dso_data.id) & ~Q(package_type_status = 2)).values()
+        sc_count = Package_Sampling.objects.filter(Q(dso_id=dso_data.id) & ~Q(package_type_status = 2)).count()
+
+        sc_details = paginatorCreation(sc_data, selected_page_no)
+
+        for i in sc_details:
+            check_lab = Testing_Lab_Facility.objects.filter(id=  i['test_lab_id'])
+            if check_lab:
+                check_lab = Testing_Lab_Facility.objects.get(id=  i['test_lab_id'])
+                lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
+                i['lab_name'] = lab_master_data.lab_name
+            else:
+                i['lab_name'] = '-'
+        
+        return Response({'details':list(sc_details), 'total_pg_count': sc_count, 'result': 'successfull '})
+  
+
+
+
 
 class GetSSUPackageData(APIView):
     def post(self, request):
