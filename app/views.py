@@ -9649,7 +9649,7 @@ class PHCDateWiseCollectionStatusAndResultTotalCountndividual(APIView):
 
 
 
-
+"""
 #########################      PHC DATE WISE SAMPLES REJECTED COUNT REPORT               #########################
 class PHCDateWiseSampleRejectedCountReport(APIView):
     def post(self, request):
@@ -9673,6 +9673,40 @@ class PHCDateWiseSampleRejectedCountReport(APIView):
             'result':Arr,
             'message':'Sucessfully'
         },status=status.HTTP_200_OK)
+"""
+
+
+#########################      PHC DATE WISE SAMPLES REJECTED COUNT REPORT               #########################
+class PHCDateWiseSampleRejectedCountReport(APIView):
+    def post(self, request):
+        data = request.data
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+
+        Arr=[]
+
+        check_user  =   Swab_Collection_Centre.objects.get(Q(user_id= user_id) & Q(role_id=6))
+        
+        phc_user    =   Swab_Collection_Centre.objects.filter(Q(phc_master_id= check_user.phc_master_id)).values_list('user_id', flat=True)
+
+        patient_data = Patient.objects.filter(Q(added_by_id__in=phc_user) & Q(samples_rejected=1)).values('create_timestamp__date').distinct()
+        patient_data_count = Patient.objects.filter(Q(added_by_id__in=phc_user) & Q(samples_rejected=1)).values('create_timestamp__date').distinct().count()
+
+        patient_details = paginatorCreation(patient_data, selected_page_no)
+
+        for i in patient_details:
+            patient_rej = Patient.objects.filter(Q(create_timestamp__date=i['create_timestamp__date']) & Q(added_by_id__in=list(phc_user)) & Q(samples_rejected=1)).count()
+            
+            Arr.append({'date':i['create_timestamp__date'], 'rejected_count':patient_rej})
+
+        return Response({'result':Arr, 'total_pg_count': patient_data_count ,'message':'Sucessfully'},status=status.HTTP_200_OK)
+
+
 
 
 
