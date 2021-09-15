@@ -9419,7 +9419,7 @@ class PHCDateWiseCollectionStatusAndResultTotalCount(APIView):
 
 
 
-
+"""
 #########################      PHC DATE WISE CONTACT TRACING STATUS REPORT               #########################
 class PHCDateWiseContectTestingStatusReport(APIView):
 
@@ -9473,6 +9473,62 @@ class PHCDateWiseContectTestingStatusReport(APIView):
             'result':Arr,
             'message':'Sucessfully'
         },status=status.HTTP_200_OK)
+"""
+
+
+#########################      PHC DATE WISE CONTACT TRACING STATUS REPORT               #########################
+class PHCDateWiseContectTestingStatusReport(APIView):
+
+    def post(self, request):
+        data = request.data
+        user_id     =   data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        Arr=[]
+
+        check_user  =   Swab_Collection_Centre.objects.get(Q(user_id= user_id) & Q(role_id=6))
+
+        get_scc_users = Swab_Collection_Centre.objects.filter(phc_master_id= check_user.phc_master_id).values_list('user_id', flat= True)
+        
+        phc_target_assigned =   PHCTargetAssignment.objects.filter(Q(phc_id= check_user.phc_master_id)).values('phc_created_datetime__date').distinct()
+        phc_target_assigned_count =   PHCTargetAssignment.objects.filter(Q(phc_id= check_user.phc_master_id)).values('phc_created_datetime__date').distinct().count()
+
+        phc_target_assigned_data = paginatorCreation(phc_target_assigned, selected_page_no)
+
+        for i in phc_target_assigned_data:
+            
+            phc_created_datetime    =   PHCTargetAssignment.objects.get(phc_created_datetime__date=i['phc_created_datetime__date'])
+            contact_testing         =   Contact_Tracing.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+            ili                     =   ILI.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+
+            col_cnt_testing_cnt = Contact_Tracing.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(sample_collected= 1) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+            col_ili_cnt = ILI.objects.filter(Q(assigned_phc=check_user.phc_master_id) & Q(sample_collected= 1) & Q(assigned_date__date=i['phc_created_datetime__date'])).count()
+            col_rnd_samp_cnt = Patient.objects.filter(Q(added_by_id__in= get_scc_users) & Q(create_timestamp__date= i['phc_created_datetime__date'])).count()
+
+            phc_target_count = phc_created_datetime.phc_target
+
+            if phc_target_count:
+                phc_target_count = phc_target_count
+            else:
+                phc_target_count = 0
+
+            random = phc_target_count - contact_testing - ili
+
+            Arr.append({'date':i['phc_created_datetime__date'],
+                        'Total_target':phc_target_count,
+                        'actieved_target':col_cnt_testing_cnt + col_ili_cnt + col_rnd_samp_cnt,
+                        'contact_testing':contact_testing,
+                        'ili':ili,
+                        'random':random})
+
+        return Response({'result':Arr, 'total_pg_count': phc_target_assigned_count, 'message':'Sucessfully'},status=status.HTTP_200_OK)
+
+
+
 
 
 
