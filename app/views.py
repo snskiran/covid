@@ -4958,6 +4958,109 @@ class GetAllPackageDetails(APIView):
 
 
 
+#########################          GET ALL PACKAGES          #########################
+class GetAllPackageDetails(APIView):
+
+    def post(self, request):
+        
+        data = request.data
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_scc_user = Swab_Collection_Centre.objects.filter(user_id= user_id)
+
+        tho_present  = THO.objects.filter(user_id= user_id)
+        dso_present  = DSO.objects.filter(user_id= user_id)
+        ssu_present  = SSU.objects.filter(user_id= user_id)
+
+        if check_scc_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
+            if check_user_roles.role_name == 'PHCMO':
+
+                check_all_slab_collector = Swab_Collection_Centre.objects.filter(phc_master_id= check_user_data.phc_master_id).values_list('user_id',flat=True)
+                
+                package_data = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector)) & (Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17))).values()
+                package_data_count = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector)) & (Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17))).count()
+                
+                package_details = paginatorCreation(package_data, selected_page_no)
+                return Response({'package_details':list(package_details), 'total_pg_count': package_data_count,'result': 'Sucess'})
+
+            if check_user_roles.role_name == 'PHCS':
+                package_data = Package_Sampling.objects.filter(user_id=user_id).values().order_by('-id')
+                package_data_count = Package_Sampling.objects.filter(user_id=user_id).count()
+
+                package_details = paginatorCreation(package_data, selected_page_no)
+                return Response({'package_details':list(package_details), 'total_pg_count': package_data_count,'result': 'Sucess'})
+
+        if tho_present:
+            tho_data = THO.objects.get(user_id= user_id)
+
+            tho_package_data = Package_Sampling.objects.filter(Q(tho_id= tho_data.id) & Q(package_type_action=13)).values()
+            tho_package_data_count = Package_Sampling.objects.filter(Q(tho_id= tho_data.id) & Q(package_type_action=13)).count()
+
+            tho_package_details = paginatorCreation(tho_package_data, selected_page_no)
+            
+            for pd in tho_package_details:
+                check_lab = Testing_Lab_Facility.objects.filter(id= pd['test_lab_id'])
+                if check_lab:
+                    check_lab = Testing_Lab_Facility.objects.get(id=  pd['test_lab_id'])
+                    lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
+                    pd['lab_name'] = lab_master_data.lab_name
+                else:
+                    pd['lab_name'] = '-'
+
+            return Response({'package_details':list(tho_package_details), 'total_pg_count': tho_package_data_count,'result':'Sucess'})
+
+
+        elif dso_present:
+            dso_data            = DSO.objects.get(user_id= user_id)
+            dso_package_datas   = Package_Sampling.objects.filter(dso_id= dso_data.id).values()
+            dso_package_data_count   = Package_Sampling.objects.filter(dso_id= dso_data.id).count()
+
+            dso_package_details = paginatorCreation(dso_package_datas, selected_page_no)
+
+            for pd in dso_package_details:
+                check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
+                if check_lab:
+                    check_lab = Testing_Lab_Facility.objects.get(id=  pd['test_lab_id'])
+                    lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
+                    pd['lab_name'] = lab_master_data.lab_name
+                else:
+                    pd['lab_name'] = '-'
+
+            return Response({'package_details':list(dso_package_details), 'total_pg_count': dso_package_data_count,'result':'Sucess'})
+        
+        elif ssu_present:
+            ssu_data            = SSU.objects.get(user_id= user_id)
+            ssu_package_data   = Package_Sampling.objects.filter(ssu_id= ssu_data.id).values()
+            ssu_package_data_count   = Package_Sampling.objects.filter(ssu_id= ssu_data.id).count()
+
+            ssu_package_details = paginatorCreation(ssu_package_data, selected_page_no)
+
+            for pd in ssu_package_details:
+                check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
+                if check_lab:
+                    check_lab = Testing_Lab_Facility.objects.get(id=  pd['test_lab_id'])
+                    lab_master_data = Master_Labs.objects.get(id= check_lab.testing_lab_master_id)
+                    pd['lab_name'] = lab_master_data.lab_name
+                else:
+                    pd['lab_name'] = '-'
+
+            return Response({'package_details':list(ssu_package_details), 'total_pg_count': ssu_package_data_count,'result':'Sucess'})
+        
+        else:
+            return Response({'result': 'Invalid'})
+
+
+
+
+
+
 
 #########################          GET ALL PACKAGES          #########################
 class GetAllPackageDetails(APIView):
