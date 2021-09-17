@@ -4877,7 +4877,7 @@ class GetTLOPSPackageData(APIView):
 
 #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 
-"""
+
 #########################          GET ALL PACKAGES          #########################
 class GetAllPackageDetails(APIView):
 
@@ -5110,7 +5110,7 @@ class GetAllPackageDetails(APIView):
         else:
             return Response({'result': 'Invalid'})
 
-
+"""
 
 
 
