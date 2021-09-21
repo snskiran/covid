@@ -4832,7 +4832,7 @@ class GetTLCPackageData(APIView):
             phc_data = Master_PHC.objects.get(id= check_swb_col.phc_master_id)
             i['phc_name'] = phc_data.phc_name
         
-        return Response({'details':list(sc_details), 'total_pg_count': sc_count,'result':'successfull '})
+        return Response({'details':list(sc_data), 'total_pg_count': sc_count,'result':'successfull '})
 
 
 
