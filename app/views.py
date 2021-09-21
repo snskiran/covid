@@ -4825,9 +4825,9 @@ class GetTLCPackageData(APIView):
         sc_data = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id).values()
         sc_count = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id).count()
         
-        sc_details = paginatorCreation(sc_data, selected_page_no)
+#         sc_details = paginatorCreation(sc_data, selected_page_no)
 
-        for i in sc_details:
+        for i in sc_data:
             i['testing_lab_name'] = test_lab_data.testing_lab_facility_name
             check_swb_col = Swab_Collection_Centre.objects.get(id= i['swab_cc_id'])
             phc_data = Master_PHC.objects.get(id= check_swb_col.phc_master_id)
