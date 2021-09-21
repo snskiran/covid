@@ -1,7 +1,6 @@
 import datetime
 from functools import partial
 from django.core.checks import messages
-
 from django.db import models
 from rest_framework import response
 from .serializers import *
