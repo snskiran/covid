@@ -441,6 +441,9 @@ class Master_BlockModelView(viewsets.ModelViewSet):
 class DistrictModelView(viewsets.ModelViewSet):
     queryset = Master_District.objects.all()
     serializer_class = DistrictSerializer
+    
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
