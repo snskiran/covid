@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import User
 
 from .models import *
 from import_export.admin import ImportExportModelAdmin
@@ -6,6 +7,12 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 # admin.site.register(Patient)
+
+
+@admin.register(User)
+class UserAdmin(ImportExportModelAdmin):
+    pass
+
 
 @admin.register(Patient)
 class TestingLabAdmin(ImportExportModelAdmin):
