@@ -1567,6 +1567,9 @@ class ContectTestingOfflineAddPatient(APIView):
             age = age_data.split(' ')[0]
             age_type = age_data.split(' ')[1]
             
+            sero_category = data.get('sero_category')
+            igg_sample = data.get('igg_sample')
+            
 
 
             # mobile_number_belongs_to = data.g et('mobile_number_belongs_to')
