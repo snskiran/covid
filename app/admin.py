@@ -11,7 +11,7 @@ from import_export.admin import ImportExportModelAdmin
 
 @admin.register(User)
 class UserAdmin(ImportExportModelAdmin):
-    pass
+    list_display = ('id', 'username', )
 
 
 @admin.register(Patient)
