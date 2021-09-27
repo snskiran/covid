@@ -8,7 +8,7 @@ from import_export.admin import ImportExportModelAdmin
 
 # admin.site.register(Patient)
 
-
+admin.site.unregister(User)
 @admin.register(User)
 class UserAdmin(ImportExportModelAdmin):
     list_display = ('id', 'username', )
