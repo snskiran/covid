@@ -554,6 +554,9 @@ class Patient(models.Model):
     pool_samples_result = models.IntegerField(default=0, blank=True, null=True)
 
     samples_rejected = models.IntegerField(default=0, blank=True, null=True)
+    
+    sero_category = models.CharField(max_length= 250, blank=True, null=True)
+    igg_sample = models.CharField(max_length= 50, blank=True, null=True)
 
     
 
