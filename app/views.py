@@ -1630,6 +1630,13 @@ class ContectTestingOfflineAddPatient(APIView):
             # print(rat_created_id_data)
             # print(generate_srf)
             # print(barcode)
+            
+            check_sero = ''
+            if sero_category:
+                check_ser= igg_sample
+            else:
+                check_sero = 'No'
+            
 
             patient_type_ref_data = Patient_Type_Ref.objects.get(patient_type_name= patient_type)
             specimen_type_ref_data = Specimen_Type_Ref.objects.get(specimen_type_name= speciman_type)
@@ -1724,6 +1731,8 @@ class ContectTestingOfflineAddPatient(APIView):
                                             # symptoms_list= symptoms, 
                                             # barcode= barcode,
                                             # rat_created_id= rat_created_id_data,
+                                            sero_category= sero_category,
+                                            igg_sample = check_sero,
                                         )
             print(patients_data.id)
             record_create_timestamp = str(patients_data.create_timestamp)
