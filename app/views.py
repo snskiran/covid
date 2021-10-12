@@ -1732,7 +1732,7 @@ class ContectTestingOfflineAddPatient(APIView):
                                             # barcode= barcode,
                                             # rat_created_id= rat_created_id_data,
                                             sero_category= sero_category,
-                                            igg_sample = check_sero,
+                                            igg_sample = igg_sample,
                                         )
             print(patients_data.id)
             record_create_timestamp = str(patients_data.create_timestamp)
