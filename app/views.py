@@ -1631,11 +1631,11 @@ class ContectTestingOfflineAddPatient(APIView):
             # print(generate_srf)
             # print(barcode)
             
-            check_sero = ''
-            if sero_category:
-                check_ser= igg_sample
-            else:
-                check_sero = 'No'
+            # check_sero = ''
+            # if sero_category:
+            #    check_ser= igg_sample
+            # else:
+            #    check_sero = 'No'
             
 
             patient_type_ref_data = Patient_Type_Ref.objects.get(patient_type_name= patient_type)
