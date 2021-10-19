@@ -596,6 +596,8 @@ class Patient(models.Model):
 
     de_pool = models.IntegerField(default= 0, blank=False, null=False)
 
+    icmr_added = models.IntegerField(default= 0, blank= True, null= True)
+
     
 
 class Patient_Address(models.Model):
