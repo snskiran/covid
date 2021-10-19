@@ -60,6 +60,8 @@ class AccessENVData(APIView):
 class PatientModelView(viewsets.ModelViewSet):
     queryset = Patient.objects.all()
     serializer_class = PatientSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -77,6 +79,8 @@ class PatientModelView(viewsets.ModelViewSet):
 class PatientAddressModelView(viewsets.ModelViewSet):
     queryset = Patient_Address.objects.all()
     serializer_class = PatientAddressSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -94,6 +98,8 @@ class PatientAddressModelView(viewsets.ModelViewSet):
 class PatientTestingModelView(viewsets.ModelViewSet):
     queryset = Patient_Testing.objects.all()
     serializer_class = PatientTestingSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -111,6 +117,8 @@ class PatientTestingModelView(viewsets.ModelViewSet):
 class PatientTypeRefModelView(viewsets.ModelViewSet):
     queryset = Patient_Type_Ref.objects.all()
     serializer_class = PatientTypeRefSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -128,6 +136,8 @@ class PatientTypeRefModelView(viewsets.ModelViewSet):
 class SpecimenTypeRefModelView(viewsets.ModelViewSet):
     queryset = Specimen_Type_Ref.objects.all()
     serializer_class = SpecimenTypeRefSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -145,6 +155,8 @@ class SpecimenTypeRefModelView(viewsets.ModelViewSet):
 class TestTypeRefModelView(viewsets.ModelViewSet):
     queryset = Test_Type_Ref.objects.all()
     serializer_class = TestTypeRefSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -162,6 +174,8 @@ class TestTypeRefModelView(viewsets.ModelViewSet):
 class SwabCollectionStatusRefModelView(viewsets.ModelViewSet):
     queryset = Swab_Collection_Status_Ref.objects.all()
     serializer_class = SwabCollectionStatusRefSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -179,6 +193,8 @@ class SwabCollectionStatusRefModelView(viewsets.ModelViewSet):
 class TestingStatusRefModelView(viewsets.ModelViewSet):
     queryset = Testing_Status_Ref.objects.all()
     serializer_class = TestingStatusRefSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -196,6 +212,8 @@ class TestingStatusRefModelView(viewsets.ModelViewSet):
 class CTestingKitBarcodeModelView(viewsets.ModelViewSet):
     queryset = Testing_Kit_Barcode.objects.all()
     serializer_class = TestingKitBarcodeSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -213,6 +231,8 @@ class CTestingKitBarcodeModelView(viewsets.ModelViewSet):
 class UserRoleRefModelView(viewsets.ModelViewSet):
     queryset = User_Role_Ref.objects.all()
     serializer_class = UserRoleRefSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -230,6 +250,8 @@ class UserRoleRefModelView(viewsets.ModelViewSet):
 class PackageSamplingModelView(viewsets.ModelViewSet):
     queryset = Package_Sampling.objects.all()
     serializer_class = PackageSamplingSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -247,6 +269,8 @@ class PackageSamplingModelView(viewsets.ModelViewSet):
 class SwabCollectionCentreModelView(viewsets.ModelViewSet):
     queryset = Swab_Collection_Centre.objects.all()
     serializer_class = SwabCollectionCentreSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -264,6 +288,8 @@ class SwabCollectionCentreModelView(viewsets.ModelViewSet):
 class THOModelView(viewsets.ModelViewSet):
     queryset = THO.objects.all()
     serializer_class = THOSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -281,6 +307,8 @@ class THOModelView(viewsets.ModelViewSet):
 class DSOModelView(viewsets.ModelViewSet):
     queryset = DSO.objects.all()
     serializer_class = DSOSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -298,6 +326,8 @@ class DSOModelView(viewsets.ModelViewSet):
 class SSUModelView(viewsets.ModelViewSet):
     queryset = SSU.objects.all()
     serializer_class = SSUSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -315,6 +345,8 @@ class SSUModelView(viewsets.ModelViewSet):
 class TestingLabFacilityModelView(viewsets.ModelViewSet):
     queryset = Testing_Lab_Facility.objects.all()
     serializer_class = TestingLabFacilitySerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -333,6 +365,8 @@ class TestingLabFacilityModelView(viewsets.ModelViewSet):
 class Master_LabModelView(viewsets.ModelViewSet):
     queryset = Master_Labs.objects.all()
     serializer_class = Master_LabSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -351,6 +385,8 @@ class Master_LabModelView(viewsets.ModelViewSet):
 class Master_ZoneModelView(viewsets.ModelViewSet):
     queryset = Master_Zone.objects.all()
     serializer_class = Master_ZoneSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -369,6 +405,8 @@ class Master_ZoneModelView(viewsets.ModelViewSet):
 class Master_WardModelView(viewsets.ModelViewSet):
     queryset = Master_Ward.objects.all()
     serializer_class = Master_WardSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -387,6 +425,8 @@ class Master_WardModelView(viewsets.ModelViewSet):
 class Master_VillageModelView(viewsets.ModelViewSet):
     queryset = Master_Village.objects.all()
     serializer_class = Master_VillageSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -405,6 +445,8 @@ class Master_VillageModelView(viewsets.ModelViewSet):
 class Master_PanchayatModelView(viewsets.ModelViewSet):
     queryset = Master_Panchayat.objects.all()
     serializer_class = Master_PanchayatSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -423,6 +465,8 @@ class Master_PanchayatModelView(viewsets.ModelViewSet):
 class Master_BlockModelView(viewsets.ModelViewSet):
     queryset = Master_Block.objects.all()
     serializer_class = Master_BlockSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         try:
@@ -442,7 +486,6 @@ class Master_BlockModelView(viewsets.ModelViewSet):
 class DistrictModelView(viewsets.ModelViewSet):
     queryset = Master_District.objects.all()
     serializer_class = DistrictSerializer
-    
     authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -501,6 +544,8 @@ def getToken():
 
 #########################          LOGIN          #########################
 class CustomAuthToken(ObtainAuthToken):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
 
@@ -772,9 +817,11 @@ class CustomAuthToken(ObtainAuthToken):
 #         return Response({'result': res_data,'message':"Patient Data added Sucessfully"}, status= status.HTTP_200_OK)
 
 
-
+"""
 #########################          ADD PATIENT          #########################
 class AddPatient(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -1084,6 +1131,598 @@ class AddPatient(APIView):
         #                                 comments= ,)                             
         res_data = [{'patient_name':patient_name, 'mobile_number':mobile_number, 'gender': gender, 'age':age, 'speciman_type':speciman_type,'patient_status_type':patient_status_type, 'test_type':test_type, 'added_date':record_create_timestamp, 'srf_id': srf_data, 'rat_created_id':rat_created_id}]
         return Response({'result': res_data,'message':"Patient Data added Sucessfully"}, status= status.HTTP_200_OK)
+"""
+
+
+#########################          ADD PATIENT          #########################
+class AddPatient(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        print("DATA", data)
+
+        reason_testing = data.get('reason_testing')
+        reason = data.get('reason')
+        patient_type = data.get('patient_type')
+        patient_name = data.get('patient_name')
+        mobile_number_belongs_to = data.get('mobile_number_belongs_to')
+        mobile_number = data.get('mobile_number')
+    
+        otp_no = data.get('otp_no')
+        states = data.get('states')
+        district_name = data.get('district_name')
+        resident_type = data.get('resident_type')
+        ward_type = data.get('ward_type')
+        city_name = data.get('city_name')
+        taluk_name = data.get('taluk_name')
+        village_name = data.get('village_name')
+        panchayat_name = data.get('panchayat_name')
+        zone_name = data.get('zone_name')
+        ward_name = data.get('ward_name')
+        flat_door_no = data.get('flat_door_no')
+        main_road_no = data.get('main_road_no')
+        pincode = data.get('pincode')
+        gender = data.get('gender')
+        age = data.get('age')
+        age_type = data.get('age_type')
+        idProof_type = data.get('idProof_type')
+
+        aadhar_number = data.get('aadhar_number')
+        ration_card_number = data.get('ration_card_number')
+        speciman_type = data.get('speciman_type')
+        speciman_collection_date = data.get('speciman_collection_date')
+        patient_status_type = data.get('patient_status_type')
+        symptoms = data.get('symptoms')
+        co_morbidity = data.get('co_morbidity')
+        co_morbidity_type = data.get('co_morbidity_type')
+        test_type = data.get('test_type')
+        old_srf_id = data.get('old_srf_id')
+        
+        vaccine_status = data.get('vaccine_status')
+        con_mobile_number = data.get('con_mobile_number')
+        existing_mobile_number = data.get('existing_mobile_number')
+        user_id = data.get('user_id')
+
+        locality = data.get('locality')
+        landmark = data.get('landmark')
+
+        arrival_date = data.get('arrival_date')
+
+        rat_created_id_data = data.get('rat_created_id')
+
+        generate_srf = random.randint(100000000, 999999999)
+
+        barcode = data.get('barcode')
+
+
+        father_name = data.get('father_name')
+        occupation = data.get('occupation')
+        mode_of_transport = data.get('mode_of_transport')
+        arogya_setu_app = data.get('arogya_setu_app')
+        vaccine_type = data.get('vaccine_type')
+        first_dose_date = data.get('first_dose_date')
+        hospitalized = data.get('hospitalized')
+        driver_license = data.get('driver_license')
+        passport = data.get('passport')
+
+        sample_collected_from = data.get('sample_collected_from')
+
+        # Encode
+        aadhar_bytes = str(aadhar_number).encode('ascii')
+        base64_bytes = base64.b64encode(aadhar_bytes)
+        encriptrd_aadhar = base64_bytes.decode('ascii')
+        
+        # Decode
+        # base64_message = encriptrd_aadhar
+        # base64_bytes = base64_message.encode('ascii')
+        # aadhar_bytes = base64.b64decode(base64_bytes)
+        # aadhar_number = aadhar_bytes.decode('ascii')
+
+        print(reason_testing)
+        print(reason)
+        print(patient_type)
+        print(patient_name)
+        print(mobile_number_belongs_to)
+        print(mobile_number)
+        print(otp_no)
+        print(states)
+        print(district_name)
+        print(resident_type)
+        print(ward_type)
+        print(city_name)
+        print(taluk_name)
+        print(village_name)
+        print(panchayat_name)
+        print(zone_name)
+        print(ward_name)
+        print(flat_door_no)
+        print(main_road_no)
+        print(pincode)
+        print(gender)
+        print(age)
+        print(idProof_type)
+        print(aadhar_number)
+        print(ration_card_number)
+        print(speciman_type)
+        print(speciman_collection_date)
+        print(patient_status_type)
+        print(symptoms)
+        print(co_morbidity)
+        print(co_morbidity_type)
+        print(test_type)
+        print(old_srf_id)
+        print(vaccine_status)
+        print(con_mobile_number)
+        print(existing_mobile_number)
+        print(user_id)
+        print(locality)
+        print(landmark)
+        print(arrival_date)
+        print(rat_created_id_data)
+        print(generate_srf)
+        print(barcode)
+
+        patient_type_ref_data = Patient_Type_Ref.objects.get(patient_type_name= patient_type)
+        specimen_type_ref_data = Specimen_Type_Ref.objects.get(specimen_type_name= speciman_type)
+        # testing_type_ref_data = Testing_Kit_Barcode.objects.get(testing_kit_barcode_name= testing_kit_barcode)
+        test_type_ref_data = Test_Type_Ref.objects.get(test_type_name= test_type)
+       
+        symptoms_list = []
+        if symptoms:
+            for i in symptoms:
+                print(i)
+                if isinstance(i, str):
+                    dist_type = ast.literal_eval(i)
+                    symptoms_list.append(dist_type['name'])
+                else:
+                    symptoms_list.append(i['name'])
+        
+        co_morbidity_type_list = []
+        for i in co_morbidity_type:
+            print(i)
+            # print(i['name'])
+            if isinstance(i, str):
+                dist_type = ast.literal_eval(i)
+                co_morbidity_type_list.append(dist_type['name'])
+            else:
+                co_morbidity_type_list.append(i['name'])
+
+        
+
+
+        record_create_timestamp = ''
+
+        rat_created_id = 0
+        """
+        if patient_type == 'Contact Testing':
+
+            contact_tracing_patients_data = New_Entry_Contact_Tracing.objects.create(reason_for_testing= reason_testing, reason_for_testing_description= reason, patient_type_id= patient_type_ref_data.id,
+                                            added_by_id= user_id,
+                                            patient_name= patient_name, 
+                                            mobile_number= mobile_number, 
+                                            mobile_number_belongs_to= mobile_number_belongs_to,
+                                            gender= gender, 
+                                            age= age, 
+                                            id_proof_type= idProof_type, 
+                                            aadhar_number= aadhar_number, 
+                                            ration_card_number= ration_card_number, 
+                                            vaccine_status= vaccine_status, 
+                                            # vaccine_mobile_registered= vaccine_mobile_registered,
+                                            specimen_type_id= specimen_type_ref_data.id, 
+                                            co_morbidity= co_morbidity,
+                                            co_morbidity_type= co_morbidity_type_list,
+                                            patient_status = patient_status_type,
+                                            # specimen_collection_date= specimen_collection_date, 
+                                            #testing_kit_barcode_id= testing_type_ref_data.id,
+                                            # symptoms_list= symptoms, 
+                                            symptoms_list= symptoms_list, 
+                                            test_type_id= test_type_ref_data.id, 
+                                            srf_id= generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
+                                            rat_created_id= rat_created_id_data,
+                                            arrival_date= arrival_date)
+            record_create_timestamp = str(contact_tracing_patients_data.create_timestamp)
+
+            if data.get('id'):
+                Contact_Tracing.objects.filter(id= data.get('id')).update(sample_collected= 1)
+            # if test_type == 'RAT':
+            #     New_Entry_Contact_Tracing.objects.filter(id= contact_tracing_patients_data.id).update(rat_created_id= contact_tracing_patients_data.id)
+
+            rat_created_id = contact_tracing_patients_data.id
+            if resident_type == 'Other-state':
+                New_Entry_Contact_Tracing_Address.objects.create(new_entry_contact_tracing_id= contact_tracing_patients_data.id, 
+                                                state_name= states, 
+                                                district_name= district_name, #district_type= district_type, 
+                                                city_name= city_name,
+                                                zone_type= zone_name, 
+                                                ward_name= ward_name, 
+                                                taluk_name= taluk_name, 
+                                                panchayat_name= panchayat_name, 
+                                                village_name= village_name, 
+                                                resident_type= resident_type, 
+                                                ward_type= ward_type, 
+                                                flat_door_no= flat_door_no, 
+                                                main_road_no= main_road_no,
+                                                pincode= pincode,
+                                                locality= locality)
+
+            else:
+                New_Entry_Contact_Tracing_Address.objects.create(new_entry_contact_tracing_id= contact_tracing_patients_data.id, 
+                                                state_name= states, 
+                                                district_name= district_name, #district_type= district_type, 
+                                                city_name= city_name,
+                                                zone_type= zone_name, 
+                                                ward_name= ward_name, 
+                                                taluk_name= taluk_name, 
+                                                panchayat_name= panchayat_name, 
+                                                village_name= village_name, 
+                                                resident_type= resident_type, 
+                                                ward_type= ward_type, 
+                                                flat_door_no= flat_door_no, 
+                                                main_road_no= main_road_no,
+                                                pincode= pincode,
+                                                locality= locality)
+
+        """
+
+        # else:
+
+        user_dist_status = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        get_user_master_dist_code = Master_PHC.objects.get(id= user_dist_status.phc_master_id)
+
+        srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+        yr = str(asdatetime.now().year)[2:]
+        mn = str(asdatetime.now().month).zfill(2)
+        dd = str(asdatetime.now().day)
+
+        srf_data = srf_dist_code+yr+mn+dd
+
+        last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+        if last_srf_id:
+            srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+            print(srf_data)
+        else:
+            srf_data = srf_data + '1'.zfill(5)
+
+        if rat_created_id_data:
+            get_patient_rat_data = Patient.objects.get(id= rat_created_id_data)
+            srf_data = str(get_patient_rat_data.srf_id) + '-TEMP'
+            print("RAT SRF ID")
+            print(srf_data)
+
+        if data.get('id'):
+                Contact_Tracing.objects.filter(id= data.get('id')).update(sample_collected= 1)
+
+        patients_data = Patient.objects.create(reason_for_testing= reason_testing, reason_for_testing_description= reason, patient_type_id= patient_type_ref_data.id,
+                                        added_by_id= user_id,
+                                        patient_name= patient_name, 
+                                        mobile_number= mobile_number, 
+                                        mobile_number_belongs_to= mobile_number_belongs_to,
+
+                                        gender= gender, 
+                                        age= age,
+                                        age_type= age_type,
+                                        id_proof_type= idProof_type,
+                                        aadhar_number= encriptrd_aadhar,
+                                        ration_card_number= ration_card_number, 
+                                        vaccine_status= vaccine_status, 
+                                        # vaccine_mobile_registered= vaccine_mobile_registered,
+                                        specimen_type_id= specimen_type_ref_data.id, 
+                                        co_morbidity= co_morbidity,
+                                        co_morbidity_type= co_morbidity_type_list,
+                                        patient_status = patient_status_type,
+                                        # specimen_collection_date= specimen_collection_date, 
+                                        #testing_kit_barcode_id= testing_type_ref_data.id,
+                                        # symptoms_list= symptoms, 
+                                        symptoms_list= symptoms_list, 
+                                        test_type_id= test_type_ref_data.id, 
+                                        srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
+                                        # barcode= barcode,
+                                        barcode= srf_data,
+                                        rat_created_id= rat_created_id_data, arrival_date= arrival_date,
+
+                                        father_name = father_name,
+                                        occupation = occupation,
+                                        mode_of_transport = mode_of_transport,
+                                        arogya_setu_app = arogya_setu_app,
+                                        vaccine_type = vaccine_type,
+                                        first_dose_date = first_dose_date,
+                                        hospitalized = hospitalized,
+                                        driver_license= driver_license,
+                                        passport= passport,
+                                        sample_collected_from= sample_collected_from,
+
+
+
+                                    )
+        record_create_timestamp = str(patients_data.create_timestamp)
+        # if test_type == 'RAT':
+        #     Patient.objects.filter(id= patients_data.id).update(rat_created_id= patients_data.id)
+        rat_created_id = patients_data.id
+        if resident_type == 'Other-state':
+            Outside_Patient_Address.objects.create(patient_id= patients_data.id, 
+                                            state_name= states, 
+                                            district_name= district_name, #district_type= district_type, 
+                                            city_name= city_name,
+                                            zone_type= zone_name, 
+                                            ward_name= ward_name, 
+                                            taluk_name= taluk_name, 
+                                            panchayat_name= panchayat_name, 
+                                            village_name= village_name, 
+                                            resident_type= resident_type, 
+                                            ward_type= ward_type, 
+                                            flat_door_no= flat_door_no, 
+                                            main_road_no= main_road_no,
+                                            pincode= pincode,
+                                            locality= locality,
+                                            landmark= landmark
+                                            )
+        else:
+            Patient_Address.objects.create(patient_id= patients_data.id, 
+                                            state_name= states, 
+                                            district_name= district_name, #district_type= district_type, 
+                                            city_name= city_name,
+                                            zone_type= zone_name, 
+                                            ward_name= ward_name, 
+                                            taluk_name= taluk_name, 
+                                            panchayat_name= panchayat_name, 
+                                            village_name= village_name, 
+                                            resident_type= resident_type, 
+                                            ward_type= ward_type, 
+                                            flat_door_no= flat_door_no, 
+                                            main_road_no= main_road_no,
+                                            pincode= pincode,
+                                            locality= locality,
+                                            landmark= landmark)
+
+        # Patient_Testing.objects.create()                                        
+
+        # Patient_Testing.objects.create(patient_id= patients_data.id, lab_received_date= , testing_kit_id= , testing_status= , ct_value= , 
+        #                                 comments= ,)                             
+        res_data = [{'patient_name':patient_name, 'mobile_number':mobile_number, 'gender': gender, 'age':age, 'speciman_type':speciman_type,'patient_status_type':patient_status_type, 'test_type':test_type, 'added_date':record_create_timestamp, 'srf_id': srf_data, 'rat_created_id':rat_created_id}]
+        return Response({'result': res_data,'message':"Patient Data added Sucessfully"}, status= status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+#########################          TLAB ADD PATIENT           #########################
+class LabAddPatient(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        reason_testing = data.get('reason_testing')
+        reason = data.get('reason')
+        patient_type = data.get('patient_type')
+        patient_name = data.get('patient_name')
+        mobile_number_belongs_to = data.get('mobile_number_belongs_to')
+        mobile_number = data.get('mobile_number')
+    
+        otp_no = data.get('otp_no')
+        states = data.get('states')
+        district_name = data.get('district_name')
+        resident_type = data.get('resident_type')
+        ward_type = data.get('ward_type')
+        city_name = data.get('city_name')
+        taluk_name = data.get('taluk_name')
+        village_name = data.get('village_name')
+        panchayat_name = data.get('panchayat_name')
+        zone_name = data.get('zone_name')
+        ward_name = data.get('ward_name')
+        flat_door_no = data.get('flat_door_no')
+        main_road_no = data.get('main_road_no')
+        pincode = data.get('pincode')
+        gender = data.get('gender')
+        age = data.get('age')
+        age_type = data.get('age_type')
+        idProof_type = data.get('idProof_type')
+
+        aadhar_number = data.get('aadhar_number')
+        ration_card_number = data.get('ration_card_number')
+        speciman_type = data.get('speciman_type')
+        speciman_collection_date = data.get('speciman_collection_date')
+        patient_status_type = data.get('patient_status_type')
+        symptoms = data.get('symptoms')
+        co_morbidity = data.get('co_morbidity')
+        co_morbidity_type = data.get('co_morbidity_type')
+        test_type = data.get('test_type')
+        old_srf_id = data.get('old_srf_id')
+        
+        vaccine_status = data.get('vaccine_status')
+        con_mobile_number = data.get('con_mobile_number')
+        existing_mobile_number = data.get('existing_mobile_number')
+        user_id = data.get('user_id')
+
+        locality = data.get('locality')
+        landmark = data.get('landmark')
+
+        arrival_date = data.get('arrival_date')
+
+        rat_created_id_data = data.get('rat_created_id')
+
+        generate_srf = random.randint(100000000, 999999999)
+
+        barcode = data.get('barcode')
+
+        father_name = data.get('father_name')
+        occupation = data.get('occupation')
+        mode_of_transport = data.get('mode_of_transport')
+        arogya_setu_app = data.get('arogya_setu_app')
+        vaccine_type = data.get('vaccine_type')
+        first_dose_date = data.get('first_dose_date')
+        hospitalized = data.get('hospitalized')
+        driver_license = data.get('driver_license')
+        passport = data.get('passport')
+
+        # Encode
+        aadhar_bytes = str(aadhar_number).encode('ascii')
+        base64_bytes = base64.b64encode(aadhar_bytes)
+        encriptrd_aadhar = base64_bytes.decode('ascii')
+        
+        # Decode
+        # base64_message = encriptrd_aadhar
+        # base64_bytes = base64_message.encode('ascii')
+        # aadhar_bytes = base64.b64decode(base64_bytes)
+        # aadhar_number = aadhar_bytes.decode('ascii')
+
+
+        patient_type_ref_data = Patient_Type_Ref.objects.get(patient_type_name= patient_type)
+        specimen_type_ref_data = Specimen_Type_Ref.objects.get(specimen_type_name= speciman_type)
+        # testing_type_ref_data = Testing_Kit_Barcode.objects.get(testing_kit_barcode_name= testing_kit_barcode)
+        test_type_ref_data = Test_Type_Ref.objects.get(test_type_name= test_type)
+       
+        symptoms_list = []
+        if symptoms:
+            for i in symptoms:
+                print(i)
+                if isinstance(i, str):
+                    dist_type = ast.literal_eval(i)
+                    symptoms_list.append(dist_type['name'])
+                else:
+                    symptoms_list.append(i['name'])
+        
+        co_morbidity_type_list = []
+        for i in co_morbidity_type:
+            print(i)
+            # print(i['name'])
+            if isinstance(i, str):
+                dist_type = ast.literal_eval(i)
+                co_morbidity_type_list.append(dist_type['name'])
+            else:
+                co_morbidity_type_list.append(i['name'])
+
+        
+        record_create_timestamp = ''
+
+        rat_created_id = 0
+        
+        user_dist_status = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        get_user_master_dist_code = Master_Labs.objects.get(id= user_dist_status.testing_lab_master_id)
+
+        srf_dist_code= str(get_user_master_dist_code.district_code)[1:]
+
+        yr = str(asdatetime.now().year)[2:]
+        mn = str(asdatetime.now().month).zfill(2)
+        dd = str(asdatetime.now().day)
+
+        srf_data = srf_dist_code+yr+mn+dd
+
+        last_srf_id = Patient.objects.filter(Q(srf_id__icontains= srf_data) & Q(create_timestamp__date= asdatetime.now().date())).values_list('srf_id', flat=True).order_by('-id')[:1]
+
+        if last_srf_id:
+            srf_data = str(int((last_srf_id[0]).split('-')[0]) + 1)
+        else:
+            srf_data = srf_data + '1'.zfill(5)
+
+        if rat_created_id_data:
+            get_patient_rat_data = Patient.objects.get(id= rat_created_id_data)
+            srf_data = str(get_patient_rat_data.srf_id) + '-TEMP'
+            
+
+        if data.get('id'):
+                Contact_Tracing.objects.filter(id= data.get('id')).update(sample_collected= 1)
+
+        patients_data = Patient.objects.create(reason_for_testing= reason_testing, reason_for_testing_description= reason, patient_type_id= patient_type_ref_data.id,
+                                        added_by_id= user_id,
+                                        patient_name= patient_name, 
+                                        mobile_number= mobile_number, 
+                                        mobile_number_belongs_to= mobile_number_belongs_to,
+
+                                        gender= gender, 
+                                        age= age,
+                                        age_type= age_type,
+                                        id_proof_type= idProof_type,
+                                        aadhar_number= encriptrd_aadhar, 
+                                        ration_card_number= ration_card_number, 
+                                        vaccine_status= vaccine_status, 
+                                        # vaccine_mobile_registered= vaccine_mobile_registered,
+                                        specimen_type_id= specimen_type_ref_data.id, 
+                                        co_morbidity= co_morbidity,
+                                        co_morbidity_type= co_morbidity_type_list,
+                                        patient_status = patient_status_type,
+                                        # specimen_collection_date= specimen_collection_date, 
+                                        #testing_kit_barcode_id= testing_type_ref_data.id,
+                                        # symptoms_list= symptoms, 
+                                        symptoms_list= symptoms_list, 
+                                        test_type_id= test_type_ref_data.id, 
+                                        srf_id= srf_data, # generate_srf, #swab_collection_status= swab_collection_status_ref_data.id,
+                                        # barcode= barcode,
+                                        barcode= srf_data,
+                                        rat_created_id= rat_created_id_data, arrival_date= arrival_date,
+
+                                        father_name = father_name,
+                                        occupation = occupation,
+                                        mode_of_transport = mode_of_transport,
+                                        arogya_setu_app = arogya_setu_app,
+                                        vaccine_type = vaccine_type,
+                                        first_dose_date = first_dose_date,
+                                        hospitalized = hospitalized,
+                                        driver_license= driver_license,
+                                        passport= passport,
+                                        lab_master_id= user_dist_status.testing_lab_master_id,
+
+                                    )
+        record_create_timestamp = str(patients_data.create_timestamp)
+        # if test_type == 'RAT':
+        #     Patient.objects.filter(id= patients_data.id).update(rat_created_id= patients_data.id)
+        rat_created_id = patients_data.id
+        if resident_type == 'Other-state':
+            Outside_Patient_Address.objects.create(patient_id= patients_data.id, 
+                                            state_name= states, 
+                                            district_name= district_name, #district_type= district_type, 
+                                            city_name= city_name,
+                                            zone_type= zone_name, 
+                                            ward_name= ward_name, 
+                                            taluk_name= taluk_name, 
+                                            panchayat_name= panchayat_name, 
+                                            village_name= village_name, 
+                                            resident_type= resident_type, 
+                                            ward_type= ward_type, 
+                                            flat_door_no= flat_door_no, 
+                                            main_road_no= main_road_no,
+                                            pincode= pincode,
+                                            locality= locality,
+                                            landmark= landmark
+                                            )
+        else:
+            Patient_Address.objects.create(patient_id= patients_data.id, 
+                                            state_name= states, 
+                                            district_name= district_name, #district_type= district_type, 
+                                            city_name= city_name,
+                                            zone_type= zone_name, 
+                                            ward_name= ward_name, 
+                                            taluk_name= taluk_name, 
+                                            panchayat_name= panchayat_name, 
+                                            village_name= village_name, 
+                                            resident_type= resident_type, 
+                                            ward_type= ward_type, 
+                                            flat_door_no= flat_door_no, 
+                                            main_road_no= main_road_no,
+                                            pincode= pincode,
+                                            locality= locality,
+                                            landmark= landmark)
+
+        # Patient_Testing.objects.create()                                        
+
+        # Patient_Testing.objects.create(patient_id= patients_data.id, lab_received_date= , testing_kit_id= , testing_status= , ct_value= , 
+        #                                 comments= ,)                             
+        res_data = [{'patient_name':patient_name, 'mobile_number':mobile_number, 'gender': gender, 'age':age, 'speciman_type':speciman_type,'patient_status_type':patient_status_type, 'test_type':test_type, 'added_date':record_create_timestamp, 'srf_id': srf_data, 'rat_created_id':rat_created_id}]
+        return Response({'result': res_data,'message':"Patient Data added Sucessfully"}, status= status.HTTP_200_OK)
+
 
 
     
@@ -1091,6 +1730,8 @@ class AddPatient(APIView):
 
 #########################          CONTACT TESTING OFF LINE          #########################
 class ContectTestingOffline(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -1353,41 +1994,41 @@ class ContectTestingOffline(APIView):
                                             landmark= landmark)
             
             
-#             if resident_type == 'Other State':
-#                 Outside_Patient_Address.objects.create(patient_id= patients_data.id, 
-#                                                 state_name= states, 
-#                                                 district_name= district_name, #district_type= district_type, 
-#                                                 city_name= city_name,
-#                                                 zone_type= zone_name, 
-#                                                 ward_name= ward_name, 
-#                                                 taluk_name= taluk_name, 
-#                                                 panchayat_name= panchayat_name, 
-#                                                 village_name= village_name, 
-#                                                 resident_type= resident_type, 
-#                                                 ward_type= ward_type, 
-#                                                 flat_door_no= flat_door_no, 
-#                                                 main_road_no= main_road_no,
-#                                                 pincode= pincode,
-#                                                 locality= locality,
-#                                                 landmark= landmark)
+            # if resident_type == 'Other State':
+            #     Outside_Patient_Address.objects.create(patient_id= patients_data.id, 
+            #                                     state_name= states, 
+            #                                     district_name= district_name, #district_type= district_type, 
+            #                                     city_name= city_name,
+            #                                     zone_type= zone_name, 
+            #                                     ward_name= ward_name, 
+            #                                     taluk_name= taluk_name, 
+            #                                     panchayat_name= panchayat_name, 
+            #                                     village_name= village_name, 
+            #                                     resident_type= resident_type, 
+            #                                     ward_type= ward_type, 
+            #                                     flat_door_no= flat_door_no, 
+            #                                     main_road_no= main_road_no,
+            #                                     pincode= pincode,
+            #                                     locality= locality,
+            #                                     landmark= landmark)
 
-#             else:
-#                 Patient_Address.objects.create(patient_id= patients_data.id, 
-#                                                 state_name= states, 
-#                                                 district_name= district_name, #district_type= district_type, 
-#                                                 city_name= city_name,
-#                                                 zone_type= zone_name, 
-#                                                 ward_name= ward_name, 
-#                                                 taluk_name= taluk_name, 
-#                                                 panchayat_name= panchayat_name, 
-#                                                 village_name= village_name, 
-#                                                 resident_type= resident_type, 
-#                                                 ward_type= ward_type, 
-#                                                 flat_door_no= flat_door_no, 
-#                                                 main_road_no= main_road_no,
-#                                                 pincode= pincode,
-#                                                 locality= locality,
-#                                                 landmark= landmark)
+            # else:
+            #     Patient_Address.objects.create(patient_id= patients_data.id, 
+            #                                     state_name= states, 
+            #                                     district_name= district_name, #district_type= district_type, 
+            #                                     city_name= city_name,
+            #                                     zone_type= zone_name, 
+            #                                     ward_name= ward_name, 
+            #                                     taluk_name= taluk_name, 
+            #                                     panchayat_name= panchayat_name, 
+            #                                     village_name= village_name, 
+            #                                     resident_type= resident_type, 
+            #                                     ward_type= ward_type, 
+            #                                     flat_door_no= flat_door_no, 
+            #                                     main_road_no= main_road_no,
+            #                                     pincode= pincode,
+            #                                     locality= locality,
+            #                                     landmark= landmark)
             
             
 
@@ -1510,6 +2151,8 @@ class ContectTestingOffline(APIView):
 
 #########################          ADD PATIENT OFF LINE          #########################
 class ContectTestingOfflineAddPatient(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -1717,7 +2360,7 @@ class ContectTestingOfflineAddPatient(APIView):
                                             test_type_id= test_type_ref_data.id,
                                             specimen_type_id= specimen_type_ref_data.id,
                                             vaccine_status= vaccine_status,
-#                                             create_timestamp = asdatetime.strptime(speciman_collection_date,'%Y-%m-%d %H:%M'),
+                                            # create_timestamp = asdatetime.strptime(speciman_collection_date,'%Y-%m-%d %H:%M'),
                                             create_timestamp = speciman_collection_date,
                                             aadhar_number= aadhar_number,
                                             swab_collection_status = swab_collection_status,
@@ -1913,6 +2556,8 @@ class ContectTestingOfflineAddPatient(APIView):
 
 #########################          CONTACT TESTING DATEWISE DUMP          #########################
 class ContectTestingDateWiseDump(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -2032,6 +2677,8 @@ class ContectTestingDateWiseDump(APIView):
 
 #########################          CONTACT TESTING DATEWISE URBAN DUMP          #########################
 class ContectTestingDateWiseUrbanDump(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -2149,6 +2796,8 @@ class ContectTestingDateWiseUrbanDump(APIView):
 
 #########################          CONTACT TESTING DATEWISE RURAL DUMP          #########################
 class ContectTestingDateWiseRuralDump(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -2234,10 +2883,10 @@ class ContectTestingDateWiseRuralDump(APIView):
                 
             
 
-#             created_ids.append(Contact_Tracing(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], taluk= i['taluk_number'], 
-#                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
-#                                                 taluk_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
-#                                                 date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
+            # created_ids.append(Contact_Tracing(covid_id = str(cnt_dd).zfill(5),name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], taluk= i['taluk_number'], 
+            #                                     panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
+            #                                     taluk_name_eng = i['taluk_name'], panchayat_name_eng = i['panchayat_name'], village_name_eng = i['village_name'],
+            #                                     date_of_contact_created= i['createdDate'], assigned_phc= i['phc_id'] ))
             Contact_Tracing.objects.create(covid_id = str(cnt_dd).zfill(5), name= i['patient_name'], age = i['age'], gender = i['gender_name'], district= i['district_number'], 
                                                 taluk= i['taluk_number'], mobile_number = i['mobile_number'],  ward_type= i['ward_type'],
                                                 panchayat= i['panchayat_number'], village= i['Village_number'], district_name_eng= i['district_name'], 
@@ -2247,7 +2896,7 @@ class ContectTestingDateWiseRuralDump(APIView):
             cnt_dd += 1
 
         print(created_ids)
-#         create_data = Contact_Tracing.objects.bulk_create(created_ids)
+        # create_data = Contact_Tracing.objects.bulk_create(created_ids)
         # return Response({'result':'Updated Sucessfully', 'resp':res_data, 'created_ids':created_ids}, status= status.HTTP_200_OK)
         return Response({'result':'Updated Sucessfully', 'resp':ct_dmp_data,}, status= status.HTTP_200_OK)
 
@@ -2258,6 +2907,8 @@ class ContectTestingDateWiseRuralDump(APIView):
 #########################          GET 
 #########################
 class GetOTPData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -2297,9 +2948,9 @@ class GetOTPData(APIView):
 
                 # print(body)
 
-#                 response = requests.post('http://103.148.156.208:81/Covid/SendOTP.php', data= json_data)
-#                 response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20'+str(otp)+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS', data= json_data)
-#                 response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20'+str(otp)+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS')
+                # response = requests.post('http://103.148.156.208:81/Covid/SendOTP.php', data= json_data)
+                # response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20'+str(otp)+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS', data= json_data)
+                # response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20'+str(otp)+'%20is%20%23field1%23%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS')
                 response = requests.post('http://securesmsc.com/httpapi/send?username=Sathish@stepnstones.in&password=Sns12345&sender_id=DACWAR&route=T&phonenumber='+str(mobile_number)+'&message=Your%20OTP%20is%20'+str(otp)+'%2C%20Don%27t%20share%20with%20anyone.%20From%20Govt%20of%20Karnataka%20-%20SNS')
 
 
@@ -2519,6 +3170,8 @@ class ChackAlreadyTestedPatients(APIView):
 
 #########################          ALREADY TESTED PATIENTS          #########################
 class ChackAlreadyTestedPatients(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -2547,6 +3200,8 @@ class ChackAlreadyTestedPatients(APIView):
 
 #########################          ALREADY TESTED LINE LIST PATIENTS DATA          #########################
 class ChackAlreadyTestedPatientsLineListData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -2677,6 +3332,8 @@ class ChackContactTracingPatients(APIView):
 
 #########################          CONTACT TRACING PATIENTS          #########################
 class ChackContactTracingPatients(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -2755,6 +3412,8 @@ class ChackContactTracingPatients(APIView):
 
 #########################          GET ALREADY TESTED PATIENT DETAILS          #########################
 class GetAlreadyTestedPatientsData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -3133,6 +3792,8 @@ class GetAlreadyTestedPatientsData(APIView):
 
 #########################          GET CONTACT TRACING PATIENT DETAILS          #########################
 class GetContactTracingPatientsData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -3221,6 +3882,8 @@ class GetContactTracingPatientsData(APIView):
 
 #########################          MASTER TABLE FILTER          #########################
 class MasterTableFilterData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -3473,9 +4136,11 @@ class MasterTableFilterData(APIView):
                     return Response(empty_arry)
 
 
-
+"""
 #########################          PHC DATE FILTER          #########################
 class PHCUserDAteFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -3543,11 +4208,112 @@ class PHCUserDAteFilter(APIView):
                 return Response({'patient_details':patient_details,'result': 'successfull'}, status= status.HTTP_200_OK)
         else:
             return Response({'result': 'Something Went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+"""
+
+
+
+#########################          PHC DATE FILTER          #########################
+class PHCUserDAteFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id      = data.get('user_id')
+        start_date = data.get('startdate')
+        end_date = data.get('endDate')
+
+        start_data_split = start_date.split('-')
+        end_date_split = end_date.split('-')
+
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+        check_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id).values()
+
+        if check_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
+            if check_user_roles.role_name == 'PHCMO':
+                all_phcm_data = []
+                check_all_slab_collector = Swab_Collection_Centre.objects.filter(swab_collection_centre_name= check_user_data.swab_collection_centre_name).values()
+                for i in check_all_slab_collector:
+                    # patient_details = Patient.objects.filter(Q(added_by=i['user_id']) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
+                    patient_details = Patient.objects.filter(Q(added_by=i['user_id'])  & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2])))).values().order_by('-id')
+                    for pd in patient_details:
+                        print(pd)
+                        patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
+                        patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
+                        patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
+                        pd['patient_type_name'] = patient_type_data.patient_type_name
+                        pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                        pd['test_type_name']= patient_test_type_data.test_type_name
+
+                        check_test_status = Patient_Testing.objects.filter(patient_id= pd['id'])
+                        if check_test_status:
+                            check_test_status_get = Patient_Testing.objects.get(patient_id= pd['id'])
+                            i['test_result'] = check_test_status_get.testing_status
+                        else:
+                            i['test_result'] = 2
+
+                        all_phcm_data.append(pd)
+                return Response({'patient_details':all_phcm_data,'result': 'successfull'}, status= status.HTTP_200_OK)
+
+            if check_user_roles.role_name == 'PHCS':
+                # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
+
+                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status= 31) & Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2])))).values().order_by('-id')
+                for i in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                    check_test_status = Patient_Testing.objects.filter(patient_id= i['id'])
+                    if check_test_status:
+                        check_test_status_get = Patient_Testing.objects.get(patient_id= i['id'])
+                        i['test_result'] = check_test_status_get.testing_status
+                    else:
+                        i['test_result'] = 2
+
+                return Response({'patient_details':patient_details,'result': 'successfull'}, status= status.HTTP_200_OK)
+        
+        elif check_lab_user:
+
+            patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status= 31) & Q(create_timestamp__date__gte= asdatetime.strptime(start_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(end_date,'%Y-%m-%d'))).values().order_by('-id')
+            
+            for i in patient_details:
+                patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                i['patient_type_name'] = patient_type_data.patient_type_name
+                i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                i['test_type_name']= patient_test_type_data.test_type_name
+
+                check_test_status = Patient_Testing.objects.filter(patient_id= i['id'])
+                if check_test_status:
+                    check_test_status_get = Patient_Testing.objects.get(patient_id= i['id'])
+                    i['test_result'] = check_test_status_get.testing_status
+                else:
+                    i['test_result'] = 2
+            return Response({'patient_details':patient_details,'result': 'successfull'}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result': 'Something Went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
 
 #########################          PHC CONTACT TRACING DATE FILTER          #########################
 class PHCContactTracingDAteFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -3651,9 +4417,11 @@ class PHCContactTracingDAteFilter(APIView):
         #     return Response({'result': 'Something Went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
 
 
-
+"""
 #########################          PHC STATUS FILTER          #########################
 class PHCUseStatusFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -3728,11 +4496,115 @@ class PHCUseStatusFilter(APIView):
                 return Response({'patient_details':patient_details,'result': 'successfull'})
         else:
             return Response({'result': 'Something Went Wrong'})
+"""
+
+
+#########################          PHC STATUS FILTER          #########################
+class PHCUseStatusFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id      = data.get('user_id')
+        status_filter = data.get('swab_collection_status')
+
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+        check_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id).values()
+
+        if check_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
+            if check_user_roles.role_name == 'PHCMO':
+                all_phcm_data = []
+                check_all_slab_collector = Swab_Collection_Centre.objects.filter(swab_collection_centre_name= check_user_data.swab_collection_centre_name).values()
+                for i in check_all_slab_collector:
+                    # patient_details = Patient.objects.filter(Q(added_by=i['user_id']) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
+                    
+                    patient_details = Patient.objects.filter(Q(added_by=i['user_id'])  & Q(package_sampling_id__isnull = True) & Q(swab_collection_status= status_filter)).values().order_by('-id')
+                    for pd in patient_details:
+                        patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
+                        patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
+                        patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
+                        pd['patient_type_name'] = patient_type_data.patient_type_name
+                        pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                        pd['test_type_name']= patient_test_type_data.test_type_name
+
+                        check_tkb = Testing_Kit_Barcode.objects.filter(id= pd['testing_kit_barcode_id'])
+                        if check_tkb:
+                            check_tkb_get = Testing_Kit_Barcode.objects.get(id= pd['testing_kit_barcode_id'])
+                            pd['test_kit_name'] = check_tkb_get.testing_kit_barcode_name
+                        else:
+                            pd['test_kit_name'] = 21
+
+                        check_test_status = Patient_Testing.objects.filter(patient_id= pd['id'])
+                        if check_test_status:
+                            check_test_status_get = Patient_Testing.objects.get(patient_id= pd['id'])
+                            pd['test_result'] = check_test_status_get.testing_status
+                        else:
+                            pd['test_result'] = 2
+
+                        all_phcm_data.append(pd)
+                return Response({'patient_details':all_phcm_data,'result': 'successfull'})
+
+            if check_user_roles.role_name == 'PHCS':
+                # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
+                patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status= status_filter)).values().order_by('-id')
+                for i in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id'])
+                    if check_tkb:
+                        check_tkb_get = Testing_Kit_Barcode.objects.get(id= i['testing_kit_barcode_id'])
+                        i['test_kit_name'] = check_tkb_get.testing_kit_barcode_name
+                    else:
+                        i['test_kit_name'] = 21
+
+                    check_test_status = Patient_Testing.objects.filter(patient_id= i['id'])
+                    if check_test_status:
+                        check_test_status_get = Patient_Testing.objects.get(patient_id= i['id'])
+                        i['test_result'] = check_test_status_get.testing_status
+                    else:
+                        i['test_result'] = 2
+                return Response({'patient_details':patient_details,'result': 'successfull'})
+        elif check_lab_user:
+
+            patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status= status_filter)).values().order_by('-id')
+            for i in patient_details:
+                patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                i['patient_type_name'] = patient_type_data.patient_type_name
+                i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                i['test_type_name']= patient_test_type_data.test_type_name
+
+                check_test_status = Patient_Testing.objects.filter(patient_id= i['id'])
+                if check_test_status:
+                    check_test_status_get = Patient_Testing.objects.get(patient_id= i['id'])
+                    i['test_result'] = check_test_status_get.testing_status
+                else:
+                    i['test_result'] = 2
+            return Response({'patient_details':patient_details,'result': 'successfull'})
+
+        else:
+            return Response({'result': 'Something Went Wrong'})
+
 
 
 
 #########################          PHC TEST TYPE FILTER          #########################
 class PHCUseTestTypeFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -3916,6 +4788,8 @@ class UpdatePatientTestingResult(APIView):
 
 #########################          Upadate Patient Testing Status  RAT RTPCR          #########################
 class UpdatePatientTestingResult(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -4167,6 +5041,8 @@ class UpdatePatientTestingResult(APIView):
 
 #########################          UPDATE PATIENT STATUS          #########################
 class UpdatePatientCollectionStatus(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -4183,9 +5059,11 @@ class UpdatePatientCollectionStatus(APIView):
         return Response("Updated Sucessfully")
 
 
-
+"""
 #########################          CREATE PACKAGE          #########################
 class CreatePackage(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -4264,11 +5142,156 @@ class CreatePackage(APIView):
         # return Response({'created_package_data':last_package_data,'result':"Package Created Sucessfully"})
 
         return Response({'created_package_data':last_package_data,'result':"Package Created Sucessfully"})
+"""
 
 
 
+#########################          CREATE PACKAGE          #########################
+class CreatePackage(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        
+        data = request.data
+
+        print("PACKAGE",data)
+
+        user_id = data.get('user_id')
+        patient_lists = data.get('packageData')
+        package_barcode = data.get('barcode')
+        print(patient_lists)
+        print(len(patient_lists))
+        patient_status = ''
+
+        patient_ids = []
+        count = 0
+        for i in patient_lists:
+            count += 1
+            patient_status = i['patient_status']
+            patient_ids.append({'id':i['id'], 'srf_id': i['srf_id']})
+        
+        print(patient_status)
+
+        print("COUNT", count)
+
+        tho_deatils_check = Swab_Collection_Centre.objects.filter(user_id= user_id)
+        tlab_user_details_check = Testing_Lab_Facility.objects.filter(user_id= user_id)
+
+        if tho_deatils_check:
+            tho_deatils = Swab_Collection_Centre.objects.get(user_id= user_id)
+            last_package_name = Package_Sampling.objects.filter(Q(master_phc= tho_deatils.phc_master_id) & Q(create_timestamp__date= asdatetime.now())).values().order_by('-id')[:1]
+            print(last_package_name)
+
+            master_phc_data = Master_PHC.objects.get(id= tho_deatils.phc_master_id)
+            
+            last_package_name_data = ''
+            if last_package_name:
+                # last_package_name = Package_Sampling.objects.filter(master_phc= tho_deatils.phc_master_id).values().order_by('-id')[0]
+                for i in last_package_name:
+                    current_datetime = asdatetime.now().strftime('%Y-%m-%d')
+                    # last_package_name_data = 'PHCID_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
+                    last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_'+str(int((i['package_sampling_name']).split('_')[2]) + 1)
+                # current_datetime = asdatetime.now().strftime('%Y-%m-%d')
+                # # last_package_name_data = 'PHCID_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
+                # last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_'+str(int((last_package_name['package_sampling_name']).split('_')[2]) + 1)
+            else:
+                current_datetime = asdatetime.now().strftime('%Y-%m-%d')
+                # last_package_name_data = 'PHCID_'+str(current_datetime)+'_1'
+                last_package_name_data = str(master_phc_data.phc_name)+'_'+str(current_datetime)+'_1'
+
+            created_package_list = Package_Sampling.objects.create(user_id= user_id, swab_cc_id= tho_deatils.id, master_phc_id= tho_deatils.phc_master_id, package_sampling_name= last_package_name_data, package_sampling_barcode= random.randint(1000000000,9999999999), samples_count= count, dispatch_status= 0, sympto_indication= patient_status, package_type_status= 6, package_type_action=16)
+
+            for pid in patient_ids:
+                print(pid)
+                print(pid['id'])
+                check_patients_details = Patient.objects.filter(Q(id= pid['id']) & Q(srf_id= pid['srf_id'])).update(package_sampling_id= created_package_list.id, swab_collection_result= 1)
+
+
+            last_package_data = Package_Sampling.objects.filter(id= created_package_list.id).values()
+
+            # check_user_phc = Swab_Collection_Centre.objects.get(user_id= user_id)
+            # test_lab_data = Testing_Lab_Facility.objects.get(id= check_user_phc.test_lab)
+            
+            
+            # check_taluk = Master_Block.objects.get(id= check_user_phc.city_id)
+            for i in last_package_data:
+                i['phc_name'] = master_phc_data.phc_name
+                i['taluk'] = master_phc_data.block_name_eng
+                i['package_type_status'] = i['sympto_indication']
+
+            # for i in last_package_data:
+            #     i['phc_name'] = check_user_phc.swab_collection_centre_name
+            #     i['taluk'] = check_taluk.block_name_eng
+
+
+            
+            # return Response({'created_package_data':last_package_data,'result':"Package Created Sucessfully"})
+
+            return Response({'created_package_data':last_package_data,'result':"Package Created Sucessfully"})
+        
+        elif tlab_user_details_check:
+            tlab_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+            # last_package_name = Package_Sampling.objects.filter(Q(master_phc= tho_deatils.phc_master_id) & Q(create_timestamp__date= asdatetime.now())).values().order_by('-id')[:1]
+            last_package_name = Package_Sampling.objects.filter(Q(user_id= user_id) & Q(create_timestamp__date= asdatetime.now())).values().order_by('-id')[:1]
+            
+            master_lab_data = Master_Labs.objects.get(id= tlab_user_details.testing_lab_master_id)
+            
+            last_package_name_data = ''
+            if last_package_name:
+
+                for i in last_package_name:
+
+                    current_datetime = asdatetime.now().strftime('%Y-%m-%d')
+                    last_package_name_data = str(master_lab_data.lab_id)+'_'+str(current_datetime)+'_'+str(int((i['package_sampling_name']).split('_')[2]) + 1)
+
+            else:
+                
+                current_datetime = asdatetime.now().strftime('%Y-%m-%d')
+                last_package_name_data = str(master_lab_data.lab_id)+'_'+str(current_datetime)+'_1'
+
+            # created_package_list = Package_Sampling.objects.create(user_id= user_id, swab_cc_id= tho_deatils.id, master_phc_id= tho_deatils.phc_master_id, package_sampling_name= last_package_name_data, package_sampling_barcode= random.randint(1000000000,9999999999), samples_count= count, dispatch_status= 0, sympto_indication= patient_status, package_type_status= 6, package_type_action=16)
+            created_package_list = Package_Sampling.objects.create(user_id= user_id, test_lab_id= tlab_user_details.id, lab_master_id= tlab_user_details.testing_lab_master_id ,package_sampling_name= last_package_name_data, package_sampling_barcode= random.randint(1000000000,9999999999), samples_count= count, dispatch_status= 0, sympto_indication= patient_status, package_type_status= 5, package_type_action=15, lab_received_datetime= asdatetime.now())
+
+            for pid in patient_ids:
+                print(pid)
+                print(pid['id'])
+                check_patients_details = Patient.objects.filter(Q(id= pid['id']) & Q(srf_id= pid['srf_id'])).update(package_sampling_id= created_package_list.id, swab_collection_result= 1)
+
+
+            last_package_data = Package_Sampling.objects.filter(id= created_package_list.id).values()
+
+            # check_user_phc = Swab_Collection_Centre.objects.get(user_id= user_id)
+            # test_lab_data = Testing_Lab_Facility.objects.get(id= check_user_phc.test_lab)
+            
+            
+            # check_taluk = Master_Block.objects.get(id= check_user_phc.city_id)
+            for i in last_package_data:
+                i['phc_name'] = master_lab_data.lab_id
+                i['taluk'] = master_lab_data.karnataka_blocks_id
+                i['package_type_status'] = i['sympto_indication']
+
+            # for i in last_package_data:
+            #     i['phc_name'] = check_user_phc.swab_collection_centre_name
+            #     i['taluk'] = check_taluk.block_name_eng
+
+            # return Response({'created_package_data':last_package_data,'result':"Package Created Sucessfully"})
+
+            return Response({'created_package_data':last_package_data,'result':"Package Created Sucessfully"})
+        else:
+            return Response({'result': 'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+
+
+"""
 #########################          GET PACKAGE SAMPLES          #########################
 class GetPackageSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -4302,11 +5325,104 @@ class GetPackageSamples(APIView):
             i['disable'] = True
 
         return Response(get_package_patients_details)
+"""
+
+
+"""
+#########################          GET PACKAGE SAMPLES          #########################
+class GetPackageSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        package_id = data.get('package_id')
+
+        package_barcode_id = data.get('package_barcode')
+        package_res_type_status = data.get('received_id')
+
+        # package_details = Package_Sampling.objects.get(Q(id= package_id) & Q(package_sampling_barcode= package_barcode_id))
+        package_details = Package_Sampling.objects.get(Q(package_sampling_barcode= package_barcode_id))
+        package_details_update = Package_Sampling.objects.filter(Q(package_sampling_barcode= package_barcode_id)).update(lab_accept_reject_status= 1)
+
+        # package_res_update_details = Package_Sampling.objects.filter(Q(package_sampling_barcode= package_barcode_id)).update(package_received_status= package_res_type_status)
+
+        get_package_patients_details = Patient.objects.filter(package_sampling_id= package_details.id).values()
+
+
+        for i in get_package_patients_details:
+            Patient.objects.filter(id= i['id']).update(sample_status= 'Accepted', lab_accepted_datetime= asdatetime.now())
+            specimen_type_details = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+            test_type_details = Test_Type_Ref.objects.get(id= i['test_type_id'])
+            package_details = Package_Sampling.objects.get(id= i['package_sampling_id'])
+            
+            i['specimen_type_name'] = specimen_type_details.specimen_type_name
+            i['test_type_name'] = test_type_details.test_type_name
+            i['package_barcode'] = package_details.package_sampling_barcode
+
+            i['disable'] = True
+            i['drop_down'] = False
+
+            # Patient.objects.filter(id= i['id']).update(sample_status= 'Accepted', lab_accepted_datetime= asdatetime.now())
+
+        return Response(get_package_patients_details)
+"""
+
+
+
+#########################          GET PACKAGE SAMPLES          #########################
+class GetPackageSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        package_id = data.get('package_id')
+
+        package_barcode_id = data.get('package_barcode')
+        package_res_type_status = data.get('received_id')
+
+        # package_details = Package_Sampling.objects.get(Q(id= package_id) & Q(package_sampling_barcode= package_barcode_id))
+        package_details = Package_Sampling.objects.get(Q(package_sampling_barcode= package_barcode_id))
+        package_details_update = Package_Sampling.objects.filter(Q(package_sampling_barcode= package_barcode_id)).update(lab_accept_reject_status= 1)
+
+        # package_res_update_details = Package_Sampling.objects.filter(Q(package_sampling_barcode= package_barcode_id)).update(package_received_status= package_res_type_status)
+
+        get_package_patients_details = Patient.objects.filter(package_sampling_id= package_details.id).values()
+
+
+        for i in get_package_patients_details:
+            Patient.objects.filter(id= i['id']).update(sample_status= 'Accepted', lab_accepted_datetime= asdatetime.now())
+            specimen_type_details = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+            test_type_details = Test_Type_Ref.objects.get(id= i['test_type_id'])
+            package_details = Package_Sampling.objects.get(id= i['package_sampling_id'])
+            
+            i['specimen_type_name'] = specimen_type_details.specimen_type_name
+            i['test_type_name'] = test_type_details.test_type_name
+            i['package_barcode'] = package_details.package_sampling_barcode
+
+            i['disable'] = True
+            i['drop_down'] = False
+
+            # Patient.objects.filter(id= i['id']).update(sample_status= 'Accepted', lab_accepted_datetime= asdatetime.now())
+
+        return Response(get_package_patients_details)
+
+
+
+
+
 
 
 
 
 class CollectionDetailsAndStatus(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -4411,9 +5527,11 @@ class GetPHCUseraddedPatients(APIView):
 
 
 
-
+"""
 #########################          GET PHC ADDED PATIENTS          #########################
 class GetPHCUseraddedPatients(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -4502,6 +5620,147 @@ class GetPHCUseraddedPatients(APIView):
                 return Response({'patient_details':list(patient_details), 'total_pg_count': patient_details_count,'result': 'successfull'})
         else:
             return Response({'result': 'Something Went Wrong'})
+"""
+
+
+#########################          GET PHC ADDED PATIENTS          #########################
+class GetPHCUseraddedPatients(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+        check_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id).values()
+
+        if check_user:
+
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
+
+            if check_user_roles.role_name == 'PHCMO':
+
+                check_all_slab_collector = Swab_Collection_Centre.objects.filter(phc_master_id= check_user_data.phc_master_id).values_list('user_id', flat=True)
+            
+                patient_data = Patient.objects.filter(Q(added_by_id__in= check_all_slab_collector)  & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id')
+                patient_details_count = Patient.objects.filter(Q(added_by_id__in= check_all_slab_collector)  & Q(package_sampling_id__isnull = True) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+                
+                for pd in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= pd['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_tkb:
+                        pd['test_kit_name'] = check_tkb[0]
+                    else:
+                        pd['test_kit_name'] = 21
+
+                    pd['patient_type_name'] = patient_type_data.patient_type_name
+                    pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    pd['test_type_name']= patient_test_type_data.test_type_name
+
+                    if patient_test_type_data.test_type_name == 'RAT':
+
+                        lab_test_data = Patient_Testing.objects.filter(patient_id= pd['id']).values_list('testing_status', flat=True)
+                        if lab_test_data:
+                            pd['test_result'] = lab_test_data[0]
+                        else:
+                            pd['test_result'] = 2
+
+                return Response({'patient_details':LIST(patient_details), 'total_pg_count': patient_details_count,'result': 'successfull'})
+
+            if check_user_roles.role_name == 'PHCS':
+                # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 'Complete') & Q(package_sampling_id__isnull = True)).values()
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 1) & Q(package_sampling_id__isnull = True)).values()
+                # patient_details = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31) & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31)  & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                patient_details_count = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31)  & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                    check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_tkb:
+                        i['test_kit_name'] = check_tkb[0]
+                    else:
+                        i['test_kit_name'] = 21
+
+                    if patient_test_type_data.test_type_name == 'RAT':
+                        lab_test_data = Patient_Testing.objects.filter(patient_id= i['id']).values_list('testing_status', flat=True)
+                        if lab_test_data:
+                            i['test_result'] = lab_test_data[0]
+                        else:
+                            i['test_result'] = 2
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_details_count,'result': 'successfull'})
+
+            else:
+                return Response({'result':'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+        
+        elif check_lab_user:
+            # check_lab_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_lab_user_roles  = Roles.objects.get(id= User_Role_Ref.objects.filter(user_id= user_id).values_list('role_id', flat=True)[0])
+
+            if check_lab_user_roles.role_name == 'TLAB':
+
+
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31)  & Q(create_timestamp__date= asdatetime.now().date())).values().order_by('-id',)
+                patient_details_count = Patient.objects.filter(Q(added_by=user_id) & Q(package_sampling_id__isnull = True) & Q(swab_collection_status=31)  & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                    # check_tkb = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    # if check_tkb:
+                    #     i['test_kit_name'] = check_tkb[0]
+                    # else:
+                    #     i['test_kit_name'] = 21
+
+                    # if patient_test_type_data.test_type_name == 'RAT':
+                    #     lab_test_data = Patient_Testing.objects.filter(patient_id= i['id']).values_list('testing_status', flat=True)
+                    #     if lab_test_data:
+                    #         i['test_result'] = lab_test_data[0]
+                    #     else:
+                    #         i['test_result'] = 2
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_details_count,'result': 'successfull'})
+            else:
+                return Response({'result': 'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+        else:
+            return Response({'result': 'Something Went Wrong'})
+
+
 
 
 
@@ -4572,9 +5831,11 @@ class GetPHCUserPackageList(APIView):
 
 
 
-
+"""
 #########################          GET PHC USER PACKAGE CREATED LIST          #########################
 class GetPHCUserPackageList(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -4646,6 +5907,122 @@ class GetPHCUserPackageList(APIView):
                 return Response({'patient_details':list(patient_details), 'total_pg_count': patient_data_count,'result': 'successfull'})
         else:
             return Response({'result': 'successfull'})
+"""
+
+
+
+#########################          GET PHC USER PACKAGE CREATED LIST          #########################
+class GetPHCUserPackageList(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+        check_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id)
+
+        if check_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
+            if check_user_roles.role_name == 'PHCMO':
+
+                check_all_slab_collector = Swab_Collection_Centre.objects.filter(phc_master_id= check_user_data.phc_master_id).values_list('user_id', flat=True)
+
+                patient_data = Patient.objects.filter(Q(added_by_id__in=check_all_slab_collector) & Q(test_type_id = 2) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).values()
+                patient_data_count = Patient.objects.filter(Q(added_by_id__in=check_all_slab_collector) & Q(test_type_id = 2) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+                
+                for pd in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
+                    pd['patient_type_name'] = patient_type_data.patient_type_name
+                    pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    pd['test_type_name']= patient_test_type_data.test_type_name
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_data_count,'result': 'successfull'})
+
+            if check_user_roles.role_name == 'PHCS':
+                 # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).values()
+                patient_data_count = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_data_count,'result': 'successfull'})
+            
+            if check_user_roles.role_name == 'PHCM':
+                 # sc = Swab_Collection_Centre.objects.filter(added_by=user_id)
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id__in = [2, 3]) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).values()
+                patient_data_count = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id__in = [2, 3]) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_data_count,'result': 'successfull'})
+        
+        elif check_lab_user:
+
+            
+            check_lab_user_roles = User_Role_Ref.objects.filter(user_id= user_id).values_list('role_id', flat=True)[0]
+            # check_lab_user_roles = User_Role_Ref.objects.filter(user_id= user_id).values('role_role_name')
+            # print(check_lab_user_roles)
+            # check_lab_user_roles = list(User_Role_Ref.objects.filter(user_id= user_id).values('role_role_name'))[0]['role_name']
+            # print(check_lab_user_roles)
+
+            check_lab_user_roles  = Roles.objects.get(id= check_lab_user_roles)
+
+            if check_lab_user_roles.role_name == 'TLAB':
+
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).values()
+                patient_data_count = Patient.objects.filter(Q(added_by=user_id) & Q(test_type_id = 2) & Q(swab_collection_status= 32) & Q(package_sampling_id__isnull = True)).count()
+
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = patient_type_data.patient_type_name
+                    i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                    i['test_type_name']= patient_test_type_data.test_type_name
+
+                return Response({'patient_details':list(patient_details), 'total_pg_count': patient_data_count,'result': 'successfull'})
+
+            else:
+                return Response({'result': 'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+        else:
+            return Response({'result': 'successfull'})
+
+
+
+
 
 
 
@@ -4685,6 +6062,8 @@ class GetTHOPackageData(APIView):
 
 #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 class GetTHOPackageData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -4743,6 +6122,9 @@ class GetDSOPackageData(APIView):
 
 
 class GetDSOPackageData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
 
@@ -4776,6 +6158,9 @@ class GetDSOPackageData(APIView):
 
 
 class GetSSUPackageData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
         print(data)
@@ -4822,9 +6207,12 @@ class GetTLCPackageData(APIView):
 
 
 
-
+"""
 #########################          GET TESTING LAB PACKAGE DETAILS          #########################
 class GetTLCPackageData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
 
@@ -4840,7 +6228,7 @@ class GetTLCPackageData(APIView):
         sc_data = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id).values()
         sc_count = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id).count()
         
-#         sc_details = paginatorCreation(sc_data, selected_page_no)
+        # sc_details = paginatorCreation(sc_data, selected_page_no)
 
         for i in sc_data:
             i['testing_lab_name'] = test_lab_data.testing_lab_facility_name
@@ -4849,6 +6237,95 @@ class GetTLCPackageData(APIView):
             i['phc_name'] = phc_data.phc_name
         
         return Response({'details':list(sc_data), 'total_pg_count': sc_count,'result':'successfull '})
+"""
+
+
+"""
+#########################          GET TESTING LAB PACKAGE DETAILS          #########################
+class GetTLCPackageData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        # sc = Package_Sampling.objects.filter(test_lab_id=user_id).values()
+        test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+        
+        sc_data = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id, lab_accept_reject_status= 0).values().order_by('-id')
+        sc_count = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id, lab_accept_reject_status= 0).count()
+        
+
+        print(test_lab_data.id)
+        print(test_lab_data.testing_lab_master_id)
+        
+        sc_details = paginatorCreation(sc_data, selected_page_no)
+
+        for i in sc_details:
+            i['testing_lab_name'] = test_lab_data.testing_lab_facility_name
+            check_swb_col = Swab_Collection_Centre.objects.filter(id= i['swab_cc_id'])
+            if check_swb_col:
+                check_swb_col = Swab_Collection_Centre.objects.get(id= i['swab_cc_id'])
+                phc_data = Master_PHC.objects.get(id= check_swb_col.phc_master_id)
+                i['phc_name'] = phc_data.phc_name
+            else:
+                i['phc_name'] = Master_Labs.objects.filter(id= test_lab_data.testing_lab_master_id).values_list('lab_id', flat=True)[0]
+        
+        return Response({'details':list(sc_details), 'total_pg_count': sc_count,'result':'successfull '})
+"""
+
+
+
+#########################          GET TESTING LAB PACKAGE DETAILS          #########################
+class GetTLCPackageData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        # sc = Package_Sampling.objects.filter(test_lab_id=user_id).values()
+        test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+        
+        sc_data = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id, lab_accept_reject_status= 0).values().order_by('-id')
+        sc_count = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id, lab_accept_reject_status= 0).count()
+        
+
+        print(test_lab_data.id)
+        print(test_lab_data.testing_lab_master_id)
+        
+        sc_details = paginatorCreation(sc_data, selected_page_no)
+
+        for i in sc_details:
+            i['testing_lab_name'] = test_lab_data.testing_lab_facility_name
+            check_swb_col = Swab_Collection_Centre.objects.filter(id= i['swab_cc_id'])
+            if check_swb_col:
+                check_swb_col = Swab_Collection_Centre.objects.get(id= i['swab_cc_id'])
+                phc_data = Master_PHC.objects.get(id= check_swb_col.phc_master_id)
+                i['phc_name'] = phc_data.phc_name
+            else:
+                i['phc_name'] = Master_Labs.objects.filter(id= test_lab_data.testing_lab_master_id).values_list('lab_id', flat=True)[0]
+        
+        return Response({'details':list(sc_details), 'total_pg_count': sc_count,'result':'successfull '})
+
+
+
+
+
 
 
 
@@ -4858,6 +6335,9 @@ class GetTLCPackageData(APIView):
 
 #########################          GET TESTING LAB PACKAGE DETAILS          #########################
 class GetTLOPSPackageData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
         print(data)
@@ -4888,6 +6368,1271 @@ class GetTLOPSPackageData(APIView):
 
 
 
+#########################          GET TESTING LAB CATEGORIZED COUNTS          #########################
+class GetTLOPSCategorizedCounts(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        get_all_users= Testing_Lab_Facility.objects.filter(testing_lab_master_id= test_lab_data.testing_lab_master_id).values_list('user_id', flat=True)
+
+        sc = Package_Sampling.objects.filter(Q(lab_master_id=test_lab_data.testing_lab_master_id) & Q(package_type_status= 5) & Q(package_type_action= 15) & Q(created_group_pool_data= 0)).values_list('id', flat=True)
+
+        all_samples_data = []
+
+        total_samples_collected = 0
+        direct_lab = 0
+        priority = 0
+        de_pool = 0
+        retest = 0
+        
+
+        direct_lab += Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(added_by_id__in= get_all_users) & Q(swab_collection_status= 32) & Q(lab_master_id=test_lab_data.testing_lab_master_id)).count()
+        for i in sc:
+
+            total_samples_collected += Patient.objects.filter(Q(package_sampling_id = i) & Q(test_lab_id__isnull = True) & Q(de_pool= 0) & Q(priority= 0)).count()
+            # direct_lab += Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(added_by_id__in= get_all_users) & Q(swab_collection_status= 32) & Q(lab_master_id=test_lab_data.testing_lab_master_id)).count()
+            priority += Patient.objects.filter(Q(package_sampling_id = i) & Q(test_lab_id__isnull = True) & Q(priority= 1)).count()
+            # de_pool += Patient.objects.filter(Q(package_sampling_id = i) & Q(test_lab_id__isnull = False) & Q(de_pool= 1) & Q(group_samples= 1) & Q(pool_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples_result = 1) & Q(submit_for_individual_testing= 1) & Q(group_samples_result= 0)).count()
+            de_pool += Patient.objects.filter(Q(package_sampling_id = i) & Q(test_lab_id__isnull = False) & Q(de_pool= 1)).count()
+
+            # get_patient_data = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(lab_ops_received_datetime__isnull= False) & Q(group_samples= 1) & Q(pool_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples_result = 1) & Q(submit_for_individual_testing= 1) & Q(group_samples_result= 0)).values()
+        return Response({'total_samples_collected': total_samples_collected, 'direct_lab':direct_lab, 'priority':priority, 'de_pool':de_pool, 'retest':retest, 'total':retest + de_pool + priority + direct_lab + total_samples_collected}, status= status.HTTP_200_OK)
+
+
+
+
+class GenerateLabIdsForCategorizedSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        row_value = data.get('row_value')
+        column_value = data.get('column_value')
+        total_individual_sample_count = data.get('total_individual_sample_count')
+        total_pool_sample_count = data.get('total_pool_sample_count')
+        multiple_of_five_value = data.get('multiple_of_five_value')
+        entered_ind_samples = data.get('entered_ind_samples')
+        entered_pool_samples = data.get('entered_pool_samples')
+
+        print(data)
+
+        # {"total_phc_samples": this.indTotalSamplePhc, "lab_direct": this.indladDirect, "priority": this.indpriority, "retest": this.indretest, "de_Pool": this.inddepool}
+        # {"total_phc_samples": this.poolTotalSamplePhc, "lab_direct": this.poolladDirect, "priority": this.poolpriority, "retest": this.poolretest, "de_Pool": this.pooldepool}
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        all_patient_details = []
+        patient_ids = []
+        
+
+        if int(entered_ind_samples.get('total_phc_samples')) > 0:
+
+            phc_samples_patient_details = Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(lab_master_id= check_user_details.testing_lab_master_id)).values()[:int(entered_ind_samples.get('total_phc_samples'))]
+            
+
+            for i in phc_samples_patient_details:
+                print(i)
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_ind_samples.get('lab_direct')) > 0:
+
+            lab_direct_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id__in= Testing_Lab_Facility.objects.filter(testing_lab_master_id= check_user_details.testing_lab_master_id).values_list('user_id', flat=True))).values()[:int(entered_ind_samples.get('lab_direct'))]
+            
+
+            for i in lab_direct_samples_patient_details:
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_ind_samples.get('priority')) > 0:
+
+            priority_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(priority= 1)).values()[:int(entered_ind_samples.get('priority'))]
+
+            for i in priority_samples_patient_details:
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_ind_samples.get('retest')) > 0:
+            pass
+            # priority_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(priority= 1)).values()[:int(entered_ind_samples.get('retest'))]
+
+            # for i in priority_samples_patient_details:
+                    
+            #     master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+            #     lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+            #     split_gen_lab_id = ''
+            #     if master_lab_data.last_genearte_individual_lab_id:
+            #         # print("CHECK LAB ID PRESENT")
+            #         split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+            #     else:
+            #         # print("CHECK LAB ID NOT")
+            #         len_of_cap = str(master_lab_data.max_capacity)
+            #         split_gen_lab_id = '0000'
+
+
+            #     if int(split_gen_lab_id) == lab_max_cap:
+
+            #         patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+            #         Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+            #         # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+            #     else:
+                    
+            #         update_lab_id_data = int(split_gen_lab_id) + 1
+
+            #         last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+            #         # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+            #         patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+            #         Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+            #         test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+            #         # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+
+        elif int(entered_ind_samples.get('de_Pool')) > 0:
+        
+            # de_pool_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = False) & Q(group_samples= 1) & Q(pool_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples_result = 1) & Q(submit_for_individual_testing= 1) & Q(group_samples_result= 0)).values()[:int(entered_ind_samples.get('de_Pool'))]
+            de_pool_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = False) & Q(de_pool= 1)).values()[:int(entered_ind_samples.get('de_Pool'))]
+
+            print(de_pool_samples_patient_details, "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKk")
+            
+            for i in de_pool_samples_patient_details:
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1, de_pool= 2)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                    patient_data_update_data = Patient.objects.filter(id= i['id']).values()
+                    print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ",patient_data_update_data)
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1, de_pool= 2)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                    patient_data_update_data = Patient.objects.filter(id= i['id']).values()
+                    print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ",patient_data_update_data)
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+        
+        if int(entered_pool_samples.get('total_phc_samples')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(lab_master_id= check_user_details.testing_lab_master_id)).values()[:int(entered_pool_samples.get('total_phc_samples'))]
+
+            for i in phc_samples_patient_details:
+                
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('lab_direct')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id__in= Testing_Lab_Facility.objects.filter(testing_lab_master_id= check_user_details.testing_lab_master_id).values_list('user_id', flat=True))).values()[:int(entered_ind_samples.get('lab_direct'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('priority')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id) & Q(priority= 1)).values()[:int(entered_ind_samples.get('priority'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+                
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('retest')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id)).values()[:int(entered_ind_samples.get('retest'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('de_Pool')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            # phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id)).values()[:int(entered_ind_samples.get('de_Pool'))]
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = False) & Q(de_pool= 1)).values()[:int(entered_ind_samples.get('de_Pool'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1, de_pool= 2)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1, de_pool= 2)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+                
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        print(all_patient_details)
+        print(patient_ids)
+        return Response({'result': all_patient_details, 'patient_ids': patient_ids}, status= status.HTTP_200_OK)
+
+
+"""
+#########################          GET TESTING LAB PACKAGE SAMPLES DETAILS          #########################
+class GetTLOPSPackageSamplesData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        # sc = Package_Sampling.objects.filter(test_lab_id=user_id).values()
+        test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        sc = Package_Sampling.objects.filter(Q(lab_master_id=test_lab_data.testing_lab_master_id) & Q(package_type_status= 5) & Q(package_type_action= 15) & Q(created_group_pool_data= 0)).values_list('id', flat=True)
+
+        all_samples_data = []
+        for i in sc:
+            patient_details = Patient.objects.filter(Q(package_sampling_id = i) & Q(test_lab_id__isnull = True)).values('id', 'srf_id', 'lab_accepted_datetime', 'lab_ops_received_datetime', 'lab_master__lab_id')
+            
+            [all_samples_data.append(j) for j in patient_details]
+
+
+        paginator = Paginator(all_samples_data, 20)
+        try:
+            package_details_data = paginator.page(selected_page_no)
+        except PageNotAnInteger:
+            package_details_data = paginator.page(1)
+        except EmptyPage:
+            package_details_data = paginator.page(paginator.num_pages)
+
+        return Response({'details':list(package_details_data),'total_pg_count': len(all_samples_data),'result': 'successfull '})
+"""
+
+
+
+
+#########################          GET TESTING LAB PACKAGE SAMPLES DETAILS          #########################
+class GetTLOPSPackageSamplesData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        # sc = Package_Sampling.objects.filter(test_lab_id=user_id).values()
+        test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        sc = Package_Sampling.objects.filter(Q(lab_master_id=test_lab_data.testing_lab_master_id) & Q(package_type_status= 5) & Q(package_type_action= 15) & Q(created_group_pool_data= 0)).values_list('id', flat=True)
+
+        all_samples_data = []
+        for i in sc:
+            patient_details = Patient.objects.filter(Q(package_sampling_id = i) & Q(test_lab_id__isnull = True)).values('id', 'srf_id', 'lab_accepted_datetime', 'lab_ops_received_datetime', 'lab_master__lab_id')
+            
+            [all_samples_data.append(j) for j in patient_details]
+
+
+        paginator = Paginator(all_samples_data, 20)
+        try:
+            package_details_data = paginator.page(selected_page_no)
+        except PageNotAnInteger:
+            package_details_data = paginator.page(1)
+        except EmptyPage:
+            package_details_data = paginator.page(paginator.num_pages)
+
+        return Response({'details':list(package_details_data),'total_pg_count': len(all_samples_data),'result': 'successfull '})
+
+
+
+
+
+
+"""
+#########################          TESTING LAB GENERATE PACKAGE SAMPLES LAB IDS          #########################
+class GetTLOPSGeneratePoolIndLabIds(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        selected_samples_id = data.get('selected_id')
+        selected_type = int(data.get('selected_type'))
+
+        print("FFFFFFFFFFF", data)
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+
+        if selected_type == 0:
+
+            for i in selected_samples_id:
+                
+
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+
+
+            return Response({'result': 'Updated Sucessfully'}, status= status.HTTP_200_OK)
+        elif selected_type == 1:
+            
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            for i in selected_samples_id:
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+            return Response({'result': 'Updated Sucessfully'}, status= status.HTTP_200_OK)
+            
+        else:
+            return Response({'result': 'Something went wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+        # return Response({'details':list(package_details_data),'total_pg_count': len(all_samples_data),'result': 'successfull '})
+"""
+
+
+
+
+#########################          TESTING LAB GENERATE PACKAGE SAMPLES LAB IDS          #########################
+class GetTLOPSGeneratePoolIndLabIds(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        selected_samples_id = data.get('selected_id')
+        selected_type = int(data.get('selected_type'))
+
+        print("FFFFFFFFFFF", data)
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+
+        if selected_type == 0:
+
+            for i in selected_samples_id:
+                
+
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+
+
+            return Response({'result': 'Updated Sucessfully'}, status= status.HTTP_200_OK)
+        elif selected_type == 1:
+            
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            for i in selected_samples_id:
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+            return Response({'result': 'Updated Sucessfully'}, status= status.HTTP_200_OK)
+            
+        else:
+            return Response({'result': 'Something went wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+        # return Response({'details':list(package_details_data),'total_pg_count': len(all_samples_data),'result': 'successfull '})
+
+
+
+
+
+
+
+#########################          SUBMIT FOR TESTING          #########################
+class SubmitForMergedPlateTesting(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        patient_ids = data.get('patient_ids')
+        user_id = data.get('user_id')
+
+        print(data)
+
+        # last_plate_no_details = MergedPlateDetails.objects.filter(Q(test_lab_id= test_lab_data_get.id) & Q(master_lab_id= test_lab_data_get.testing_lab_master_id)).order_by('-id')[:1]
+
+        # last_plate_no = '0'
+        # if last_plate_no_details:
+        #     for i in last_plate_no_details:
+        #         last_plate_no = str(int(i.plate_no) + 1).zfill(3)
+        # else:
+        #     last_plate_no = str(1).zfill(3)
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        last_plate_no_details = MergedPlateDetails.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id)).order_by('-id')[:1]
+
+        print(last_plate_no_details)
+
+        last_plate_no = '0'
+        if last_plate_no_details:
+            for i in last_plate_no_details:
+                last_plate_no = str(int(i.plate_no) + 1).zfill(3)
+        else:
+            last_plate_no = str(1).zfill(3)
+
+        create_plate = MergedPlateDetails.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_no= last_plate_no)
+
+
+        # patient_details = Patient.objects.filter(id__in= patient_ids).update(submit_for_pool_testing= 1)
+
+        for i in patient_ids:
+            patient_details = MergedPlateSamples.objects.create(merge_plate_id= create_plate.id, submit_for_testing= 0, test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, patient_id= i, ind_pool_id= Patient.objects.get(id= i).test_lab_id)
+
+        # patient_details = MergedPlateSamples.objects.filter(merge_plate_id__in= pool_ids).update(submit_for_testing= 1)
+
+        all_plate_details = MergedPlateDetails.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(testing_status= 0)).values('id', 'plate_no', 'testing_status', 'create_datetime', 'master_lab__lab_id')
+
+        return Response({'result':'Plate Submitted For Testing', 'all_plate_details': all_plate_details}, status= status.HTTP_200_OK)
+
+
+
+
+class UpdateMergedPlateStatus(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        plate_id = data.get('plate_id')
+        plate_no = data.get('plate_no')
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        create_plate = MergedPlateDetails.objects.filter(Q(id= plate_id) & Q(plate_no= plate_no) & Q(master_lab_id= check_user_details.testing_lab_master_id)).update(testing_status= 1)
+        MergedPlateSamples.objects.filter(merge_plate_id= plate_id).update(submit_for_testing= 1)
+
+        return Response({'result': 'Status Updated Sucessfully'}, status= status.HTTP_200_OK)
+
+
+
+
+#########################      GET LAB PLATE DATA      #########################
+class GetTlabOPSIndiMergedPlateData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        get_tlf_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+
+        # get_plate_details = Patient.objects.filter(Q(test_lab_id= get_tlf_data.id)).values().order_by('-id')
+        # print(get_plate_details)
+        
+        get_plate_details = Patient.objects.filter(Q(lab_master_id= get_tlf_data.testing_lab_master_id) & Q(group_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples= 0) | Q(de_pool= 2)).values().order_by('-id')
+        print(get_plate_details)
+        get_plate_details_count = Patient.objects.filter(Q(lab_master_id= get_tlf_data.testing_lab_master_id) & Q(group_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples= 0) | Q(de_pool= 2)).count()
+
+        get_plate_data = paginatorCreation(get_plate_details, selected_page_no)
+
+        for i in get_plate_data:
+            master_lab_data = Master_Labs.objects.get(id= i['lab_master_id'])
+            i['lab_name'] = master_lab_data.lab_name
+            i['lab_id'] = master_lab_data.lab_id
+            plate_data = list(MergedPlateSamples.objects.filter(patient_id= i['id']).values('id', 'merge_plate__plate_no').order_by('-id'))
+            if plate_data:
+                i['plate_no'] = plate_data[0]['merge_plate__plate_no']
+            else:
+                i['plate_no'] = '-'
+        return Response({'result':list(get_plate_data), 'total_pg_count': get_plate_details_count})
+
+
+
+#########################      GET LAB PLATE DATA      #########################
+class GetTlabOPSPoolMergedPlateData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        get_tlf_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+
+        merge_palte_data = MergedPlateSamples.objects.filter(Q(submit_for_testing= 1)).values('ind_pool_id', 'merge_plate_id').distinct()
+        print(merge_palte_data)
+        merge_palte_data = MergedPlateSamples.objects.filter(Q(submit_for_testing= 1) & Q(test_lab_id= get_tlf_data.id)).values('ind_pool_id', 'merge_plate_id').distinct()
+        print(merge_palte_data)
+        merge_palte_data = MergedPlateSamples.objects.filter(Q(submit_for_testing= 1) & Q(test_lab_id= get_tlf_data.id) & Q(master_lab_id= get_tlf_data.testing_lab_master_id)).values('ind_pool_id', 'merge_plate_id').distinct()
+        print(merge_palte_data)
+        merge_palte_data = MergedPlateSamples.objects.filter(Q(submit_for_testing= 1) & Q(test_lab_id= get_tlf_data.id) & Q(master_lab_id= get_tlf_data.testing_lab_master_id) & Q(test_result__isnull= True)).values('ind_pool_id', 'merge_plate_id').distinct()
+        print(merge_palte_data)
+        merge_palte_data = MergedPlateSamples.objects.filter(Q(submit_for_testing= 1) & Q(test_lab_id= get_tlf_data.id) & Q(master_lab_id= get_tlf_data.testing_lab_master_id) & Q(test_result__isnull= True) & Q(ind_pool_id__startswith= 'P')).values('ind_pool_id', 'merge_plate_id').distinct()
+        print(merge_palte_data)
+        # merge_palte_details_count = MergedPlateSamples.objects.filter(Q(test_lab_id= get_tlf_data.id) & Q(master_lab_id= get_tlf_data.testing_lab_master_id) & Q(test_result__isnull= True) & Q(ind_pool_id__startswith= 'P')).values('ind_pool_id', 'merge_plate_id').count()
+
+        # get_plate_data = paginatorCreation(merge_palte_details, selected_page_no)
+        
+        print(merge_palte_data)
+
+        resp_details = []
+
+        for gpd in merge_palte_data:
+            
+            merge_palte_details = MergedPlateSamples.objects.filter(Q(ind_pool_id= gpd['ind_pool_id']) & Q(merge_plate_id= gpd['merge_plate_id'])).values()[:1]
+
+            for i in merge_palte_details:
+                
+                master_lab_data = Master_Labs.objects.get(id= i['master_lab_id'])
+                i['lab_name'] = master_lab_data.lab_name
+                i['lab_id'] = master_lab_data.lab_id
+
+                plate_data = list(MergedPlateDetails.objects.filter(id= i['merge_plate_id']).values('id', 'plate_no').order_by('-id'))
+                
+                print(plate_data)
+
+                if plate_data:
+                    i['plate_no'] = plate_data[0]['plate_no']
+                else:
+                    i['plate_no'] = '-'
+
+                resp_details.append(i)
+
+        # return Response({'result':resp_details, 'total_pg_count': merge_palte_details_count})
+        return Response({'result':resp_details,})
+
+
+
+
+#########################      UPDATE GROUP SAMPLES TEST RESULT       #########################
+class UpdateIndMergePlateSamplesTestResult(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        patient_id = data.get('patient_id')
+        result_status= data.get('result_status')
+        print(user_id)
+        print(patient_id)
+        print(result_status)
+
+        # check_data = Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= patient_id))
+
+        
+        if int(result_status) != 6:
+            Patient.objects.filter(id= patient_id).update(group_samples_result= 1)
+            Patient_Testing.objects.create(patient_id= patient_id, testing_status= result_status, rtpcr_test= 1)
+            # Patient_Testing.objects.filter(patient_id= patient_id).update(test_result= int(result_status))
+
+        else:
+            Patient.objects.filter(id= patient_id).update(retest = 1, test_lab_id__isnull = True, group_samples= 0, pool_samples= 0, group_samples_result= 0, pool_samples_result= 0)
+            
+
+        # if check_data:
+        #     Patient.objects.filter(id= patient_id).update(group_samples_result= 1)
+        #     Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= patient_id)).update(testing_status= result_status, last_update_timestamp= asdatetime.now())
+            
+        # else:
+        #     Patient.objects.filter(id= patient_id).update(group_samples_result= 1)
+        #     Patient_Testing.objects.create(Q(id= test_result_id) & Q(patient_id= patient_id)).update(testing_status= result_status)
+                       
+        # if user_id:
+
+        #     check_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+        #     Master_Labs.objects.filter(id = check_lab_data.testing_lab_master_id).update(closing_balance = F('closing_balance') + 1)
+
+        return Response({'result': 'Result Updated'})
+
+
+#########################      UPDATE GROUP SAMPLES TEST RESULT       #########################
+class UpdatePoolMergePlateSamplesTestResult(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        pool_id = data.get('pool_id')
+        plate_id = data.get('plate_id')
+        result_status= data.get('result_status')
+
+        print(data, "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+
+        master_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+        testing_result_pool = MergedPlateSamples.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(merge_plate_id= plate_id) & Q(ind_pool_id= pool_id)).values()
+
+        for i in testing_result_pool:
+
+            if int(result_status) == 2:
+
+
+                # check_data = Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= i['patient_id']))
+
+                # if check_data:
+                #     Patient_Testing.objects.filter(Q(id= test_result_id) & Q(patient_id= i['patient_id'])).update(testing_status= result_status, last_update_timestamp= asdatetime.now())
+                #     Patient.objects.filter(id= i['patient_id']).update(pool_samples_result= 1)
+                # else:
+
+                Patient_Testing.objects.create(patient_id= i['patient_id'], testing_status= result_status, rtpcr_test= 1)
+                Patient.objects.filter(id= i['patient_id']).update(pool_samples_result= 1)
+                MergedPlateSamples.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(merge_plate_id= plate_id) & Q(ind_pool_id= pool_id) & Q()).update(test_result= int(result_status))
+
+                ppp = MergedPlateSamples.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(merge_plate_id= plate_id) & Q(ind_pool_id= pool_id) & Q()).values()
+                print(ppp)
+            
+            if int(result_status) == 3:
+
+                print(int(result_status))
+                print("HHHHHHHHHHHHHHHHHHHHHHHHH")
+
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                # print(master_lab_data.max_capacity)
+                # print(master_lab_data.last_genearte_lab_id)
+
+                # lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                # split_gen_lab_id = ''
+                # if master_lab_data.last_genearte_lab_id:
+                #     # print("CHECK LAB ID PRESENT")
+                #     split_gen_lab_id = master_lab_data.last_genearte_lab_id[1:]
+                # else:
+                #     # print("CHECK LAB ID NOT")
+                #     len_of_cap = str(master_lab_data.max_capacity)
+                #     split_gen_lab_id = '0000'
+
+
+                # if int(split_gen_lab_id) == lab_max_cap:
+                #     print("IF MAX LAB REACHED")
+                #     patient_data_update = Patient.objects.filter(id= i['patient_id']).update(lab_master_id= master_lab_data.id, test_lab_id= master_lab_data.last_genearte_lab_id, last_update_timestamp= asdatetime.now(), group_samples= 1, pool_samples_result= 1, submit_for_pool_testing =0)
+                #     Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_lab_id= 'A0001')
+                
+                # else:
+                #     print("HELLO HELLO HELLO")
+                #     update_lab_id_data = int(split_gen_lab_id) + 1
+                #     last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                #     patient_data_update = Patient.objects.filter(id= i['patient_id']).update(lab_master_id= master_lab_data.id, test_lab_id= last_lab_id, last_update_timestamp= asdatetime.now(), group_samples= 1, pool_samples_result= 1, submit_for_pool_testing =0)
+                #     Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_lab_id= last_lab_id)
+
+                patient_data_update = Patient.objects.filter(id= i['patient_id']).update(lab_master_id= master_lab_data.id, last_update_timestamp= asdatetime.now(), group_samples= 1, pool_samples_result= 1, submit_for_pool_testing =0, submit_for_individual_testing=1, de_pool= 1)
+                # Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_lab_id= last_lab_id)
+                MergedPlateSamples.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(merge_plate_id= plate_id) & Q(ind_pool_id= pool_id) & Q()).update(test_result= int(result_status))
+            
+            if int(result_status) == 6:
+
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                patient_data_update = Patient.objects.filter(id= i['patient_id']).update(lab_master_id= master_lab_data.id, last_update_timestamp= asdatetime.now(), group_samples= 1, pool_samples_result= 1, submit_for_pool_testing =0, submit_for_individual_testing=1, de_pool= 1)
+                # Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_lab_id= last_lab_id)
+                MergedPlateSamples.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(merge_plate_id= plate_id) & Q(ind_pool_id= pool_id) & Q()).update(test_result= int(result_status))
+
+        return Response({'result': 'Updated'})
+
+
+
+class AllPlateDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        print(data)
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        all_plate_details = MergedPlateDetails.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(testing_status= 0)).values('id', 'plate_no', 'testing_status', 'create_datetime', 'master_lab__lab_id')
+        all_plate_details_count = MergedPlateDetails.objects.filter(Q(test_lab_id= check_user_details.id) & Q(master_lab_id= check_user_details.testing_lab_master_id) & Q(testing_status= 0)).count()
+        
+        get_plate_data = paginatorCreation(all_plate_details, selected_page_no)
+        
+        return Response({'result': list(get_plate_data),'total_pg_count':all_plate_details_count}, status= status.HTTP_200_OK)
+
+
+
+
+class UpdatePrioritySampleData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        srf_id = self.request.query_params.get('srf_id')
+        mobile_number = self.request.query_params.get('mobile_number')
+        user_id = self.request.query_params.get('user_id')
+
+        check_swab_collector = Swab_Collection_Centre.objects.filter(user_id= user_id).get(user_id= user_id)
+
+        if check_swab_collector:
+            query_data = {'test_type__test_type_name': 'RTPCR'}
+            
+            if mobile_number:
+                query_data['mobile_number'] = mobile_number
+            elif srf_id:
+                query_data['srf_id'] = srf_id
+            
+            query_data['added_by_id__in']= Swab_Collection_Centre.objects.filter(phc_master_id=  check_swab_collector.phc_master_id).values_list('user_id', flat= True)
+
+            check_patient_data = Patient.objects.filter(**query_data).values('id', 'srf_id', 'mobile_number', 'patient_name', 'age', 'gender', 'patient_status', 'test_type__test_type_name', 'priority')
+
+            if check_patient_data:
+                return Response({'result': check_patient_data,}, status= status.HTTP_200_OK)
+            else:
+                return Response({'result':'Search Data is not comes under this PHC'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+        
+            return Response(check_swab_collector.user_id)
+        else:
+            return Response({'result':'Something went wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        patient_id = data.get('patient_id')
+
+        print(data)
+
+        Patient.objects.filter(id= patient_id).update(priority= 1)
+        
+        return Response({'result': 'Updated Sucessfully'}, status= status.HTTP_200_OK)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -4895,6 +7640,8 @@ class GetTLOPSPackageData(APIView):
 
 #########################          GET ALL PACKAGES          #########################
 class GetAllPackageDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -4942,8 +7689,8 @@ class GetAllPackageDetails(APIView):
                 # for i in check_all_slab_collector:
                 package_details = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector))).filter((Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17))).values()
                 print("AAAAAA     ", package_details)
-#                 package_details = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector)) & ((Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17)))).values()
-#                 print("AAAAAA     ", package_details)
+                # package_details = Package_Sampling.objects.filter(Q(user_id__in=list(check_all_slab_collector)) & ((Q(package_type_status= 6) & Q(package_type_action=16)) | (Q(package_type_status=7) & Q(package_type_action=17)))).values()
+                # print("AAAAAA     ", package_details)
                 
                 # for pd in package_details:
                 #     check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
@@ -5022,11 +7769,9 @@ class GetAllPackageDetails(APIView):
         
         else:
             return Response({'result': 'INVALID '})
+
+
 """
-
-
-
-
 #########################          GET ALL PACKAGES          #########################
 class GetAllPackageDetails(APIView):
 
@@ -5235,6 +7980,8 @@ class GetAllPackageDetails(APIView):
 
 
 class UpdatePatientSwabTestingResult(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -5254,6 +8001,8 @@ class UpdatePatientSwabTestingResult(APIView):
 
 #########################          UPDATE PACKAGE SAMPLES          #########################
 class UpadtePackagetoLabOrHigherOfc(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -5314,8 +8063,37 @@ class UpadtePackagetoLabOrHigherOfc(APIView):
 
 
 
+#########################          GET PACKAGES SAMPLES          #########################
+class GetPackageSamplesDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+        package_id = data.get('id')
+
+        get_package_samples_details = Patient.objects.filter(package_sampling_id= package_id).values()
+        
+
+        for i in get_package_samples_details:
+            test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+            spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+            i['test_type_name'] = test_type_data.test_type_name
+            i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+        return Response({'result':get_package_samples_details}, status= status.HTTP_200_OK)
+
+
+
+
+
+
 #########################          PHC USER LOCATION DETAILS          #########################
 class GetPHCUserLocationDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -5581,6 +8359,8 @@ class GetPHCUserLocationDetails(APIView):
 
 #########################          PHC USER LOCATION VILLAGE FILTER          #########################
 class GetPHCUserVillageDataFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -5618,6 +8398,8 @@ class GetPHCUserVillageDataFilter(APIView):
 
 #########################          PHC USER LOCATION WARD FILTER          #########################
 class GetPHCUserWardDataFilter(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -5657,6 +8439,8 @@ class GetPHCUserWardDataFilter(APIView):
 
 #########################          GET PHC MOBILE USERS          #########################
 class GetPHCMobileUsers(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -5686,6 +8470,8 @@ class GetPHCMobileUsers(APIView):
 
 #########################          GET ALL MO CONTRACING TACING DATA          #########################
 class AllContactTracingData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -5753,6 +8539,8 @@ class AllContactTracingData(APIView):
 
 #########################          ASSIGN CONTACT TRACING          #########################
 class AssignContactTracing(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
 
@@ -5781,6 +8569,8 @@ class AssignContactTracing(APIView):
 
 #########################          ACCEPT PACKAGE SAMPLES          #########################
 class LabReceivePackage(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -5865,9 +8655,11 @@ class AcceptPackagePatientSamples(APIView):
 
 
 
-
+"""
 #########################          ACCEPT PACKAGE SAMPLES          #########################
 class AcceptPackagePatientSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -5919,6 +8711,77 @@ class AcceptPackagePatientSamples(APIView):
         # get_phcm_user_details = Swab_Collection_Centre.objects.get(Q(swab_collection_centre_name= get_phcs_user_details.swab_collection_centre_name) & Q(role= get_roles.id))
 
         return Response('Updated Sucessfully')
+"""
+
+
+
+
+#########################          ACCEPT PACKAGE SAMPLES          #########################
+class AcceptPackagePatientSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        srf_id = data.get('srf_id')
+        result_status = data.get('received_status')
+        result_status_comment = data.get('reject_reason')
+        user_id = data.get('user_id')
+        package_id = data.get('package_id')
+
+        if result_status:
+
+            if result_status == 'Reject':
+                test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+                master_lab_data = Master_Labs.objects.get(id= test_lab_data.testing_lab_master_id)
+                get_patient_details = Patient.objects.filter(srf_id= srf_id).update(sample_status= result_status, lab_accepted_datetime= asdatetime.now(), samples_rejected= 1, package_sampling_id= None) # test_lab_id= master_lab_data.lab_id)
+
+                get_package_details = Package_Sampling.objects.get(id= package_id)
+                print(get_package_details.samples_count)
+                # Package_Sampling.objects.filter(id= package_id).update(samples_count= int(get_package_details.samples_count) - 1)
+
+
+                get_pa_data = Package_Sampling.objects.filter(id= package_id).values()
+
+            elif result_status == 'Inconclusive':
+
+                test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+                master_lab_data = Master_Labs.objects.get(id= test_lab_data.testing_lab_master_id)
+                get_patient_details = Patient.objects.filter(srf_id= srf_id).update(sample_status= result_status, lab_accepted_datetime= asdatetime.now(), samples_inconclusive= 1, package_sampling_id= None) # test_lab_id= master_lab_data.lab_id)
+
+                get_package_details = Package_Sampling.objects.get(id= package_id)
+                print(get_package_details.samples_count)
+
+            else:
+                test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+                master_lab_data = Master_Labs.objects.get(id= test_lab_data.testing_lab_master_id)
+                get_patient_details = Patient.objects.filter(srf_id= srf_id).update(sample_status= result_status, lab_accepted_datetime= asdatetime.now()) # test_lab_id= master_lab_data.lab_id)
+
+        if result_status_comment:
+
+            get_patient_details = Patient.objects.filter(srf_id= srf_id).update(sample_rejected_reason= result_status_comment, lab_accepted_datetime= asdatetime.now())
+
+            get_package_details = Package_Sampling.objects.get(id= package_id)
+            Package_Sampling.objects.filter(id= package_id).update(samples_count= int(get_package_details.samples_count) - 1)
+            
+
+            check_data = Package_Sampling.objects.filter(Q(id= package_id) & Q(samples_count = 0)).delete()
+            
+
+            get_pa_data = Package_Sampling.objects.filter(id= package_id).values()
+
+        # get_added_user_details = Patient.objects.get(srf_id= srf_id)
+
+        # get_roles = Roles.objects.get(role_name= 'PHCMO')
+
+        # get_phcs_user_details = Swab_Collection_Centre.objects.get(Q(user_id= get_added_user_details.added_by))
+
+        # get_phcm_user_details = Swab_Collection_Centre.objects.get(Q(swab_collection_centre_name= get_phcs_user_details.swab_collection_centre_name) & Q(role= get_roles.id))
+
+        return Response('Updated Sucessfully')
+
 
 
 
@@ -5928,6 +8791,8 @@ class AcceptPackagePatientSamples(APIView):
 
 #########################          GET REJECTED SAMPLES DETAILS          #########################
 class GetRejectedSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -5964,6 +8829,8 @@ class GetRejectedSamples(APIView):
 
 #########################          GENERATE LAB ID          #########################
 class GenerateLabId(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6007,6 +8874,8 @@ class GenerateLabId(APIView):
 
 #########################          AVALIABLE LAS FOR ASSIGN PACKAGES          #########################
 class GetTestingLabs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6094,6 +8963,8 @@ class GetTestingLabs(APIView):
 
 #########################          PHC LABS CHECK          #########################
 class CheckPHCLabAvailable(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6130,6 +9001,8 @@ class CheckPHCLabAvailable(APIView):
 
 #########################          DSO GET LABS          #########################
 class DSOReferenceTlabData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6154,6 +9027,8 @@ class DSOReferenceTlabData(APIView):
 
 #########################          CHECK PACKAGE REFERENCE TEST LABS          #########################
 class CheckPackageReferenceCheck(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6180,6 +9055,8 @@ class CheckPackageReferenceCheck(APIView):
 
 #########################          GENERATE USERNAME FOR MO LOGINS (PHCS AND PHCMC)          #########################
 class GenerateUsername(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
 
@@ -6254,6 +9131,8 @@ class GenerateUsername(APIView):
 
 #########################          CREATE NEW USERS          #########################
 class CreateUser(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6288,6 +9167,8 @@ class CreateUser(APIView):
 
 #########################          USER SUSPEND          #########################
 class UserSuspend(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6311,6 +9192,8 @@ class UserSuspend(APIView):
 
 #########################          GET USER DETAILS AND UPDATE USER DETAILS          #########################
 class GetUserAndUpdateUser(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6365,6 +9248,8 @@ class GetUserAndUpdateUser(APIView):
 
 #########################          GET ALL PHC USERS LIST MO LOGIN          #########################
 class GetMOALLUserDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -6497,6 +9382,8 @@ class GetMOALLUserDetails(APIView):
 
 #########################          GET PHC LOGIN DASHBOARD DETAILS          #########################
 class GetPHCDashboardDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -7156,46 +10043,46 @@ class GetThoDsoSsuDashboardDetails(APIView):
                 short_fall_cnt = 0
                 
 
-#                 for i in phc_user_ids:
-#                     phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
-#                     phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
-#                     no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                # for i in phc_user_ids:
+                #     phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
+                #     phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+                #     no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
 
-#                     no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #     no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
 
-#                     no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
-#                     no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
-#                     no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
+                #     no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                #     no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
+                #     no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
 
-#                     today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
-#                     if today_contact_tracing:
-#                         today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
-#                         cnt_data = 0
-#                         for i in today_contact_tracing_details:
-#                             cnt_data += 1
-#                         today_contact_tracing_assigned += cnt_data
-
-
-#                     today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
-#                     if today_total_sam_collected:
-#                         today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
-#                         cnt_smp_coll = 0
-#                         for i in today_sam_collected_details:
-#                             cnt_smp_coll+= 1
-#                         # today_total_sam_collected_cnt = today_sam_collected_details
-#                         today_total_sam_collected_cnt += cnt_smp_coll
+                #     today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                #     if today_contact_tracing:
+                #         today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                #         cnt_data = 0
+                #         for i in today_contact_tracing_details:
+                #             cnt_data += 1
+                #         today_contact_tracing_assigned += cnt_data
 
 
-#                     short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
-#                     if short_fall:
-#                         short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
-#                         # short_fall_cnt = short_fall_cnt_details
+                #     today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
+                #     if today_total_sam_collected:
+                #         today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
+                #         cnt_smp_coll = 0
+                #         for i in today_sam_collected_details:
+                #             cnt_smp_coll+= 1
+                #         # today_total_sam_collected_cnt = today_sam_collected_details
+                #         today_total_sam_collected_cnt += cnt_smp_coll
 
-#                         cnt_shrt_fall = 0
-#                         for i in short_fall_cnt_details:
-#                             cnt_shrt_fall += 1
 
-#                         short_fall_cnt += cnt_shrt_fall
+                #     short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
+                #     if short_fall:
+                #         short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
+                #         # short_fall_cnt = short_fall_cnt_details
+
+                #         cnt_shrt_fall = 0
+                #         for i in short_fall_cnt_details:
+                #             cnt_shrt_fall += 1
+
+                #         short_fall_cnt += cnt_shrt_fall
                 
                 
 
@@ -7451,46 +10338,46 @@ class GetThoDsoSsuDashboardDetails(APIView):
                 short_fall_cnt = 0
                 
 
-#                 for i in phc_user_ids:
-#                     phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
-#                     phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
-#                     no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                for i in phc_user_ids:
+                    phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
+                    phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+                    no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
 
-#                     no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                    no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
 
-#                     no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
-#                     no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
-#                     no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
+                    no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                    no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
+                    no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
 
-#                     today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
-#                     if today_contact_tracing:
-#                         today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
-#                         cnt_data = 0
-#                         for i in today_contact_tracing_details:
-#                             cnt_data += 1
-#                         today_contact_tracing_assigned += cnt_data
-
-
-#                     today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
-#                     if today_total_sam_collected:
-#                         today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
-#                         cnt_smp_coll = 0
-#                         for i in today_sam_collected_details:
-#                             cnt_smp_coll+= 1
-#                         # today_total_sam_collected_cnt = today_sam_collected_details
-#                         today_total_sam_collected_cnt += cnt_smp_coll
+                    today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                    if today_contact_tracing:
+                        today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                        cnt_data = 0
+                        for i in today_contact_tracing_details:
+                            cnt_data += 1
+                        today_contact_tracing_assigned += cnt_data
 
 
-#                     short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
-#                     if short_fall:
-#                         short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
-#                         # short_fall_cnt = short_fall_cnt_details
+                    today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
+                    if today_total_sam_collected:
+                        today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
+                        cnt_smp_coll = 0
+                        for i in today_sam_collected_details:
+                            cnt_smp_coll+= 1
+                        # today_total_sam_collected_cnt = today_sam_collected_details
+                        today_total_sam_collected_cnt += cnt_smp_coll
 
-#                         cnt_shrt_fall = 0
-#                         for i in short_fall_cnt_details:
-#                             cnt_shrt_fall += 1
 
-#                         short_fall_cnt += cnt_shrt_fall
+                    short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
+                    if short_fall:
+                        short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
+                        # short_fall_cnt = short_fall_cnt_details
+
+                        cnt_shrt_fall = 0
+                        for i in short_fall_cnt_details:
+                            cnt_shrt_fall += 1
+
+                        short_fall_cnt += cnt_shrt_fall
                 
                 
 
@@ -7691,26 +10578,26 @@ class GetThoDsoSsuDashboardDetails(APIView):
                 request_for_lab_allocation = 0
 
                 
-#                 for th in tho_data_get:
-#                     no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+                # for th in tho_data_get:
+                #     no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
 
-#                     swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
-#                     if swab_collectios_details:
-#                         for i in swab_collectios_details:
-#                             phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
-#                             # for j in phc_swab_collection_team:
-#                             #     total_samples_collected += Patient.objects.filter(added_by_id__in= j['user_id']).count()
-#                             #     rat_result_published += Patient.objects.filter(Q(added_by_id__in= j['user_id']) & Q(test_type_id= 1)).count()
+                #     swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                #     if swab_collectios_details:
+                #         for i in swab_collectios_details:
+                #             phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                #             # for j in phc_swab_collection_team:
+                #             #     total_samples_collected += Patient.objects.filter(added_by_id__in= j['user_id']).count()
+                #             #     rat_result_published += Patient.objects.filter(Q(added_by_id__in= j['user_id']) & Q(test_type_id= 1)).count()
 
-#                             #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= j['user_id']) & Q(test_lab__isnull= False)).count()
+                #             #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= j['user_id']) & Q(test_lab__isnull= False)).count()
 
-#                             #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+                #             #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
                            
-#                             total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
-#                             rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
-#                             packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
                             
-#                             request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
                 
                 
                 no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(role_id= 6)).count()
@@ -7762,28 +10649,28 @@ class GetThoDsoSsuDashboardDetails(APIView):
                 request_for_lab_allocation = 0
 
                 
-#                 for th in tho_data_get:
-#                     no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+                # for th in tho_data_get:
+                #     no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
 
-#                     swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
-#                     if swab_collectios_details:
-#                         for i in swab_collectios_details:
-#                             # phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values()
-#                             # for j in phc_swab_collection_team:
+                #     swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                #     if swab_collectios_details:
+                #         for i in swab_collectios_details:
+                #             # phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values()
+                #             # for j in phc_swab_collection_team:
 
-#                             #     total_samples_collected += Patient.objects.filter(added_by_id= j['user_id']).count()
-#                             #     rat_result_published += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(test_type_id= 1)).count()
+                #             #     total_samples_collected += Patient.objects.filter(added_by_id= j['user_id']).count()
+                #             #     rat_result_published += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(test_type_id= 1)).count()
 
-#                             #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id= j['user_id']) & Q(test_lab__isnull= False)).count()
+                #             #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id= j['user_id']) & Q(test_lab__isnull= False)).count()
 
-#                             #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+                #             #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
 
-#                             phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                #             phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
 
-#                             total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.now().date())).count()
-#                             rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date=asdatetime.now().date())).count()
-#                             packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date=asdatetime.now().date())).count()
-#                             request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                #             total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                #             rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                #             packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                #             request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date=asdatetime.now().date())).count()
                 
 
                 no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(role_id= 6)).count()
@@ -7819,6 +10706,8 @@ class GetThoDsoSsuDashboardDetails(APIView):
 
 #########################          GET THO DSO SSU DASHBOARD DETAILS          #########################
 class GetThoDsoSsuDashboardDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8235,9 +11124,11 @@ class GetThoDsoSsuDashboardDetails(APIView):
 
 
 
-
+"""
 #########################          GET TLAB TLAB OPS DASHBOARD DETAILS          #########################
 class GetTlabTlapOPSDashboardDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def post(self, request):
 
@@ -8363,6 +11254,303 @@ class GetTlabTlapOPSDashboardDetails(APIView):
                 return Response({'result':[], 'message':'Something went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
         else:   
             return Response({'result':[], 'message':'Something Went Wong'}, status= status.HTTP_400_BAD_REQUEST)
+"""
+
+
+#########################          GET TLAB TLAB OPS DASHBOARD DETAILS          #########################
+class GetTlabTlapOPSDashboardDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        user_id = data.get('user_id')
+
+        check_user = User_Role_Ref.objects.filter(user_id= user_id)
+
+        if check_user:
+            check_user_get = User_Role_Ref.objects.get(user_id= user_id)
+            get_user_lab = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+            if check_user_get.role.role_name == 'TLAB':
+                # get_user_lab = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+                from_date = data.get('from_date')
+                to_date = data.get('to_date')
+
+                if from_date and to_date:
+                    resp_data = {}
+                    resp_data['no_of_packages_arrived'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 8) | Q(package_type_action= 18)) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                    resp_data['no_of_packages_received'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 5) | Q(package_type_action= 15)) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                    return Response({'result': resp_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+                else:
+                    resp_data = {}
+                    resp_data['no_of_packages_arrived'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 8) | Q(package_type_action= 18)) & Q(lab_received_datetime__date= asdatetime.now().date())).count()
+                    resp_data['no_of_packages_received'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 5) | Q(package_type_action= 15)) & Q(lab_received_datetime__date= asdatetime.now().date())).count()
+                
+                    return Response({'result': resp_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+            if check_user_get.role.role_name == 'LABOP':
+                from_date = data.get('from_date')
+                to_date = data.get('to_date')
+
+                if from_date and to_date:
+
+                    samples_received_total_count = Package_Sampling.objects.filter(Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).aggregate(total_samples= Sum('samples_count'))
+                    print(samples_received_total_count)
+                    if samples_received_total_count['total_samples']:
+                        pass
+                    else:
+                        samples_received_total_count['total_samples'] = 0
+
+                    individual_testing = Package_Sampling.objects.filter(Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).values_list('id', flat=True)
+                    
+                    check_patients = Patient.objects.filter(Q(package_sampling_id__in= individual_testing) & Q(lab_accepted_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_accepted_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).values()
+                    
+                    individual_testing_under_testing = 0
+                    pool_testing_under_testing = 0
+                    result_not_declared = 0
+                    result_declared = 0
+                    total_c_positive = 0
+                    total_inconclusive = 0
+                    total_rejected_samples = 0 
+                    for i in check_patients:
+
+                        result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                        if i['group_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            individual_testing_under_testing += 1
+
+                        # if i['group_samples'] == '1' and i['group_samples_result'] == '1':
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+
+                        if i['pool_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            pool_testing_under_testing += 1
+
+
+                        # if i['pool_samples'] == '1' and i['pool_samples_result'] == '1':
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+                        # result_declared += Patient_Testing.objects.filter(patient_id= i['id']).count()
+                        total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                        total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                        total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(samples_rejected= 1)).count()
+                    
+                    return Response({'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+
+                else:
+                    samples_received_total_count = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date= asdatetime.now().date())).aggregate(total_samples= Sum('samples_count'))
+                    
+                    if samples_received_total_count['total_samples']:
+                        pass
+                    else:
+                        samples_received_total_count['total_samples'] = 0
+
+                    individual_testing = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date= asdatetime.now().date())).values_list('id', flat=True)
+                    check_patients = Patient.objects.filter(package_sampling_id__in= individual_testing).values()
+                    individual_testing_under_testing = 0
+                    pool_testing_under_testing = 0
+                    result_not_declared = 0
+                    result_declared = 0
+                    total_c_positive = 0
+                    total_inconclusive = 0
+                    total_rejected_samples = 0
+                    for i in check_patients:
+                        # if i['group_samples'] == 1 and i['group_samples_result'] == 0:
+                        #     individual_testing_under_testing += 1
+
+                        # if i['group_samples'] == 1 and i['group_samples_result'] == 1:
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+
+                        # if i['pool_samples'] == 1 and i['pool_samples_result'] == 0:
+                        #     pool_testing_under_testing += 1
+
+                        # if i['pool_samples'] == 1 and i['pool_samples_result'] == 1:
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+                        result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                        if i['group_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            individual_testing_under_testing += 1
+
+                        if i['pool_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            pool_testing_under_testing += 1
+                        
+                        total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                        total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                        total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(samples_rejected= 1)).count()
+
+                        
+                        
+                    
+                    # return Response({'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':result_not_declared, 'result_declared':result_declared})
+                    return Response({'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+            else:
+                return Response({'result':[], 'message':'Something went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+        else:   
+            return Response({'result':[], 'message':'Something Went Wong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
+#########################          GET TLAB TLAB OPS DASHBOARD MO THO DSO DETAILS          #########################
+class LabOpsDashboardGetThoDsoPhcData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        # selected_type = data.get('type')
+        check_testing_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id).values_list('testing_lab_master_id', flat=True)
+        if check_testing_lab_user:
+            check_packegs = list(set(Package_Sampling.objects.filter(lab_master_id= check_testing_lab_user[0]).values_list('user_id', flat=True)))
+            
+            dso_details = [] 
+            tho_details = []
+            tho_data_alrdy_present = []
+            mo_details = []
+
+            for i in check_packegs:
+                check_swb_col_user = Swab_Collection_Centre.objects.filter(user_id= i).values_list('phc_master_id', flat=True)
+                check_lab_user = Testing_Lab_Facility.objects.filter(user_id= i)
+
+
+                
+                if check_swb_col_user:
+                    check_master_phc = Master_PHC.objects.get(id= check_swb_col_user[0])
+
+                    # check_dso_data_present = [True for elem in dso_details if check_master_phc.district_code not in elem.values()]
+                    check_dso_data_present = any(check_master_phc.district_code in ele.values() for ele in dso_details)
+
+                    if not check_dso_data_present:
+                        check_master_dist_data = list(Master_District.objects.filter(district_code= check_master_phc.district_code).values('district_code', 'district_name_eng'))
+                        dso_details.append({'code':check_master_dist_data[0]['district_code'], 'name':check_master_dist_data[0]['district_name_eng']})
+                    
+
+                    # check_tho_data_present = [True for elem in tho_details if check_master_phc.block_code in elem.values()]
+                    # check_tho_data_present = any(str(check_master_phc.block_code) in ele.values() for ele in tho_details)
+                    # if not check_tho_data_present:
+
+                    if check_master_phc.block_code not in [str(block_id['code']) for block_id in tho_details]:
+                        check_master_block_data = list(Master_Block.objects.filter(block_code= check_master_phc.block_code).values('block_code', 'block_name_eng'))
+                        tho_details.append({'code':check_master_block_data[0]['block_code'], 'name':check_master_block_data[0]['block_name_eng']})
+                    
+
+                    # check_mo_data_present = [True for elem in mo_details if check_master_phc.phc_code in elem.values()]
+                    check_mo_data_present = any(check_master_phc.phc_code in ele.values() for ele in mo_details)
+                    if not check_mo_data_present:
+                        mo_details.append({'code':check_master_phc.phc_code, 'name':check_master_phc.phc_name})
+
+                    
+                elif check_lab_user:
+                    pass
+
+
+            return Response({'dso_details': dso_details, 'tho_details': tho_details, 'mo_details': mo_details}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+#########################          GET TLAB TLAB OPS DASHBOARD MO THO DSO DETAILS          #########################
+class LabOpsDashboardGetSelectedTypeDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        selected_code = data.get('selected_code')
+        selected_type = data.get('selected_type')
+
+        check_testing_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id).values_list('testing_lab_master_id', flat=True)
+
+        if check_testing_lab_user:
+
+            master_phc_data = Master_PHC.objects.none()
+
+
+            if selected_type == 'DSO':
+                master_phc_data = Master_PHC.objects.filter(district_code= selected_code).values_list('id', flat=True)
+            elif selected_type == 'THO':
+                master_phc_data = Master_PHC.objects.filter(block_code= selected_code).values_list('id', flat=True)
+            elif selected_type == 'MO':
+                master_phc_data = Master_PHC.objects.filter(phc_code= selected_code).values_list('id', flat=True)
+
+            phc_users = Swab_Collection_Centre.objects.filter(phc_master_id__in= master_phc_data).values_list('user_id', flat=True)
+
+            check_packegs = Package_Sampling.objects.filter(Q(lab_master_id= check_testing_lab_user[0]) & Q(user_id__in= phc_users)).values_list('id', flat=True)
+            
+
+            # individual_testing = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id)).values_list('id', flat=True)
+            
+            check_patients = Patient.objects.filter(package_sampling_id__in= check_packegs).values()
+
+            # samples_received_total_count = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date= asdatetime.now().date())).aggregate(total_samples= Sum('samples_count'))
+            samples_received_total_count = Package_Sampling.objects.filter(Q(lab_master_id= check_testing_lab_user[0]) & Q(user_id__in= phc_users)).aggregate(total_samples= Sum('samples_count'))
+                    
+            if samples_received_total_count['total_samples']:
+                pass
+            else:
+                samples_received_total_count['total_samples'] = 0
+
+            individual_testing_under_testing = 0
+            pool_testing_under_testing = 0
+            result_not_declared = 0
+            result_declared = 0
+            total_c_positive = 0
+            total_inconclusive = 0
+            total_rejected_samples = 0
+            for i in check_patients:
+                result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                if i['group_samples'] == 1 and result_declared_check:
+                    result_declared += 1
+                else:
+                    individual_testing_under_testing += 1
+
+                if i['pool_samples'] == 1 and result_declared_check:
+                    result_declared += 1
+                else:
+                    pool_testing_under_testing += 1
+                
+                total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= check_testing_lab_user[0]) & Q(samples_rejected= 1)).count()
+
+            return Response({'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+
+        else:
+            return Response({'result':'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
 
 
 
@@ -8386,6 +11574,8 @@ class GetTlabTlapOPSDashboardDetails(APIView):
 
 #########################          GET ACTIVATED PHC TEST KITS DETAILS          #########################
 class GetAvailableMOTestKits(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         data = request.data
@@ -8429,10 +11619,64 @@ class GetAvailableMOTestKits(APIView):
 
 
 
+#########################          GET ASSIGNED PHC MSC USER TEST KITS DETAILS          #########################
+class GetAvailableMSCTestKits(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+
+        user_id  = data.get('user_id')
+
+        get_swab_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        mobile_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= get_swab_detail.phc_master_id) & Q(role__role_name= 'PHCM')).values()
+
+        response_list = []
+        for i in mobile_swab_collector:
+            res={}
+            res['user_name'] = User.objects.get(id= i['user_id']).first_name
+            res['msc_user_id'] = i['user_id']
+            total_test_kit_assigned = Phc_MSC_Id_Test_Kit_Id.objects.filter(user_id= i['user_id']).aggregate(total_capacity= Sum('capacity'))
+            if total_test_kit_assigned['total_capacity']:
+                res['capacity'] = total_test_kit_assigned['total_capacity']
+            else:
+                res['capacity'] =  0
+
+            response_list.append(res)
+
+        return Response({'result':response_list,}, status= status.HTTP_200_OK)
+
+
+
+#########################          GET ASSIGNED PHC MSC USER TEST KITS DETAILS          #########################
+class AssignMSCUserTestKits(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        
+        user_id  = data.get('user_id')
+        msc_user_id = data.get('selected_user')
+        test_kit_id  = data.get('test_kit_id')
+        capacity  = data.get('capacity')
+
+        get_swab_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        Phc_MSC_Id_Test_Kit_Id.objects.create(user_id= msc_user_id, phc_id= get_swab_detail.phc_master_id, test_kit_id= test_kit_id, capacity= capacity)
+       
+        return Response({'result': 'Test kit Assigned Sucessfully',}, status= status.HTTP_200_OK)
+
+
+
+
+
 
 
 #########################          GET TESTING KIT DETAILS          #########################
 class GetTestingKitDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         data = request.data
@@ -8459,6 +11703,8 @@ class GetTestingKitDetails(APIView):
 
 #########################          GET ASSIGNED CONTACT TRACING DETAILS          #########################
 class MSCAssignedData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8476,6 +11722,8 @@ class MSCAssignedData(APIView):
 
 #########################          GET ASSIGNED COMPLETED PENDING MSC COUNT          #########################
 class GetAssignedCompletedPendingMscCounts(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8497,6 +11745,8 @@ class GetAssignedCompletedPendingMscCounts(APIView):
 
 #########################          SAVE CONTACT TRACING          #########################
 class SaveContactTracing(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         pass
@@ -8505,6 +11755,8 @@ class SaveContactTracing(APIView):
 
 #########################          Accept Package          #########################
 class AcceptPackage(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8549,6 +11801,8 @@ class AcceptPackage(APIView):
 
 #########################          GET CONTACTEE PATIENT DETAILS          #########################
 class GetContacteePatientDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8600,6 +11854,8 @@ class GetContacteePatientDetails(APIView):
 
 #########################          CREATE DYNAMIC PHC USERNAME          #########################
 class CreatePHCUserNames(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8709,6 +11965,8 @@ def haversine(lat1, lon1, lat2, lon2):
 
 #########################          FILTER TESTING LABS          #########################
 class FilterDSOLabsBasedLocation(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8779,6 +12037,8 @@ class FilterDSOLabsBasedLocation(APIView):
 
 #########################          GET CONTACT TRACING DATA          #########################
 class GetContactTracingDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -8829,7 +12089,9 @@ class GetContactTracingDetails(APIView):
 #!-------------------------------------------------------------------------------------------------------------------------------------          
 #!-------------------------------------------------------------------------------------------------------------------------------------          
 
-class Posttaluk(GenericAPIView):
+class Posttaluk(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):  
         data = request.data
@@ -8851,6 +12113,8 @@ class Posttaluk(GenericAPIView):
 
 #########################          CREATE LABS          #########################
 class Postlabs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -8932,6 +12196,8 @@ class GetEditLabs(APIView):
 
 #########################          EDIT LABS          #########################
 class GetEditLabs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -9023,6 +12289,8 @@ class GetEditLabs(APIView):
 
 #########################          EDIT UPDATE LABS          #########################
 class EditUpdateLabs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -9042,7 +12310,10 @@ class EditUpdateLabs(APIView):
 
 
 
-class get_all_labs(GenericAPIView):
+class get_all_labs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self,request):
         
         master_lab =   Master_Labs.objects.filter(active= 1).values()
@@ -9078,7 +12349,10 @@ class get_all_labs(GenericAPIView):
     
 
 
-class Postdelete(GenericAPIView):
+class Postdelete(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
         data = request.data
         print(data)
@@ -9090,7 +12364,10 @@ class Postdelete(GenericAPIView):
 
 
 
-class Posttestkit(GenericAPIView):
+class Posttestkit(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
         data = request.data
         print(data)
@@ -9102,7 +12379,10 @@ class Posttestkit(GenericAPIView):
 
 
 
-class All_testkit(GenericAPIView):
+class All_testkit(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self,request):
        
         master_testkit =   Testing_Kit_Barcode.objects.filter().values()
@@ -9113,7 +12393,10 @@ class All_testkit(GenericAPIView):
 
 
 
-class get_all_patients(GenericAPIView):
+class get_all_patients(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self,request):
 
         all_patient = Patient.objects.all().values()
@@ -9163,6 +12446,8 @@ class get_all_contact_testing(GenericAPIView):
 """
 
 class get_all_contact_testing(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self,request):
 
@@ -9195,7 +12480,9 @@ class get_all_contact_testing(APIView):
 #?-----------------       ALL USERS               -----------------------------------------------------------------------------------
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  
-class get_all_user(GenericAPIView):
+class get_all_user(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
    
     def get(self,request):
 
@@ -9216,7 +12503,10 @@ class get_all_user(GenericAPIView):
  
 
 
-class get_all_generated_package(GenericAPIView):
+class get_all_generated_package(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self,request):
         
         package_details = Package_Sampling.objects.all().values()
@@ -9269,6 +12559,8 @@ class get_all_lab_allocation(GenericAPIView):
 
 
 class get_all_lab_allocation(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
     def get(self,request):
 
@@ -9312,6 +12604,9 @@ class get_all_lab_allocation(APIView):
 
 #########################          ASSIGN TEST KIT TO PHC           #########################
 class AssignTestKitToPhc(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
         data = request.data
         print(data)
@@ -9327,6 +12622,9 @@ class AssignTestKitToPhc(APIView):
 
 #########################          DELETE PHC TEST KIT         #########################
 class DeletePHCTestKit(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
         data = request.data
         print(data)
@@ -9364,6 +12662,9 @@ class DeletePHCTestKit(APIView):
 
 #########################      TESTING KIT BARCODE               #########################
 class TestingKitBarcode(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         test_kit_barcode = Testing_Kit_Barcode.objects.filter(active=1).values()
         return Response({'result': test_kit_barcode,'message':'Sucessfull'})
@@ -9373,6 +12674,9 @@ class TestingKitBarcode(APIView):
 
 #########################      USER TARGET ASSIGNED COUNTS               #########################
 class UserTargetAssignedCounts(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     
     def post(self, request):
 
@@ -9476,6 +12780,8 @@ class GetPHCUseraddedPatientsReport(APIView):
 
 #########################          PHC ADDED PATIENTS REPORT          #########################
 class GetPHCUseraddedPatientsReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -9611,6 +12917,8 @@ class PHCDateWiseCollectionStatusAndResultTotalCount(APIView):
 
 #########################      PHC DATE WISE COLLECTION STATUS AND RESULT TOTAL COUNT               #########################
 class PHCDateWiseCollectionStatusAndResultTotalCount(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -9721,6 +13029,8 @@ class PHCDateWiseContectTestingStatusReport(APIView):
 
 #########################      PHC DATE WISE CONTACT TRACING STATUS REPORT               #########################
 class PHCDateWiseContectTestingStatusReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -9778,6 +13088,8 @@ class PHCDateWiseContectTestingStatusReport(APIView):
 
 #########################      PHC DATE WISE CONTACT TRACING STATUS INDIVIDUAL USER COUNT               #########################
 class PHCDateWiseContectTestingStatusIndividualUserReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -9806,6 +13118,8 @@ class PHCDateWiseContectTestingStatusIndividualUserReport(APIView):
 
 #########################      PHC DATE WISE CONTACT TRACING STATUS INDIVIDUAL USER COUNT               #########################
 class PHCDateWiseContectTestingStatusIndividualUserDetailReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data            =   request.data
@@ -9824,6 +13138,8 @@ class PHCDateWiseContectTestingStatusIndividualUserDetailReport(APIView):
 
 #########################      PHC DATE WISE COLLECTION STATUS AND RESULT TOTAL COUNT INDIVIDUAL               #########################
 class PHCDateWiseCollectionStatusAndResultTotalCountndividual(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -9921,6 +13237,9 @@ class PHCDateWiseSampleRejectedCountReport(APIView):
 
 #########################      PHC DATE WISE SAMPLES REJECTED COUNT REPORT               #########################
 class PHCDateWiseSampleRejectedCountReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
         user_id = data.get('user_id')
@@ -9956,6 +13275,9 @@ class PHCDateWiseSampleRejectedCountReport(APIView):
 
 #########################      PHC DATE WISE SAMPLES REJECTED COUNT REPORT INDETAIL               #########################
 class PHCDateWiseSampleRejectedIndetailReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         data = request.data
         user_id     =   data.get('user_id')
@@ -10023,6 +13345,8 @@ class PHCTargetvsActualSwabCollection(APIView):
 
 #########################      PHC TARGET VS ACTUAL SWAB COLLECTION               #########################
 class PHCTargetvsActualSwabCollection(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -10068,6 +13392,8 @@ class PHCTargetvsActualSwabCollection(APIView):
 
 #########################      PHC TARGET VS ACTUAL SWAB COLLECTION DATE VIEW               #########################
 class PHCTargetvsActualSwabCollectionDateView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
 
@@ -10159,7 +13485,7 @@ class SwabCollectionBySwabCollector(APIView):
             swab_col_rep_details['balance'] = no_of_patient_alloted - no_of_swab_collected
             
             
-#             if (no_of_patient_alloted != 0 and no_of_swab_collected != 0):
+            # if (no_of_patient_alloted != 0 and no_of_swab_collected != 0):
             if (no_of_patient_alloted != 0):
                 swab_col_rep_data.append(swab_col_rep_details)
                 total_swab_coll += 1
@@ -10238,6 +13564,8 @@ class SwabCollectionBySwabCollector(APIView):
 
 #########################      SWAB COLLECTION BY SWAB COLLECTOR               #########################
 class SwabCollectionBySwabCollector(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -10302,6 +13630,8 @@ class SwabCollectionBySwabCollector(APIView):
 
 #########################      SWAB COLLECTION BY SWAB COLLECTOR SWABCOLLECTOR VIEW               #########################
 class SwabCollectionBySwabCollectorSwabcollectorView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -10431,6 +13761,8 @@ class SwabPackageDespatchDetailsCount(APIView):
 
 #########################      SWAB PACKAGE DISPATCH DETAILS               #########################
 class SwabPackageDespatchDetailsCount(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -10515,6 +13847,8 @@ class SwabPackageDespatchDetailsCount(APIView):
 
 #########################      SWAB PACKAGE DISPATCH DETAILS               #########################
 class SwabPackageDespatchDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data
@@ -10599,6 +13933,8 @@ class PHCPackageLabWiseReport(APIView):
 
 #########################      PHC PACKAGE LAB WISE REPORT               #########################
 class PHCPackageLabWiseReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -10734,6 +14070,8 @@ class THOTargetvsActualSwabCollection(APIView):
 
 #########################      THO TARGET VS ACTUAL SWAB COLLECTION               #########################
 class THOTargetvsActualSwabCollection(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -10793,6 +14131,8 @@ class THOTargetvsActualSwabCollection(APIView):
     
 #########################      THO TARGET VS ACTUAL SWAB COLLECTION VIEW               #########################
 class THOTargetvsActualSwabCollectionView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -10954,6 +14294,8 @@ class THOSwabDispatchDetails(APIView):
 
 #########################      THO SWAB DISPATCH DETAILS               #########################
 class THOSwabDispatchDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -11282,6 +14624,8 @@ class THOPackageLabWiseReport(APIView):
 
 #########################      THO PACKAGE LAB WISE REPORT               #########################
 class THOPackageLabWiseReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -11367,13 +14711,7 @@ class THOPackageLabWiseReport(APIView):
         return Response({'result': this_final_data, 'no_of_labs':no_of_labs, 'total_samples':total_samples, 'message': 'Sucess'})
 
 
-
-
-
-
-
-
-    
+ 
 
 """
 #########################      THO DATE WISE COLLECTED SAMPLES               #########################
@@ -11405,6 +14743,8 @@ class THODateWiseSamplesCollectionReport(APIView):
 
 #########################      THO DATE WISE COLLECTED SAMPLES               #########################
 class THODateWiseSamplesCollectionReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -11442,6 +14782,8 @@ class THODateWiseSamplesCollectionReport(APIView):
 
 #########################      THO DATE WISE COLLECTED SAMPLES PHC VIEW1               #########################
 class THODateWisePHCWiseSamplesCollectionReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -11543,6 +14885,8 @@ class DSOTargetvsActualSwabCollection(APIView):
 
 #########################      DSO TARGET VS ACTUAL SWAB COLLECTION               #########################
 class DSOTargetvsActualSwabCollection(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -11619,6 +14963,8 @@ class DSOTargetvsActualSwabCollection(APIView):
 
 #########################      DSO SWAB DISPATCH DETAILS               #########################
 class DSOTargetvsActualSwabCollectionView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -11708,6 +15054,8 @@ class DSOSwabDispatchDetails(APIView):
 
 #########################      DSO SWAB DISPATCH DETAILS               #########################
 class DSOSwabDispatchDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -11781,10 +15129,6 @@ class DSOSwabDispatchDetails(APIView):
         # rep_data.append({'total_package_created':total_package_created, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho,})
         
         return Response({'result': rep_data, 'total_pg_count': check_dso_tho_count, 'total_package_created':total_package_created, 'total_package_dispatched_lab':total_package_dispatched_lab, 'total_package_dispatched_to_tho':total_package_dispatched_to_tho, 'message': 'Sucess'})
-
-
-
-
 
 
 
@@ -11873,6 +15217,8 @@ class DSOPackageLabWiseReport(APIView):
 
 #########################      DSO PACKAGE LAB WISE REPORT               #########################
 class DSOPackageLabWiseReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         
@@ -11960,10 +15306,6 @@ class DSOPackageLabWiseReport(APIView):
 
 
 
-
-    
-    
-
 """
 #########################      DSO DATE WISE COLLECTED SAMPLES               #########################
 class DSODateWiseSamplesCollectionReport(APIView):
@@ -12000,6 +15342,8 @@ class DSODateWiseSamplesCollectionReport(APIView):
 
 #########################      DSO DATE WISE COLLECTED SAMPLES               #########################
 class DSODateWiseSamplesCollectionReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12047,6 +15391,8 @@ class DSODateWiseSamplesCollectionReport(APIView):
 
 #########################      DSO DATE WISE COLLECTED SAMPLES TALUK VIEW1               #########################
 class DSODateWiseTalukDatewiseSamplesCollectionReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12080,6 +15426,9 @@ class DSODateWiseTalukDatewiseSamplesCollectionReport(APIView):
 
 #########################      SSU DATE WISE TOTAL TARGET COUNT               #########################
 class SSUDateWiseTotalTargetCountReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
 
         data        = request.data
@@ -12120,7 +15469,10 @@ class SSUDateWiseTotalTargetCountReport(APIView):
 
 
 #########################      SSU DATE WISE TOTAL TARGET COUNT DETAILS               #########################
-class SSUViewTotalTargetCountDetails(GenericAPIView):
+class SSUViewTotalTargetCountDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
         data        = request.data
         date= data.get('date')
@@ -12182,6 +15534,8 @@ class SSUSwabCollectorsTeam(APIView):
 
 #########################      SSU SWAB COLLECTION TEAM               #########################
 class SSUSwabCollectorsTeam(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12231,11 +15585,10 @@ class SSUSwabCollectorsTeam(APIView):
 
 
 
-
-
-
 #########################      SSU TOTAL SAMPLE COLLECTED               #########################
 class SSUTotalSampleCollected(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12385,6 +15738,9 @@ class SSUTotalSampleCollected(APIView):
 
 #########################      SSU DATE WISE GENERATED PACKAGE REPORT               #########################
 class SSUDateWiseGeneratedPackageReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self,request):
         data = request.data
         id = data.get('user_id')
@@ -12410,6 +15766,8 @@ class SSUDateWiseGeneratedPackageReport(APIView):
 
 #########################      SSU DATE WISE GENERATED PACKAGE REPORT DETAILS               #########################
 class SSUDateWiseGeneratedPackageDetailsReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self,request):
         data        = request.data
@@ -12436,9 +15794,6 @@ class SSUDateWiseGeneratedPackageDetailsReport(APIView):
         else:
             return Response('Date Required')
 
-
-        
-        
 
 """
 #########################      SSU DATE WISE COLLECTED SAMPLES               #########################
@@ -12471,6 +15826,8 @@ class SSUDateWiseSamplesCollectionReport(APIView):
 
 #########################      SSU DATE WISE COLLECTED SAMPLES               #########################
 class SSUDateWiseSamplesCollectionReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
 
@@ -12515,6 +15872,8 @@ class SSUDateWiseSamplesCollectionReport(APIView):
 
 #########################      SSU DATE WISE COLLECTED SAMPLES VIEW1               #########################
 class SSUDateWiseDistrictWiseSamplesCollectionCountReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12560,6 +15919,8 @@ class SSUDateWiseDistrictWiseSamplesCollectionCountReport(APIView):
 
 #########################      SSU DATE WISE COLLECTED SAMPLES VIEW2               #########################
 class SSUDateWiseDistrictWiseTalukWiseSamplesCollectionCountReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12589,6 +15950,8 @@ class SSUDateWiseDistrictWiseTalukWiseSamplesCollectionCountReport(APIView):
 
 #########################      SSU DSO DATE WISE COLLECTED SAMPLES VIEW3               #########################
 class SSUDSODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionCountReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12619,6 +15982,8 @@ class SSUDSODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionCountReport(API
 
 #########################      SSU DATE WISE COLLECTED SAMPLES VIEW4               #########################
 class SSUDSOTHODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionDetailsReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -12673,6 +16038,8 @@ class SSUDSOTHODateWiseDistrictWiseTalukWisePHCwiseSamplesCollectionDetailsRepor
 
 #########################      LAB WISE DELAY REPORT               #########################
 class SSUGetLabwiseDelayReportTest(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     """def get (self,request):
         Arr=[]
@@ -13133,6 +16500,8 @@ class SSUGetLabwiseDelayReportTest(APIView):
 
 #########################      LAB WISE DELAY REPORT               #########################
 class SSUGetLabwiseDelayReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     """def get (self,request):
         Arr=[]
@@ -14333,8 +17702,9 @@ class SSUGetOverallLabDelayD4(GenericAPIView):
 
 
 #########################      OVERALL LAB WISE DELAY REPORT               #########################
-# class SSUGetOverallLabDelayD4(GenericAPIView):
 class SSUGetOverallLabDelayD4(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post (self,request):
         data        = request.data
@@ -14864,8 +18234,9 @@ class SSUGetMasterSysAsym(GenericAPIView):
 
 
 #########################      SYMPTOMATIC  ASYMPTOMATIC POSITIVITY RATE REPORT              #########################
-# class SSUGetMasterSysAsym(GenericAPIView):
 class SSUGetMasterSysAsym(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
 
@@ -15487,6 +18858,8 @@ class SSUGetMasterRatRtpcrPositivityReport(APIView):
 
 #########################      RAT RTPCR POSITIVITY RATE REPORT              #########################
 class SSUGetMasterRatRtpcrPositivityReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         Arr=[]
@@ -15804,7 +19177,362 @@ class SSUGetMasterRatRtpcrPositivityReport(APIView):
             return Response("user not found")
 
     
+
+
+
+
+#########################      TLAB ALL ACCEPTED PACKAGES              #########################
+class TlabAllAcceptedPackagesReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        # sc = Package_Sampling.objects.filter(test_lab_id=user_id).values()
+        test_lab_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+        
+        sc_data = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id, lab_accept_reject_status= 1).values().order_by('-id')
+        sc_count = Package_Sampling.objects.filter(test_lab_id=test_lab_data.id, lab_master_id= test_lab_data.testing_lab_master_id, lab_accept_reject_status= 1).count()
+        
+        
+        sc_details = paginatorCreation(sc_data, selected_page_no)
+
+        for i in sc_details:
+            i['testing_lab_name'] = test_lab_data.testing_lab_facility_name
+            check_swb_col = Swab_Collection_Centre.objects.filter(id= i['swab_cc_id'])
+            if check_swb_col:
+                check_swb_col = Swab_Collection_Centre.objects.get(id= i['swab_cc_id'])
+                phc_data = Master_PHC.objects.get(id= check_swb_col.phc_master_id)
+                i['phc_name'] = phc_data.phc_name
+            else:
+                i['phc_name'] = Master_Labs.objects.filter(id= test_lab_data.testing_lab_master_id).values_list('lab_id', flat=True)[0]
+        
+        return Response({'details':list(sc_details), 'total_pg_count': sc_count,'result':'successfull '})
+
+
+
+
+
+
+
+#########################      TLAB OPS DATE WISE REPORT              #########################
+class TlabOpsDateWiseReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        check_lab_user = list(Testing_Lab_Facility.objects.filter(user_id= user_id).values('id', 'testing_lab_master_id'))
+
+        print(check_lab_user)
+        print(check_lab_user[0]['testing_lab_master_id'])
+
+        if check_lab_user:
+
+            all_packages = Package_Sampling.objects.filter(Q(lab_master_id= check_lab_user[0]['testing_lab_master_id'])).values('lab_received_datetime__date').distinct().order_by('-lab_ops_received_datetime')
+
+            response_data = []
+
+            for date in all_packages:
+                res = {}
+                print(date['lab_received_datetime__date'])
+
+                if date['lab_received_datetime__date']:
+
+                    package_details = Package_Sampling.objects.filter(Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= asdatetime.strftime(date['lab_received_datetime__date'], '%Y-%m-%d'))).values_list('id', flat=True)
+                    
+                    patient_details = Patient.objects.filter(package_sampling_id__in= package_details).values()
+
+                    samples_received_total_count = Package_Sampling.objects.filter(Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= asdatetime.strftime(date['lab_received_datetime__date'], '%Y-%m-%d'))).aggregate(total_samples= Sum('samples_count'))
+                        
+                    if samples_received_total_count['total_samples']:
+                        pass
+                    else:
+                        samples_received_total_count['total_samples'] = 0
+
+                    individual_testing = Package_Sampling.objects.filter(Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= asdatetime.strftime(date['lab_received_datetime__date'], '%Y-%m-%d'))).values_list('id', flat=True)
+                    check_patients = Patient.objects.filter(package_sampling_id__in= individual_testing).values()
+                    
+                    individual_testing_under_testing = 0
+                    pool_testing_under_testing = 0
+                    result_not_declared = 0
+                    result_declared = 0
+                    total_c_positive = 0
+                    total_inconclusive = 0
+                    total_rejected_samples = 0
+
+                    for i in check_patients:
+                        
+
+                        result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                        if i['group_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            individual_testing_under_testing += 1
+
+                        if i['pool_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            pool_testing_under_testing += 1
+                        
+                        total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                        total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                        total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(samples_rejected= 1)).count()
+
+                    response_data.append({'date':date['lab_received_datetime__date'], 'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+
+            return Response({'result': response_data})
+
+
+
+#########################      TLAB OPS DATE WISE REPORT VIEW1              #########################
+class TlabOpsDateWiseTHOReportView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        selected_date = data.get('date')
+
+        check_lab_user = list(Testing_Lab_Facility.objects.filter(user_id= user_id).values('id', 'testing_lab_master_id'))
+
+
+        if check_lab_user:
+
+            all_packages_user = list(set(Package_Sampling.objects.filter(Q(lab_master_id= check_lab_user[0]['testing_lab_master_id'])& Q(lab_received_datetime__date= selected_date)).values_list('user_id', flat=True)))
+
+            tho_details = Swab_Collection_Centre.objects.filter(user_id__in= all_packages_user).values_list('tho_id', flat=True)
+            
+            response_data = []
+            
+
+            for td in tho_details:
+                # res = {}
+                chek_block_master_details = Master_Block.objects.get(id= THO.objects.get(id= td).city_id)
+                # res['block_code'] = chek_block_master_details.block_code
+                # res['block_name_eng'] = chek_block_master_details.block_name_eng
+                # res['tho_id'] = td
+
+                tho_scc_user = list(set(Swab_Collection_Centre.objects.filter(tho_id= td).values_list('user_id', flat=True)))
+
+
+
+                samples_received_total_count = Package_Sampling.objects.filter(Q(user_id__in= tho_scc_user) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= selected_date)).aggregate(total_samples= Sum('samples_count'))
+                        
+                if samples_received_total_count['total_samples']:
+                    pass
+                else:
+                    samples_received_total_count['total_samples'] = 0
+
+                individual_testing = Package_Sampling.objects.filter(Q(user_id__in= tho_scc_user) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= selected_date)).values_list('id', flat=True)
+                check_patients = Patient.objects.filter(package_sampling_id__in= individual_testing).values()
+                
+                individual_testing_under_testing = 0
+                pool_testing_under_testing = 0
+                result_not_declared = 0
+                result_declared = 0
+                total_c_positive = 0
+                total_inconclusive = 0
+                total_rejected_samples = 0
+
+                for i in check_patients:
+                    
+                    result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                    if i['group_samples'] == 1 and result_declared_check:
+                        result_declared += 1
+                    else:
+                        individual_testing_under_testing += 1
+
+                    if i['pool_samples'] == 1 and result_declared_check:
+                        result_declared += 1
+                    else:
+                        pool_testing_under_testing += 1
+                    
+                    total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                    total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                    total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(samples_rejected= 1)).count()
+
+                response_data.append({'block_code': chek_block_master_details.block_code, 'block_name_eng': chek_block_master_details.block_name_eng, 'tho_id': td,'date':selected_date, 'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+            print(response_data)
+            print("GGGGGGGGGGGGGGGGGGGGGGGGGGGGG")
+            return Response({'result': response_data}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result': 'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+#########################      TLAB OPS DATE WISE REPORT VIEW2              #########################
+class TlabOpsDateWiseTHOMOReportView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        selected_tho = data.get('selected_tho')
+        selected_date = data.get('date')
+
+        check_lab_user = list(Testing_Lab_Facility.objects.filter(user_id= user_id).values('id', 'testing_lab_master_id'))
+
+
+        if check_lab_user:
+
+            # all_packages_user = list(set(Package_Sampling.objects.filter(Q(lab_master_id= check_lab_user[0]['testing_lab_master_id'])& Q(lab_received_datetime__date= selected_date)).values_list('user_id', flat=True)))
+
+            mo_details = list(set(Swab_Collection_Centre.objects.filter(tho_id= selected_tho).values_list('phc_master_id', flat=True)))
+            
+            response_data = []
+
+            for md in mo_details:
+                # res = {}
+                check_master_phc_details = Master_PHC.objects.get(id= md)
+                # res['block_code'] = chek_block_master_details.block_code
+                # res['block_name_eng'] = chek_block_master_details.block_name_eng
+                # res['tho_id'] = td
+
+                tho_scc_user = list(set(Swab_Collection_Centre.objects.filter(phc_master_id= md).values_list('user_id', flat=True)))
+
+
+                samples_received_total_count = Package_Sampling.objects.filter(Q(user_id__in= tho_scc_user) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= selected_date)).aggregate(total_samples= Sum('samples_count'))
+                        
+                if samples_received_total_count['total_samples']:
+                    pass
+                else:
+                    samples_received_total_count['total_samples'] = 0
+
+                individual_testing = Package_Sampling.objects.filter(Q(user_id__in= tho_scc_user) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= selected_date)).values_list('id', flat=True)
+                check_patients = Patient.objects.filter(package_sampling_id__in= individual_testing).values()
+                
+                individual_testing_under_testing = 0
+                pool_testing_under_testing = 0
+                result_not_declared = 0
+                result_declared = 0
+                total_c_positive = 0
+                total_inconclusive = 0
+                total_rejected_samples = 0
+
+                for i in check_patients:
+                    
+                    result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                    if i['group_samples'] == 1 and result_declared_check:
+                        result_declared += 1
+                    else:
+                        individual_testing_under_testing += 1
+
+                    if i['pool_samples'] == 1 and result_declared_check:
+                        result_declared += 1
+                    else:
+                        pool_testing_under_testing += 1
+                    
+                    total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                    total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                    total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(samples_rejected= 1)).count()
+
+                response_data.append({'phc_code': check_master_phc_details.phc_code, 'phc_name': check_master_phc_details.phc_name, 'mo_id': md,'date':selected_date, 'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+
+            return Response({'result': response_data})
+
+
+
+
+#########################      TLAB OPS DATE WISE REPORT VIEW3              #########################
+class TlabOpsDateWiseTHOMOIndetailReportView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        selected_mo = data.get('selected_mo')
+        selected_date = data.get('date')
+
+        check_lab_user = list(Testing_Lab_Facility.objects.filter(user_id= user_id).values('id', 'testing_lab_master_id'))
+
+
+        if check_lab_user:
+
+            # all_packages_user = list(set(Package_Sampling.objects.filter(Q(lab_master_id= check_lab_user[0]['testing_lab_master_id'])& Q(lab_received_datetime__date= selected_date)).values_list('user_id', flat=True)))
+
+            mo_user_details = list(set(Swab_Collection_Centre.objects.filter(phc_master_id= selected_mo).values_list('user_id', flat=True)))
+            
+            response_data = []
+
+            # res = {}
+            check_master_phc_details = Master_PHC.objects.get(id= selected_mo)
+            # res['block_code'] = chek_block_master_details.block_code
+            # res['block_name_eng'] = chek_block_master_details.block_name_eng
+            # res['tho_id'] = td
+
+
+            samples_received_total_count = Package_Sampling.objects.filter(Q(user_id__in= mo_user_details) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= selected_date)).aggregate(total_samples= Sum('samples_count'))
+                    
+            if samples_received_total_count['total_samples']:
+                pass
+            else:
+                samples_received_total_count['total_samples'] = 0
+
+            individual_testing = Package_Sampling.objects.filter(Q(user_id__in= mo_user_details) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(lab_received_datetime__date= selected_date)).values_list('id', flat=True)
+            check_patients = Patient.objects.filter(package_sampling_id__in= individual_testing).values()
+            
+            individual_testing_under_testing = 0
+            pool_testing_under_testing = 0
+            result_not_declared = 0
+            result_declared = 0
+            total_c_positive = 0
+            total_inconclusive = 0
+            total_rejected_samples = 0
+
+            for i in check_patients:
+                
+                result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                if i['group_samples'] == 1 and result_declared_check:
+                    result_declared += 1
+                else:
+                    individual_testing_under_testing += 1
+
+                if i['pool_samples'] == 1 and result_declared_check:
+                    result_declared += 1
+                else:
+                    pool_testing_under_testing += 1
+                
+                total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= check_lab_user[0]['testing_lab_master_id']) & Q(samples_rejected= 1)).count()
+
+            response_data.append({'phc_code': check_master_phc_details.phc_code, 'phc_name': check_master_phc_details.phc_name,'date':selected_date, 'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+
+            return Response({'result': response_data})
+
+
+
+
+
+
     
         
 
@@ -15984,6 +19712,8 @@ class GetSSUTargetSetup(APIView):
 
 #########################      SSU TARGET SETUP      #########################
 class GetSSUTargetSetup(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -16158,6 +19888,8 @@ class TargetForDSO(APIView):
 
 #########################      TARGET FOR DSO      #########################
 class TargetForDSO(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -16252,9 +19984,9 @@ class GetDSOTarget(APIView):
                 check_taluk_data = Master_Block.objects.filter(block_code= i['block_code'])
                 if check_taluk_data:
                     taluk_data = Master_Block.objects.get(block_code= i['block_code'])
-#                     print(i['block_code'])
+                    # print(i['block_code'])
                     get_tho_data_filter = THO.objects.filter(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
-#                     print(get_tho_data_filter)
+                    # print(get_tho_data_filter)
                     if get_tho_data_filter:
                         get_tho_data = THO.objects.get(Q(dso_id= dso_details.id) & Q(city= taluk_data.id))
 
@@ -16283,6 +20015,8 @@ class GetDSOTarget(APIView):
 
 #########################      GET DSO TARGET      #########################
 class GetDSOTarget(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -16451,6 +20185,8 @@ class TargetForTHO(APIView):
 
 #########################      TARGET FOR THO      #########################
 class TargetForTHO(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -16567,6 +20303,8 @@ class GetTHOTarget(APIView):
 
 #########################      GET THO TARGET      #########################
 class GetTHOTarget(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -16704,6 +20442,8 @@ class TargetForPHC(APIView):
 
 #########################      TARGET FOR PHC      #########################
 class TargetForPHC(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -16783,6 +20523,9 @@ class TargetForPHC(APIView):
 
 #########################      GET PHC TARGETS      #########################
 class PHCTargets(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         
         data = request.data
@@ -16792,9 +20535,9 @@ class PHCTargets(APIView):
         get_user = Swab_Collection_Centre.objects.get(user_id = user_id)
 
 
-#         target_assign_contact_tracing =  Contact_Tracing.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date=asdatetime.now().date())).count()
+        # target_assign_contact_tracing =  Contact_Tracing.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date=asdatetime.now().date())).count()
 
-#         target_assign_ili          =  ILI.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date= asdatetime.now().date())).count()
+        # target_assign_ili          =  ILI.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(date_of_contact_created__date= asdatetime.now().date())).count()
 
         target_assign_contact_tracing =  Contact_Tracing.objects.filter(Q(assigned_phc=get_user.phc_master_id) & Q(assigned_date__date=asdatetime.now().date())).count()
 
@@ -16819,6 +20562,8 @@ class PHCTargets(APIView):
 
 #########################          TARGET ASSIGN TO USER          #########################
 class TargetAssigntoUser(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -16849,6 +20594,8 @@ class TargetAssigntoUser(APIView):
 
 #########################          GET USER ASSIGNED TARGETS          #########################
 class GetAssignedUserTargets(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -17950,6 +21697,8 @@ class GroupSmaples(APIView):
 
 #########################          GROUP SAMPLES          #########################
 class GroupSmaples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18069,11 +21818,6 @@ class GroupSmaples(APIView):
         get_patient_ids = Patient.objects.filter(Q(lab_master_id= test_lab_data_get.testing_lab_master_id) & Q(lab_ops_received_datetime__isnull= False) & Q(group_samples= 1) & Q(group_samples_result= 0) & Q(submit_for_individual_testing = 0)).values_list('id', flat=True)[:94]
         print(get_patient_ids)
         return Response({'result':res_list, 'total_no_of_single_samples':total_no_of_single_samples, 'last_plate_no':last_plate_no, 'get_patient_ids':get_patient_ids})
-
-
-
-
-
 
 
 
@@ -18244,6 +21988,8 @@ class PoolSmaples(APIView):
 
 #########################          POOL SAMPLES          #########################
 class PoolSmaples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18389,6 +22135,8 @@ class PoolSmaples(APIView):
 
 #########################          SUBMIT FOR INDIVIDUAL TESTING          #########################
 class SubmitForIndividualTesting(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18405,6 +22153,8 @@ class SubmitForIndividualTesting(APIView):
 
 #########################          SUBMIT FOR POOL TESTING          #########################
 class SubmitForPoolTesting(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18422,12 +22172,10 @@ class SubmitForPoolTesting(APIView):
     
     
     
-
-
-
-
 #########################          UPDATE LAB ID / GENERATE LAB ID          #########################
 class UpdatePatientLabId(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -18508,9 +22256,11 @@ class UpdatePatientLabId(APIView):
 
 
 
-
+"""
 #########################      GET LAB PLATE DATA      #########################
 class GetTlabOPSPlateData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18528,12 +22278,44 @@ class GetTlabOPSPlateData(APIView):
             i['lab_id'] = master_lab_data.lab_id
 
         return Response(get_plate_details)
+"""
+
+
+#########################      GET LAB PLATE DATA      #########################
+class GetTlabOPSPlateData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        get_tlf_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        get_plate_details = GroupPlate.objects.filter(Q(test_lab_id= get_tlf_data.id) & Q(master_lab_id= get_tlf_data.testing_lab_master_id)).values().order_by('id')
+
+        for i in get_plate_details:
+            master_lab_data = Master_Labs.objects.get(id= i['master_lab_id'])
+            i['lab_name'] = master_lab_data.lab_name
+            i['lab_id'] = master_lab_data.lab_id
+
+        return Response(get_plate_details)
 
 
 
 
+
+
+
+
+
+"""
 #########################      GET PLATE SAMPLES DETAILS       #########################
 class GetTlabOPSPlatePatientDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18587,11 +22369,75 @@ class GetTlabOPSPlatePatientDetails(APIView):
         print("GET GROUP DATA", len(get_plate_details))
         
         return Response(get_plate_details)
+"""
+
+
+#########################      GET PLATE SAMPLES DETAILS       #########################
+class GetTlabOPSPlatePatientDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        plate_id = data.get('plate_id')
+
+        get_tlf_data = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        master_data = Master_Labs.objects.get(id= get_tlf_data.testing_lab_master_id)
+
+        get_group_sam_plate_id = GroupPlate.objects.get(id= plate_id)
+
+        get_plate_details = GroupSamples.objects.filter(Q(plate_id= plate_id) & Q(test_lab_id= get_tlf_data.id) & Q(master_lab_id= get_tlf_data.testing_lab_master_id)).values()
+
+        for i in get_plate_details:
+
+            get_patient_data = Patient.objects.get(id= i['patient_id'])
+
+            check_data = Patient_Testing.objects.filter(Q(patient_id= i['patient_id']) & Q(rtpcr_test= 1))
+            if check_data:
+                get_patient_test_data = Patient_Testing.objects.get(Q(patient_id= i['patient_id']) & Q(rtpcr_test= 1))
+                i['test_result'] = get_patient_test_data.testing_status
+                i['test_result_id'] = get_patient_test_data.id
+
+                # Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 1)
+                Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 0)
+
+            else:
+                # test_result_create = Patient_Testing.objects.create(patient_id= i['patient_id'], testing_status= 2, rtpcr_test= 1)
+                test_result_create = Patient_Testing.objects.create(patient_id= i['patient_id'], testing_status= 4, rtpcr_test= 1)
+                i['test_result'] = 4
+                i['test_result_id'] = test_result_create.id
+                # Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 1)
+                Patient.objects.filter(id= i['patient_id']).update(group_samples_result= 0)
+
+            GroupSamples.objects.filter(id= i['id']).update(test_result= 4)
+
+            i['srf_id'] = get_patient_data.srf_id
+            i['patient_name'] = get_patient_data.patient_name
+            i['mobile_number'] = get_patient_data.mobile_number
+            i['rat_created_id'] = get_patient_data.rat_created_id
+            i['lab_id'] = get_patient_data.test_lab_id
+            i['plate_no']= get_group_sam_plate_id.plate_no
+            i['patient_id']= i['patient_id']
+            i['age']= str(get_patient_data.age) +' '+ get_patient_data.age_type
+            i['patient_status'] = get_patient_data.patient_status
+
+        
+        return Response(get_plate_details)
+
+
+
+
 
 
 
 #########################      UPDATE GROUP SAMPLES TEST RESULT       #########################
 class UpdateGroupSamplesTestResult(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18622,6 +22468,8 @@ class UpdateGroupSamplesTestResult(APIView):
 
 #########################      GET LAB POOL PLATE DATA      #########################
 class GetTlabOPSPoolPlateData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18643,6 +22491,8 @@ class GetTlabOPSPoolPlateData(APIView):
 
 #########################      GET POOL PLATE SAMPLES DETAILS       #########################
 class GetTlabOPSPoolPlatePatientDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18802,6 +22652,8 @@ class UpdatePoolSamplesTestResult(APIView):
 
 #########################      UPDATE POOL SAMPLES TEST RESULT       #########################
 class UpdatePoolSamplesTestResult(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18887,6 +22739,8 @@ class UpdatePoolSamplesTestResult(APIView):
 
 #########################          GET DE-SAMPLED PATIENT DETAILS          #########################
 class GetDesampledPatientDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -18926,11 +22780,10 @@ class GetDesampledPatientDetails(APIView):
     
 
 
-
-
-
 #########################          CREATE POOL IDS          #########################
 class UpdatePatientPoolLabId(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
@@ -19134,6 +22987,8 @@ class UpdatePatientPoolLabId(APIView):
 
 #########################          POOL PATIENT TEST RESULT VIEW          #########################
 class PatientPoolTestResultView(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -19165,6 +23020,8 @@ class PatientPoolTestResultView(APIView):
 
 #########################          ACCEPT PACKAGE THO DSO SSU          #########################
 class AcceptPackageSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -19195,6 +23052,8 @@ class AcceptPackageSamples(APIView):
 
 #########################          ICMR ACCESS TOKEN          #########################
 class ICMRGetAccessToken(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -19222,6 +23081,8 @@ class ICMRGetAccessToken(APIView):
 
 #########################          ICMR ADD RECORD          #########################
 class ICMRAddPatientRecord(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -19465,9 +23326,11 @@ class UniversalSearch(APIView):
 """
 
 
-
+"""
 #########################          Universal Search          #########################
 class UniversalSearch(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -19675,6 +23538,232 @@ class UniversalSearch(APIView):
             return Response({'result':fil_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
         else:
             return Response({'result':[], 'message': 'Something went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+"""
+
+
+
+#########################          Universal Search          #########################
+class UniversalSearch(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        srf_id = data.get('srf_id')
+        mobile_number = data.get('mobile_number')
+
+        if srf_id and mobile_number:
+            fil_data = Patient.objects.filter(Q(mobile_number= mobile_number) & Q(srf_id= srf_id)).values()
+
+            for i in fil_data:
+                # loc_add_data = Patient_Address.objects.filter(patient_id = i['id'])
+                # out_add_data = Outside_Patient_Address.objects.filter(patient_id= i['id'])
+
+                # if loc_add_data:
+                #     for j in loc_add_data:
+                #         i['state_name'] = j.state_name
+                #         i['']
+
+                test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+                i['test_type_name'] = test_type_data.test_type_name
+                i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+                if test_type_data.test_type_name == 'RAT':
+                    test_kit_details = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if test_kit_details:
+                        i['testing_kit_name'] = test_kit_details[0]
+                    else:
+                        i['testing_kit_name'] = '-'
+
+
+
+                pt_data = Patient_Testing.objects.filter(patient_id= i['id'])
+                if pt_data:
+                    for j in pt_data:
+                        i['lab_received_date'] = str(j.lab_received_date)
+                        i['rtpcr_test'] = j.rtpcr_test
+                        i['testing_status'] = j.testing_status
+                        i['test_date'] = j.create_timestamp
+                else:
+                    i['lab_received_date'] = '-'
+                    i['rtpcr_test'] = '-'
+                    i['testing_status'] = 4
+                    i['test_date'] = '-'
+
+                # pckg_data = Package_Sampling.objects.filter(id = i['package_sampling_id'])
+                # if pckg_data:
+                #     for j in pckg_data:
+                #         i['package_sampling_name'] = j.package_sampling_name
+                #         i['package_sampling_barcode'] = j.package_sampling_barcode
+                #         i['package_type_status'] = j.package_type_status
+                #         i['package_type_action'] = j.package_type_action
+
+                pckg_data = list(Package_Sampling.objects.filter(id = i['package_sampling_id']).values('package_sampling_name', 'package_sampling_barcode', 'package_type_status', 'package_type_action', 'lab_master__lab_name'))
+                if pckg_data:
+                    # for j in pckg_data:
+                    i['package_sampling_name'] = pckg_data[0]['package_sampling_name']
+                    i['package_sampling_barcode'] = pckg_data[0]['package_sampling_barcode']
+                    i['package_type_status'] = pckg_data[0]['package_type_status']
+                    i['package_type_action'] = pckg_data[0]['package_type_action']
+
+                    if pckg_data[0]['package_type_status'] and pckg_data[0]['package_type_action']:
+                        i['lab_name'] = pckg_data[0]['lab_master__lab_name']
+                    else:
+                        i['lab_name'] = '-'
+
+                else:
+                    i['package_sampling_name'] = '-'
+                    i['package_sampling_barcode'] = '-'
+                    i['package_type_status'] = 33
+                    i['package_type_action'] = 33
+                    i['lab_name'] = '-'
+
+
+            return Response({'result':fil_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+
+
+        if mobile_number:
+            fil_data = Patient.objects.filter(Q(mobile_number= mobile_number)).values()
+
+            for i in fil_data:
+                # loc_add_data = Patient_Address.objects.filter(patient_id = i['id'])
+                # out_add_data = Outside_Patient_Address.objects.filter(patient_id= i['id'])
+
+                # if loc_add_data:
+                #     for j in loc_add_data:
+                #         i['state_name'] = j.state_name
+                #         i['']
+
+                test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+                i['test_type_name'] = test_type_data.test_type_name
+                i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+                if test_type_data.test_type_name == 'RAT':
+                    check_test_kit = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_test_kit:
+                        i['testing_kit_name'] = check_test_kit[0]
+                    else:
+                        i['testing_kit_name'] = '-'
+
+                    # i['testing_kit_name'] = (Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True))[0]
+
+                pt_data = Patient_Testing.objects.filter(patient_id= i['id'])
+                if pt_data:
+                    for j in pt_data:
+                        i['lab_received_date'] = str(j.lab_received_date)
+                        i['rtpcr_test'] = j.rtpcr_test
+                        i['testing_status'] = j.testing_status
+                        i['test_date'] = j.create_timestamp
+                else:
+                    i['lab_received_date'] = '-'
+                    i['rtpcr_test'] = '-'
+                    i['testing_status'] = 4
+                    i['test_date'] = '-'
+
+                pckg_data = list(Package_Sampling.objects.filter(id = i['package_sampling_id']).values('package_sampling_name', 'package_sampling_barcode', 'package_type_status', 'package_type_action', 'lab_master__lab_name'))
+                
+                if pckg_data:
+                    # for j in pckg_data:
+                    i['package_sampling_name'] = pckg_data[0]['package_sampling_name']
+                    i['package_sampling_barcode'] = pckg_data[0]['package_sampling_barcode']
+                    i['package_type_status'] = pckg_data[0]['package_type_status']
+                    i['package_type_action'] = pckg_data[0]['package_type_action']
+
+                    if pckg_data[0]['package_type_status'] and pckg_data[0]['package_type_action']:
+                        i['lab_name'] = pckg_data[0]['lab_master__lab_name']
+                    else:
+                        i['lab_name'] = '-'
+                else:
+                    i['package_sampling_name'] = '-'
+                    i['package_sampling_barcode'] = '-'
+                    i['package_type_status'] = 33
+                    i['package_type_action'] = 33
+                    i['lab_name'] = '-'
+
+            return Response({'result':fil_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+
+
+        if srf_id:
+            fil_data = Patient.objects.filter(Q(srf_id= srf_id)).values()
+
+            for i in fil_data:
+                # loc_add_data = Patient_Address.objects.filter(patient_id = i['id'])
+                # out_add_data = Outside_Patient_Address.objects.filter(patient_id= i['id'])
+
+                # if loc_add_data:
+                #     for j in loc_add_data:
+                #         i['state_name'] = j.state_name
+                #         i['']
+
+                test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                spcm_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+
+                i['test_type_name'] = test_type_data.test_type_name
+                i['specimen_type_name'] = spcm_type_data.specimen_type_name
+
+                if test_type_data.test_type_name == 'RAT':
+
+                    check_test_kit = Testing_Kit_Barcode.objects.filter(id= i['testing_kit_barcode_id']).values_list('testing_kit_barcode_name', flat=True)
+                    if check_test_kit:
+                        i['testing_kit_name'] = check_test_kit[0]
+                    else:
+                        i['testing_kit_name'] = '-'
+
+
+                pt_data = Patient_Testing.objects.filter(patient_id= i['id'])
+                if pt_data:
+                    for j in pt_data:
+                        i['lab_received_date'] = str(j.lab_received_date)
+                        i['rtpcr_test'] = j.rtpcr_test
+                        i['testing_status'] = j.testing_status
+                        i['test_date'] = j.create_timestamp
+                else:
+                    i['lab_received_date'] = '-'
+                    i['rtpcr_test'] = '-'
+                    i['testing_status'] = 4
+                    i['test_date'] = '-'
+
+                # pckg_data = Package_Sampling.objects.filter(id = i['package_sampling_id'])
+                # if pckg_data:
+                #     for j in pckg_data:
+                #         i['package_sampling_name'] = j.package_sampling_name
+                #         i['package_sampling_barcode'] = j.package_sampling_barcode
+                #         i['package_type_status'] = j.package_type_status
+                #         i['package_type_action'] = j.package_type_action
+
+                pckg_data = list(Package_Sampling.objects.filter(id = i['package_sampling_id']).values('package_sampling_name', 'package_sampling_barcode', 'package_type_status', 'package_type_action', 'lab_master__lab_name'))
+                
+                if pckg_data:
+                    # for j in pckg_data:
+                    i['package_sampling_name'] = pckg_data[0]['package_sampling_name']
+                    i['package_sampling_barcode'] = pckg_data[0]['package_sampling_barcode']
+                    i['package_type_status'] = pckg_data[0]['package_type_status']
+                    i['package_type_action'] = pckg_data[0]['package_type_action']
+
+                    if pckg_data[0]['package_type_status'] and pckg_data[0]['package_type_action']:
+                        i['lab_name'] = pckg_data[0]['lab_master__lab_name']
+                    else:
+                        i['lab_name'] = '-'
+                else:
+                    i['package_sampling_name'] = '-'
+                    i['package_sampling_barcode'] = '-'
+                    i['package_type_status'] = 33
+                    i['package_type_action'] = 33
+                    i['lab_name'] = '-'
+
+            return Response({'result':fil_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+        else:
+            return Response({'result':[], 'message': 'Something went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
 
 
 
@@ -19769,9 +23858,9 @@ class UniversalSearch(APIView):
 
 
 
-class GetPostTesting_Lab_Facility(GenericAPIView):
-    serializer_class    = Testing_Lab_FacilitySerializer
-    queryset            = Testing_Lab_Facility.objects.all()
+class GetPostTesting_Lab_Facility(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         all_Testing_Lab_Facility = Testing_Lab_Facility.objects.all().values()
@@ -19828,9 +23917,9 @@ class GetPostTesting_Lab_Facility(GenericAPIView):
 
     
 
-class GetPutPatchTesting_Lab_Facility(GenericAPIView):
-    serializer_class    = Testing_Lab_FacilitySerializer
-    queryset            = Testing_Lab_Facility.objects.all()
+class GetPutPatchTesting_Lab_Facility(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request,pk):
        
@@ -19928,9 +24017,9 @@ class GetPutPatchTesting_Lab_Facility(GenericAPIView):
 #?----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-class GetPostSSU(GenericAPIView):
-    serializer_class    = SSUSerializer
-    queryset            = SSU.objects.all()
+class GetPostSSU(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         all_SSU = SSU.objects.all().values()
@@ -19987,9 +24076,9 @@ class GetPostSSU(GenericAPIView):
                 })
 
 
-class GetPutPatchSSU(GenericAPIView):
-    serializer_class    = SSUSerializer
-    queryset            = SSU.objects.all()
+class GetPutPatchSSU(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request,pk):
        
@@ -20095,9 +24184,9 @@ class GetPutPatchSSU(GenericAPIView):
 #?----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-class GetPostDSO(GenericAPIView):
-    serializer_class    = DSOSerializer
-    queryset            = DSO.objects.all()
+class GetPostDSO(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         all_DSO = DSO.objects.all().values()
@@ -20153,9 +24242,9 @@ class GetPostDSO(GenericAPIView):
                 })
 
 
-class GetPutPatchDSO(GenericAPIView):
-    serializer_class    = DSOSerializer
-    queryset            = DSO.objects.all()
+class GetPutPatchDSO(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request,pk):
        
@@ -20262,9 +24351,9 @@ class GetPutPatchDSO(GenericAPIView):
 #?----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-class GetPostTHO(GenericAPIView):
-    serializer_class    = THOSerializer
-    queryset            = THO.objects.all()
+class GetPostTHO(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         all_THO = THO.objects.all().values()
@@ -20320,9 +24409,9 @@ class GetPostTHO(GenericAPIView):
                 })
 
 
-class GetPutPatchTHO(GenericAPIView):
-    serializer_class    = THOSerializer
-    queryset            = THO.objects.all()
+class GetPutPatchTHO(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request,pk):
        
@@ -20430,9 +24519,9 @@ class GetPutPatchTHO(GenericAPIView):
 #?----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-class GetPostSwab_Collection_Centre(GenericAPIView):
-    serializer_class    = Swab_Collection_CentreSerializer
-    queryset            = Swab_Collection_Centre.objects.all()
+class GetPostSwab_Collection_Centre(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         all_Swab_Collection_Centre = Swab_Collection_Centre.objects.all().values()
@@ -20490,9 +24579,9 @@ class GetPostSwab_Collection_Centre(GenericAPIView):
                 })
 
 
-class GetPutPatchSwab_Collection_Centre(GenericAPIView):
-    serializer_class    = Swab_Collection_CentreSerializer
-    queryset            = Swab_Collection_Centre.objects.all()
+class GetPutPatchSwab_Collection_Centre(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request,pk,):
        
@@ -20606,9 +24695,9 @@ class GetPutPatchSwab_Collection_Centre(GenericAPIView):
 #?----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-class GetPostTesting_Kit_Barcode(GenericAPIView):
-    serializer_class    = Testing_Kit_BarcodeSerializer
-    queryset            = Testing_Kit_Barcode.objects.all()
+class GetPostTesting_Kit_Barcode(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         all_Swab_Testing_Kit_Barcode = Testing_Kit_Barcode.objects.all().values()
@@ -20639,9 +24728,9 @@ class GetPostTesting_Kit_Barcode(GenericAPIView):
             return Response({'result': 'testing_kit_barcode_id Created Successfully'})
 
         
-class GetPutPatchTesting_Kit_Barcode(GenericAPIView):
-    serializer_class    = Testing_Kit_BarcodeSerializer
-    queryset            = Testing_Kit_Barcode.objects.all()
+class GetPutPatchTesting_Kit_Barcode(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request,pk): 
         try:
@@ -20707,9 +24796,9 @@ class GetPutPatchTesting_Kit_Barcode(GenericAPIView):
 #?----------------------------------------------------------------------------------------------------------------------------------------------
 
 
-class GetPostPackage_Sampling(GenericAPIView):
-    serializer_class    = Package_SamplingSerializer
-    queryset            = Package_Sampling.objects.all()
+class GetPostPackage_Sampling(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get (self,request):
         all_Package_Sampling = Package_Sampling.objects.all().values()
@@ -20747,9 +24836,9 @@ class GetPostPackage_Sampling(GenericAPIView):
             return Response({'result': 'Package_Sampling Created Successfully'})
 
         
-class GetPutPatchPackage_Sampling(GenericAPIView):
-    serializer_class    = Package_SamplingSerializer
-    queryset            = Package_Sampling.objects.all()
+class GetPutPatchPackage_Sampling(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request,pk): 
         try:
@@ -20879,6 +24968,8 @@ class GetPutPatchPackage_Sampling(GenericAPIView):
 
 
 class AutomatePatientCreate(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -20952,6 +25043,8 @@ class AutomatePatientCreate(APIView):
 
 
 class CompleteCreatedSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
 
@@ -20987,6 +25080,8 @@ class CompleteCreatedSamples(APIView):
 
 
 class DeleteMasterPHC(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
 
