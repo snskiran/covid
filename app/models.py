@@ -1,3 +1,4 @@
+from hashlib import blake2b, blake2s
 from random import sample
 from django.core.exceptions import MultipleObjectsReturned
 from django.db import models
@@ -182,7 +183,6 @@ class Master_PHC(models.Model):
 
 
 
-
 class Testing_Lab_Master(models.Model):
 
     lab_name = models.CharField(max_length=250, blank=True, null=True)
@@ -193,7 +193,6 @@ class Testing_Lab_Master(models.Model):
 
     current_count                   =   models.IntegerField(blank=True, null=True)
     availability_limit              =   models.IntegerField(blank=True, null=True)
-
 
 
 
@@ -228,7 +227,8 @@ class Master_Labs(models.Model):
     closing_balance = models.IntegerField(blank=True, null=True)
     active = models.IntegerField(default= 1, blank=True, null=True)
 
-    last_genearte_lab_id = models.CharField(max_length=120 ,blank=True, null=True)
+    last_genearte_individual_lab_id = models.CharField(max_length=120 ,blank=True, null=True)
+    last_genearte_pool_lab_id = models.CharField(max_length=120 ,blank=True, null=True)
 
     # def __str__(self):
     #     return '%s' % (str(self.address)+'     '+str(self.lab_type_id))
@@ -439,6 +439,16 @@ class Testing_Kit_Barcode(models.Model):
         
 
 
+class RTPCR_Test_Kits(models.Model):
+    rtpcr_test_kit_name = models.CharField(max_length=250, blank=True, null=True)
+    rtpcr_testing_kit_barcode_value       =   models.CharField(max_length=50, blank=True, null=True)
+    create_timestamp                =   models.DateTimeField(auto_now_add=True,blank=True,null=True)
+    last_update_timestamp           =   models.DateTimeField(auto_now_add=False ,blank=True,null=True)
+    active           =   models.IntegerField(default=1,blank=True,null=True)
+
+
+
+
 class Package_Sampling(models.Model):
     
     user                            =   models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True)
@@ -471,6 +481,8 @@ class Package_Sampling(models.Model):
     lab_ops_received_datetime = models.DateTimeField(auto_now_add=False, blank=True,null=True)
 
     created_group_pool_data = models.IntegerField(default=0, blank=True, null=True)
+
+    lab_accept_reject_status = models.IntegerField(default=0, blank=True, null=True)
        
 
 
@@ -503,7 +515,7 @@ class Patient(models.Model):
     age                             =   models.IntegerField( blank=True, null=True)
     age_type = models.CharField(max_length=10, blank=True, null=True)
     id_proof_type                   =   models.CharField(max_length=120, blank=True, null=True)
-    aadhar_number                   =   models.CharField(max_length=12, blank=True, null=True)
+    aadhar_number                   =   models.CharField(max_length=120, blank=True, null=True)
     ration_card_number              =   models.CharField(max_length=15, blank=True, null=True)
     vaccine_status                  =   models.CharField(max_length=10, blank=True, null=True)
     vaccine_mobile_registered       =   models.CharField(max_length=150, blank=True, null=True)
@@ -554,12 +566,30 @@ class Patient(models.Model):
     pool_samples_result = models.IntegerField(default=0, blank=True, null=True)
 
     samples_rejected = models.IntegerField(default=0, blank=True, null=True)
-    
+    samples_inconclusive = models.IntegerField(default=0, blank=True, null=True)
+
+    father_name = models.CharField(max_length= 150, blank=True, null=True)
+    occupation = models.CharField(max_length= 150, blank=True, null=True)
+    mode_of_transport = models.CharField(max_length= 150, blank=True, null=True)
+    arogya_setu_app = models.CharField(max_length= 150, blank=True, null=True)
+    vaccine_type = models.CharField(max_length= 150, blank=True, null=True)
+    driver_license = models.CharField(max_length= 150, blank=True, null=True)
+    passport = models.CharField(max_length= 150, blank=True, null=True)
+    sample_collected_from = models.CharField(max_length= 150, blank=True, null=True)
+
+    first_dose_date = models.DateField(auto_now_add=False, blank=True, null=True)
+
+    hospitalized = models.CharField(max_length= 150, blank=True, null=True)
+
     sero_category = models.CharField(max_length= 250, blank=True, null=True)
     igg_sample = models.CharField(max_length= 50, blank=True, null=True)
 
-    
+    priority = models.IntegerField(default= 0, blank=False, null=False)
+    retest = models.IntegerField(default= 0, blank=False, null=False)
 
+    de_pool = models.IntegerField(default= 0, blank=False, null=False)
+
+    
 
 class Patient_Address(models.Model):
     
@@ -624,40 +654,6 @@ class Patient_Testing(models.Model):
     last_update_timestamp           =   models.DateTimeField(auto_now_add=False,verbose_name="Last_Update_TimeStamp",blank=True,null=True)
 
     
-"""
-class Contact_Tracing(models.Model):
-
-    covid_id = models.CharField(max_length=20, blank= False, null=False)
-    name = models.CharField(max_length=150, blank=True, null=True)
-    mobile_number = models.CharField(max_length=12, blank=True, null=True)
-    age = models.IntegerField(blank=True, null=True)
-    gender = models.CharField(max_length=10, blank=True, null=True)
-
-    category = models.CharField(max_length=150, blank=True, null=True)
-    district = models.CharField(max_length=150, blank=True, null=True)
-    city = models.CharField(max_length=150, blank=True, null=True)
-    block = models.CharField(max_length=150, blank=True, null=True)
-    panchayat = models.CharField(max_length=150, blank=True, null=True)
-    village = models.CharField(max_length=150, blank=True, null=True)
-    town = models.CharField(max_length=150, blank=True, null=True)
-    ward = models.CharField(max_length=150, blank=True, null=True)
-    taluk = models.CharField(max_length=150, blank=True, null=True)
-    bbmp_zone = models.CharField(max_length=150, blank=True, null=True)
-    pincode = models.CharField(max_length=20, blank=True, null=True)
-    street = models.CharField(max_length=150, blank=True, null=True)
-    building = models.CharField(max_length=150, blank=True, null=True)
-    door_no = models.CharField(max_length=150, blank=True, null=True)
-
-    ct_latitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
-    ct_longitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
-    date_of_contact_created = models.DateTimeField(auto_now_add=True)
-    assigned_date = models.DateTimeField(auto_now_add=False, blank=True, null=True)
-    # assigned_phc = models.ForeignKey(Master_PHC, on_delete=models.CASCADE ,blank=True, null=True)
-    assigned_phc = models.CharField(max_length=150 ,blank=True, null=True)
-    assigned_msc_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    sample_collected = models.IntegerField(default=0, blank=True, null=True)
-"""
-
 
 class Contact_Tracing(models.Model):
 
@@ -672,6 +668,8 @@ class Contact_Tracing(models.Model):
     district_name_eng = models.CharField(max_length=150, blank=True, null=True)
     city = models.CharField(max_length=150, blank=True, null=True)
     city_name_eng = models.CharField(max_length=150, blank=True, null=True)
+    block = models.CharField(max_length=150, blank=True, null=True)
+    block_name_eng = models.CharField(max_length=150, blank=True, null=True)
     panchayat = models.CharField(max_length=150, blank=True, null=True)
     panchayat_name_eng = models.CharField(max_length=150, blank=True, null=True)
     village = models.CharField(max_length=150, blank=True, null=True)
@@ -698,9 +696,6 @@ class Contact_Tracing(models.Model):
     assigned_phc = models.CharField(max_length=150 ,blank=True, null=True)
     assigned_msc_user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     sample_collected = models.IntegerField(default=0, blank=True, null=True)
-
-
-
 
 
 
@@ -858,7 +853,6 @@ class PHCLikedLabs(models.Model):
 
 
 
-
 class GroupPlate(models.Model):
 
     test_lab = models.ForeignKey(Testing_Lab_Facility, on_delete=models.CASCADE, blank=True, null=True)
@@ -877,7 +871,6 @@ class GroupSamples(models.Model):
     # plate_no = models.IntegerField(blank=True, null=True)
     test_result = models.IntegerField(blank=True, null=True)
     create_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-
 
 
 
@@ -964,8 +957,46 @@ class ICMRDataPush(models.Model):
 
 
 
+class Phc_MSC_Id_Test_Kit_Id(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, null=True)
+    phc_id = models.IntegerField(blank=True, null=True)
+    test_kit_id = models.IntegerField(blank=True, null=True)
+    capacity = models.IntegerField(blank=True, null=True)
+    active = models.IntegerField(default=1, blank=True, null=True)
 
 
 
+
+class Lab_RTPCR_Test_Kit_Id(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE, blank=True, null=True)
+    master_labs = models.ForeignKey(Master_Labs, on_delete= models.CASCADE, blank=True, null=True)
+    test_kit_id = models.IntegerField(blank=True, null=True)
+    capacity = models.IntegerField(blank=True, null=True)
+    active = models.IntegerField(default=1, blank=True, null=True)
+
+
+
+
+class MergedPlateDetails(models.Model):
+    test_lab = models.ForeignKey(Testing_Lab_Facility, on_delete=models.CASCADE, blank=True, null=True)
+    master_lab = models.ForeignKey(Master_Labs, on_delete=models.CASCADE, blank=True, null=True)
+    plate_no = models.CharField(max_length= 150,blank=True, null=True)
+    testing_status = models.IntegerField(default= 0, blank=True, null=True)
+    create_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+
+
+
+
+
+class MergedPlateSamples(models.Model):
+    test_lab = models.ForeignKey(Testing_Lab_Facility, on_delete=models.CASCADE, blank=True, null=True)
+    master_lab = models.ForeignKey(Master_Labs, on_delete=models.CASCADE, blank=True, null=True)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, blank=True, null=True)
+    merge_plate = models.ForeignKey(MergedPlateDetails, on_delete=models.CASCADE, blank=True, null=True)
+    ind_pool_id = models.CharField(max_length=150, blank=True, null=True)
+    # plate_no = models.IntegerField(blank=True, null=True)
+    test_result = models.IntegerField(blank=True, null=True)
+    submit_for_testing = models.IntegerField(default=0, blank=True, null=True)
+    create_datetime = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 
