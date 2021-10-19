@@ -16318,6 +16318,40 @@ class DeleteMasterPHC(APIView):
 
 
 
+class GetPatientDetails(APIView):
+
+    """
+    In this class details from Patient, PatientAddress, 
+    PatientTesting models
+    are combined and returned.
+    """
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        dat_from = request.data.get('fromDate')
+        dat_to = request.data.get('toDate')
+        try:
+            #creating connection
+            rst_patient = Patient.objects.filter(create_timestamp__gte=dat_from, create_timestamp__lte=dat_to).values()
+            
+            for data in rst_patient:
+                rst_outside_add = list(Outside_Patient_Address.objects.annotate(address_create_timestamp= F('create_timestamp')).filter(patient_id= data['id']).values())
+                rst_add = list(Patient_Address.objects.annotate(address_create_timestamp= F('create_timestamp')).filter(patient_id= data['id']).values())
+                patient_testing_details = list(Patient_Testing.objects.annotate(testing_create_timestamp= F('create_timestamp')).filter(patient_id= data['id']).values())
+
+                if rst_outside_add:
+                    data.update(rst_outside_add[0])
+
+                if rst_add:
+                    data.update(rst_add[0])
+
+                if patient_testing_details:
+                    data.update(patient_testing_details[0])
+            return Response({'status':1, 'message': 'success', 'result': rst_patient})
+        except Exception as e:
+            return Response({'status':0, 'message': str(e)})
+
 
 
     
