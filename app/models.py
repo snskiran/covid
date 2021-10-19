@@ -23,7 +23,6 @@ class Roles(models.Model):
         return '%s' % (self.role_name)
 
 
-    
 
 class Patient_Type_Ref(models.Model):
     
@@ -578,12 +577,19 @@ class Patient(models.Model):
     passport = models.CharField(max_length= 150, blank=True, null=True)
     sample_collected_from = models.CharField(max_length= 150, blank=True, null=True)
 
+
     first_dose_date = models.DateField(auto_now_add=False, blank=True, null=True)
 
     hospitalized = models.CharField(max_length= 150, blank=True, null=True)
 
     sero_category = models.CharField(max_length= 250, blank=True, null=True)
     igg_sample = models.CharField(max_length= 50, blank=True, null=True)
+    speciman_type_scan = models.CharField(max_length= 50, blank=True, null=True)
+    speciman_typeRFID_scan = models.CharField(max_length= 50, blank=True, null=True)
+    contact_with_lab_confirmed_patient = models.CharField(max_length= 50, blank=True, null=True)
+    speciman_type_blood_test_scan = models.CharField(max_length= 50, blank=True, null=True)
+    speciman_type_nasal_throat_scan = models.CharField(max_length= 50, blank=True, null=True)
+    
 
     priority = models.IntegerField(default= 0, blank=False, null=False)
     retest = models.IntegerField(default= 0, blank=False, null=False)
@@ -611,6 +617,8 @@ class Patient_Address(models.Model):
     landmark = models.CharField(max_length=250, blank=True, null=True)
     # address_line1                   =   models.CharField(max_length=150, blank=True, null=True)
     # address_line2                   =   models.CharField(max_length=150, blank=True, null=True)
+    ct_latitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
+    ct_longitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
     pincode                         =   models.CharField(max_length=10, blank=True, null=True)
     create_timestamp                =   models.DateTimeField(auto_now_add=True,verbose_name="Create_TimeStamp",blank=True,null=True)
     last_update_timestamp           =   models.DateTimeField(auto_now_add=False,verbose_name="Last_Update_TimeStamp",blank=True,null=True)
@@ -636,6 +644,8 @@ class Outside_Patient_Address(models.Model):
     landmark = models.CharField(max_length=250, blank=True, null=True)
     # address_line1                   =   models.CharField(max_length=150, blank=True, null=True)
     # address_line2                   =   models.CharField(max_length=150, blank=True, null=True)
+    ct_latitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
+    ct_longitude = models.DecimalField(max_digits=15, decimal_places=7, blank=True, null=True)
     pincode                         =   models.CharField(max_length=10, blank=True, null=True)
     create_timestamp                =   models.DateTimeField(auto_now_add=True,verbose_name="Create_TimeStamp",blank=True,null=True)
     last_update_timestamp           =   models.DateTimeField(auto_now_add=False,verbose_name="Last_Update_TimeStamp",blank=True,null=True)
