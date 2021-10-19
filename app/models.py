@@ -23,6 +23,7 @@ class Roles(models.Model):
         return '%s' % (self.role_name)
 
 
+    
 
 class Patient_Type_Ref(models.Model):
     
