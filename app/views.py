@@ -34,6 +34,7 @@ from django.db.models import Q
 import random
 
 import ast
+import base64
 
 from math import radians, cos, sin, asin, sqrt
 
