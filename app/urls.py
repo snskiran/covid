@@ -48,6 +48,7 @@ urlpatterns = [
     path('add-patient/', AddPatient.as_view()),
     path('contact-testing-offline/', ContectTestingOffline.as_view()),
     path('add-patient-offline/', ContectTestingOfflineAddPatient.as_view()),
+    path('lab-add-patient/', LabAddPatient.as_view()),
     path('contact-testing-date-wise-dump/', ContectTestingDateWiseDump.as_view()),
     path('contact-testing-date-wise-urban-dump/', ContectTestingDateWiseUrbanDump.as_view()),
     path('contact-testing-date-wise-rural-dump/', ContectTestingDateWiseRuralDump.as_view()),
@@ -68,6 +69,7 @@ urlpatterns = [
     path('get-tlc-packages-details/', GetTLCPackageData.as_view()),
     path('get-tl-ops-packages-details/', GetTLOPSPackageData.as_view()),
     path('update-dispatch-package-samples/', UpadtePackagetoLabOrHigherOfc.as_view()),
+    path('get-package-samples-details/', GetPackageSamplesDetails.as_view()),
     path('get-all-package-details/', GetAllPackageDetails.as_view()),
     path('get-package-patient-details/', GetPackageSamples.as_view()),
     path('update-package-patient-samples/', AcceptPackagePatientSamples.as_view()),
@@ -105,6 +107,28 @@ urlpatterns = [
     path('get-depool-patient-samples-details/', GetDesampledPatientDetails.as_view()),
 
 
+
+
+
+
+    path('get-tl-ops-categorized-samples-counts/', GetTLOPSCategorizedCounts.as_view()),
+    path('generate-lab-id-for-categorized-samples/', GenerateLabIdsForCategorizedSamples.as_view()),
+    path('get-tl-ops-packages-samples-details/', GetTLOPSPackageSamplesData.as_view()),
+    path('get-tl-ops-packages-ind-pool-samples-assign/', GetTLOPSGeneratePoolIndLabIds.as_view()),
+    path('submit-for-merged-plate-testing/', SubmitForMergedPlateTesting.as_view()),
+    path('update-merged-plate-status/', UpdateMergedPlateStatus.as_view()),
+    path('get-tlab-ops-individual-merge-plate-details/', GetTlabOPSIndiMergedPlateData.as_view()),
+    path('get-tlab-ops-pool-merge-plate-details/', GetTlabOPSPoolMergedPlateData.as_view()),
+    path('update-tlab-ops-ind-merge-plate-samples-test-result/', UpdateIndMergePlateSamplesTestResult.as_view()),
+    path('update-tlab-ops-pool-merge-plate-samples-test-result/', UpdatePoolMergePlateSamplesTestResult.as_view()),
+    path('get-all-plate-details/', AllPlateDetails.as_view()),
+    path('get-update-priority-samples/', UpdatePrioritySampleData.as_view()),
+
+
+
+
+
+
     ####################     User related Urls     ####################
     path('generate-username/', GenerateUsername.as_view()),
     path('create-new-phc-users/', CreateUser.as_view()),
@@ -133,6 +157,8 @@ urlpatterns = [
     path('phc-dashboard-count/', GetPHCDashboardDetails.as_view()),
     path('get-tho-dso-ssu-dashboard-details/', GetThoDsoSsuDashboardDetails.as_view()),
     path('get-tlab-tlabops-dashboard-details/', GetTlabTlapOPSDashboardDetails.as_view()),
+    path('get-tlabops-dashboard-tho-dso-mo-data/', LabOpsDashboardGetThoDsoPhcData.as_view()),
+    path('get-tlabops-dashboard-selected-type-details/', LabOpsDashboardGetSelectedTypeDetails.as_view()),
    
 
 
@@ -171,6 +197,8 @@ urlpatterns = [
     # path('get-phc-test-kits/', GetPhcTestKit.as_view()),
     path('get-phc-all-test-kits/', TestingKitBarcode.as_view()),
     path('get-mo-available-test-kits/', GetAvailableMOTestKits.as_view()),
+    path('get-msc-available-test-kits/', GetAvailableMSCTestKits.as_view()),
+    path('assign-msc-user-test-kits/', AssignMSCUserTestKits.as_view()),
 
 
 
@@ -248,6 +276,12 @@ urlpatterns = [
     path('ssu-get-sysc-asysc-report/', SSUGetMasterSysAsym.as_view()),
     path('ssu-get-rat-rtpcr-positivity-report/', SSUGetMasterRatRtpcrPositivityReport.as_view()),
 
+    path('tlab-all-accepted-packages-report/', TlabAllAcceptedPackagesReport.as_view()),
+    path('tlab-ops-get-date-wise-report/', TlabOpsDateWiseReport.as_view()),
+    path('tlab-ops-get-date-wise-tho-view-report/', TlabOpsDateWiseTHOReportView.as_view()),
+    path('tlab-ops-get-date-wise-tho-mo-view-report/', TlabOpsDateWiseTHOMOReportView.as_view()),
+    path('tlab-ops-get-date-wise-tho-mo-indetail-view-report/', TlabOpsDateWiseTHOMOIndetailReportView.as_view()),
+
 
     ####################      TLAB OPS      ####################
     path('tlab-ops-recieve-package/', UpdatePatientLabId.as_view()),
@@ -280,7 +314,7 @@ urlpatterns = [
     path('universal-search/', UniversalSearch.as_view()),
     
     
-    path('access-envdata/', AccessENVData.as_view()),
+    # path('access-envdata/', AccessENVData.as_view()),
 
 
 
