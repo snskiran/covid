@@ -539,8 +539,6 @@ def getToken():
 
 #########################          LOGIN          #########################
 class CustomAuthToken(ObtainAuthToken):
-    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
 
