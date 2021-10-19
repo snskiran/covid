@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
 
 from .models import *
 from import_export.admin import ImportExportModelAdmin
@@ -7,9 +6,6 @@ from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 
 # admin.site.register(Patient)
-
-
-
 
 @admin.register(Patient)
 class TestingLabAdmin(ImportExportModelAdmin):
@@ -56,7 +52,7 @@ class TestingLabAdmin(ImportExportModelAdmin):
 
 @admin.register(User_Role_Ref)
 class TestingLabAdmin(ImportExportModelAdmin):
-	list_display = ('id', 'user_role_name')
+	list_display = ('id', 'user_role_name', 'user')
 
 
 @admin.register(Testing_Lab_Facility)
@@ -72,7 +68,7 @@ class TestingLabAdmin(ImportExportModelAdmin):
 
 @admin.register(Package_Sampling)
 class TestingLabAdmin(ImportExportModelAdmin):
-	list_display = ('id', 'package_sampling_name', 'package_type_status', 'package_type_action', 'test_lab_id', 'created_group_pool_data', 'samples_count')
+	list_display = ('id', 'package_sampling_name', 'package_type_status', 'package_type_action', 'test_lab_id', 'created_group_pool_data', 'samples_count', 'package_sampling_barcode')
 
 
 
@@ -119,7 +115,7 @@ admin.site.register(Outside_Patient_Address)
 
 @admin.register(Contact_Tracing)
 class WardMasterAdmin(ImportExportModelAdmin):
-	list_display = ('id', 'name', 'mobile_number', 'age', 'gender', 'covid_id')
+	list_display = ('id', 'name', 'mobile_number', 'age', 'gender',)
 
 
 
@@ -136,8 +132,14 @@ class TestingLabMasterAdmin(ImportExportModelAdmin):
 
 
 @admin.register(Testing_Kit_Barcode)
-class TestingLabMasterAdmin(ImportExportModelAdmin):
+class TestingKitBarcodeAdmin(ImportExportModelAdmin):
 	list_display = ('id', 'testing_kit_barcode_name',)
+
+
+@admin.register(RTPCR_Test_Kits)
+class RTPCRTestingKitBarcodeAdmin(ImportExportModelAdmin):
+	list_display = ('id', 'rtpcr_test_kit_name',)
+
 
 
 admin.site.register(New_Entry_Contact_Tracing)
@@ -188,5 +190,12 @@ class WardMasterAdmin(ImportExportModelAdmin):
 @admin.register(ICMRDataPush)
 class WardMasterAdmin(ImportExportModelAdmin):
 	list_display = ('id', 'patient_id')
+
+
+
+
+admin.site.register(MergedPlateDetails)
+admin.site.register(MergedPlateSamples)
+
 
 
