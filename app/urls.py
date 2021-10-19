@@ -355,5 +355,7 @@ urlpatterns = [
 
     path('auth-login/', CustomAuthToken.as_view()),
     
+    path('get-patient-details/', GetPatientDetails.as_view()),
+    
 
 ]
