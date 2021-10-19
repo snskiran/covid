@@ -136,9 +136,9 @@ class TestingKitBarcodeAdmin(ImportExportModelAdmin):
 	list_display = ('id', 'testing_kit_barcode_name',)
 
 
-@admin.register(RTPCR_Test_Kits)
-class RTPCRTestingKitBarcodeAdmin(ImportExportModelAdmin):
-	list_display = ('id', 'rtpcr_test_kit_name',)
+# @admin.register(RTPCR_Test_Kits)
+# class RTPCRTestingKitBarcodeAdmin(ImportExportModelAdmin):
+# 	list_display = ('id', 'rtpcr_test_kit_name',)
 
 
 
