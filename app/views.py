@@ -14986,7 +14986,7 @@ class AcceptPackageSamples(APIView):
         return Response({'result':'Accepted'})
 
 
-
+"""
 #########################          ICMR ACCESS TOKEN          #########################
 class ICMRGetAccessToken(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
@@ -15114,7 +15114,233 @@ class ICMRAddPatientRecord(APIView):
 
 
         return Response({'result':result,}, status= status.HTTP_200_OK)
+"""
+
+
+
+#########################          ICMR ACCESS TOKEN          #########################
+class ICMRGetAccessToken(APIView):
+    # authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+
+        username = icmr_auth_token_username
+        password = icmr_auth_token_password
+
+        if username and password:
+            json_body = json.dumps({'username': username, 'password': password})
+
+            url = icmr_access_token_url
+
+            response = requests.post(url, data= json_body)
+
+            res_json = response.json()
+
+            # return Response({'result': res_json, 'token':res_json['token']})
+            return res_json['token']
+
+
+        else:
+            return Response({'result':'Please Enter Username and Password'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#########################          ICMR ADD RECORD          #########################
+class ICMRAddPatientRecord(APIView):
+    # authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        # data = request.data
+
+        # print(data)
+        # auth_token = data.get('token')
+
+        url = 'https://cvstatus.icmr.gov.in/api/nic/icmr_api/index.php/add-record'
+
+        auth_token = ICMRGetAccessToken.post(self, request)
+
+        get_icmr_data = Patient_Testing.objects.select_related('patient').filter(icmr_added= 0)
         
+        result = []
+        resultone = []
+        vv = 0
+
+        for i in get_icmr_data:
+
+            if vv == 0:
+                
+                if i.patient.test_type.test_type_name == 'RTPCR':
+                    if i.patient.first_dose_date:
+                        vv += 1
+
+                        patient_gender = ''
+                        if i.patient.gender == 'male':
+                            patient_gender = 'M'
+                        elif i.patient.gender == 'female':
+                            patient_gender = 'F'
+                        
+                        contact_number_belongs_to = ''
+                        if i.patient.mobile_number_belongs_to == 'Family':
+                            contact_number_belongs_to = 'relative'
+                        else:
+                            contact_number_belongs_to = (i.patient.mobile_number_belongs_to).lower()
+
+                        age_in = ''
+                        if i.patient.age_type == 'month':
+                            age_in = 'Months'
+                        elif i.patient.age_type == 'year':
+                            age_in = 'Years'
+
+
+                        get_patient_address = list(Patient_Address.objects.filter(patient_id= i.id).values())
+                        get_outside_patient_address = list(Outside_Patient_Address.objects.filter(patient_id= i.id).values())
+
+                        district =''
+                        pincode = ''
+                        address = ''
+                        patient_area = ''
+                        if get_patient_address:
+                            district = get_patient_address[0]['district_name'][1:]
+                            pincode = get_patient_address[0]['pincode']
+                            address = get_patient_address[0]['flat_door_no'] +', '+ get_patient_address[0]['main_road_no'] +', '+ get_patient_address[0]['landmark']
+                            if get_patient_address[0]['ward_type'] == 'rural':
+                                patient_area = 'Rural'
+                            elif get_patient_address[0]['ward_type'] == 'urban':
+                                patient_area = 'Urban'
+
+                        elif get_outside_patient_address:
+                            district = get_outside_patient_address[0]['district_name']
+                            pincode = get_outside_patient_address[0]['pincode']
+                            address = get_outside_patient_address[0]['flat_door_no'] +', '+ get_outside_patient_address[0]['main_road_no'] +', '+ get_outside_patient_address[0]['landmark'] 
+                            if get_outside_patient_address[0]['ward_type'] == 'rural':
+                                patient_area = 'Rural'
+                            elif get_outside_patient_address[0]['ward_type'] == 'urban':
+                                patient_area = 'Urban'
+
+                        symptoms = ''
+                        syncnt = 0
+                        for synl in ast.literal_eval(i.patient.symptoms_list):
+                            if syncnt == 0:
+                                symptoms += str(synl)
+                                syncnt += 1
+                            else:
+                                symptoms += ', '+str(synl)
+
+
+                        testing_kit_used = ''
+                        if i.patient.testing_kit_barcode:
+                            testing_kit_used = i.patient.testing_kit_barcode.testing_kit_barcode_name
+                        else:
+                            testing_kit_used = 'Null'
+
+                        
+                        test_res_data = ''
+                        if i.testing_status == '0':
+                            test_res_data = 'Antigen Negative'
+                        if i.testing_status == '1':
+                            test_res_data = 'Antigen Positive'
+                        if i.testing_status == '2':
+                            test_res_data = 'Negative'
+                        if i.testing_status == '3':
+                            test_res_data = 'Positive'
+
+                        lab_data_id = ''
+                        lab_data_lab_id = ''
+
+                        if i.patient.lab_master:
+                            lab_data_id = str(i.patient.lab_master.id)
+                            lab_data_lab_id = str(i.patient.lab_master.lab_id)
+                        else:
+                            lab_data_id = '0'
+                            lab_data_lab_id = '00000'
+
+
+                        body_data = {
+                            "patient_id":str(i.patient.srf_id),
+                            "patient_name":str(i.patient.patient_name),
+                            "gender":patient_gender,
+                            "age":str(i.patient.age),
+                            "age_in":age_in,
+                            "contact_number":str(i.patient.mobile_number),
+                            "contact_number_belongs_to": contact_number_belongs_to,
+                            "fathers_name":str(i.patient.father_name),
+                            "nationality":"Indian",
+                            "state":"29",
+                            "district":district,
+                            "pincode":pincode,
+                            "aadhar_number":"",
+                            "passport_number":"",
+                            "patient_category":"NCat17",
+                            "address":address,
+                            "patient_area":patient_area,
+                            "occupation":str(i.patient.occupation),
+                            "aarogya_setu_app_downloaded":str(i.patient.arogya_setu_app),
+                            "contact_with_lab_confirmed_patient":str(i.patient.contact_with_lab_confirmed_patient),
+                            "srf_id":"",
+                            "sample_cdate":str(i.patient.create_timestamp.strftime('%Y-%m-%d')),
+                            "sample_rdate":str(i.patient.lab_ops_received_datetime.strftime('%Y-%m-%d')),
+                            "sample_type":str(i.patient.specimen_type.specimen_type_name),
+                            "sample_id":str(i.patient.id),
+                            "sample_collected_from":str(i.patient.sample_collected_from),
+                            "status":str(i.patient.patient_status),
+                            "symptoms":symptoms,
+                            "transport_mode_used_to_visit_testing_facility":str(i.patient.mode_of_transport),
+                            "date_of_onset_of_symptoms":"",
+                            "underlying_medical_condition":"",
+                            "vaccine_recevied":str(i.patient.vaccine_status),
+                            "vaccine_type":str(i.patient.vaccine_type),
+                            "vaccine_dose1_date":str(i.patient.first_dose_date.strftime('%Y-%m-%d')),
+                            "vaccine_dose2_date":"",
+                            "hospitalized":str(i.patient.hospitalized),
+                            "hospital_name":"",
+                            "hospitalization_date":"",
+                            "hospital_state":"",
+                            "hospital_district":"",
+                            "sample_tdate":str(i.create_timestamp),
+                            "testing_kit_used":testing_kit_used,
+                            "covid19_result_egene":test_res_data,
+                            "ct_value_screening":"",
+                            "orf1b_confirmatory":test_res_data,
+                            "ct_value_orf1b":"",
+                            "rdrp_confirmatory":test_res_data,
+                            "ct_value_rdrp":"",
+                            "final_result_of_sample":test_res_data,
+                            "repeat_sample":"No",
+                            "remarks":"",
+                            # "lab_id":str(i.patient.lab_master.id),
+                            # "lab_code":str(i.patient.lab_master.lab_id)
+                            "lab_id":lab_data_id,
+                            "lab_code":lab_data_lab_id
+                        }
+
+
+                        header = {'Authorization': 'Bearer ' + auth_token}
+
+                        json_body = json.dumps(body_data)
+                        json_header = json.dumps(header)
+
+
+                        response = requests.post(url, data= json_body, headers= header)
+
+                        res_text = response.text
+
+                        # if response.status_code == 200:
+                        res_json = response.json()
+                        result.append({'response': res_json})
+                        # else:
+                        #     resultone.append({'response': response})
+
+                        Patient_Testing.objects.filter(id= i.id).update(icmr_added= 1)
+                        Patient.objects.filter(id= i.patient_id).update(icmr_added= 1)
+
+                        # ICMRDataPush.objects.filter(id= i['id']).update(updated_samples_status= 1)
+
+        return Response({'result':result,}, status= status.HTTP_200_OK)
 
 
 
