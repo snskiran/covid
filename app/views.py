@@ -5,6 +5,7 @@ from django.db import models
 from rest_framework import response
 from .serializers import *
 from .models import *
+from .urls_variables import *
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.models import User
