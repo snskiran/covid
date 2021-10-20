@@ -16654,6 +16654,8 @@ class GetPatientDetails(APIView):
 
                 if patient_testing_details:
                     data.update(patient_testing_details[0])
+                    
+                del data['aadhar_number']
             return Response({'status':1, 'message': 'success', 'result': rst_patient})
         except Exception as e:
             return Response({'status':0, 'message': str(e)})
