@@ -4673,8 +4673,8 @@ class GetPHCUseraddedPatients(APIView):
 
 #########################          GET PHC USER PACKAGE CREATED LIST          #########################
 class GetPHCUserPackageList(APIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    #authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
 
     def post(self, request):
         
