@@ -5524,6 +5524,8 @@ class GenerateLabIdsForCategorizedSamples(APIView):
         # {"total_phc_samples": this.poolTotalSamplePhc, "lab_direct": this.poolladDirect, "priority": this.poolpriority, "retest": this.poolretest, "de_Pool": this.pooldepool}
 
         check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+        print(check_user_details.testing_lab_master_id, "LAB DATAAAA")
+        
 
         all_patient_details = []
         patient_ids = []
@@ -5532,7 +5534,7 @@ class GenerateLabIdsForCategorizedSamples(APIView):
         if int(entered_ind_samples.get('total_phc_samples')) > 0:
 
             phc_samples_patient_details = Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(lab_master_id= check_user_details.testing_lab_master_id)).values()[:int(entered_ind_samples.get('total_phc_samples'))]
-            
+            print("GET TOTAL PHC SAMPLES", phc_samples_patient_details)
 
             for i in phc_samples_patient_details:
                 print(i)
@@ -5577,7 +5579,7 @@ class GenerateLabIdsForCategorizedSamples(APIView):
         elif int(entered_ind_samples.get('lab_direct')) > 0:
 
             lab_direct_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id__in= Testing_Lab_Facility.objects.filter(testing_lab_master_id= check_user_details.testing_lab_master_id).values_list('user_id', flat=True))).values()[:int(entered_ind_samples.get('lab_direct'))]
-            
+            print("GET LAB DIRECT", lab_direct_samples_patient_details)
 
             for i in lab_direct_samples_patient_details:
                     
@@ -5620,7 +5622,8 @@ class GenerateLabIdsForCategorizedSamples(APIView):
         elif int(entered_ind_samples.get('priority')) > 0:
 
             priority_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(priority= 1)).values()[:int(entered_ind_samples.get('priority'))]
-
+            print("GET PRIORITY", priority_samples_patient_details)
+            
             for i in priority_samples_patient_details:
                     
                 master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
@@ -5755,7 +5758,7 @@ class GenerateLabIdsForCategorizedSamples(APIView):
             lab_max_cap = 0
 
             phc_samples_patient_details = Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(lab_master_id= check_user_details.testing_lab_master_id)).values()[:int(entered_pool_samples.get('total_phc_samples'))]
-
+            print("GET POOL TOTAL PHC SAMPLES ", phc_samples_patient_details)
             for i in phc_samples_patient_details:
                 
                 if iter_count == 0:
@@ -5805,7 +5808,7 @@ class GenerateLabIdsForCategorizedSamples(APIView):
             lab_max_cap = 0
 
             phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id__in= Testing_Lab_Facility.objects.filter(testing_lab_master_id= check_user_details.testing_lab_master_id).values_list('user_id', flat=True))).values()[:int(entered_ind_samples.get('lab_direct'))]
-
+            print("GET POOL LAB DIRECT ", phc_samples_patient_details)
             for i in phc_samples_patient_details:
 
                 if iter_count == 0:
@@ -5854,7 +5857,7 @@ class GenerateLabIdsForCategorizedSamples(APIView):
             lab_max_cap = 0
 
             phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id) & Q(priority= 1)).values()[:int(entered_ind_samples.get('priority'))]
-
+            print("GET POOL PRIORITY ", phc_samples_patient_details)
             for i in phc_samples_patient_details:
 
                 if iter_count == 0:
@@ -5904,7 +5907,7 @@ class GenerateLabIdsForCategorizedSamples(APIView):
             lab_max_cap = 0
 
             phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id)).values()[:int(entered_ind_samples.get('retest'))]
-
+            print("GET POOL RESET ", phc_samples_patient_details)
             for i in phc_samples_patient_details:
 
                 if iter_count == 0:
@@ -5955,7 +5958,7 @@ class GenerateLabIdsForCategorizedSamples(APIView):
 
             # phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id)).values()[:int(entered_ind_samples.get('de_Pool'))]
             phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = False) & Q(de_pool= 1)).values()[:int(entered_ind_samples.get('de_Pool'))]
-
+            print("GET POOL DEPOOL ", phc_samples_patient_details)
             for i in phc_samples_patient_details:
 
                 if iter_count == 0:
