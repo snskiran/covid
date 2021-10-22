@@ -4997,6 +4997,509 @@ class GetTLOPSCategorizedCounts(APIView):
 
 
 
+"""
+class GenerateLabIdsForCategorizedSamples(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        row_value = data.get('row_value')
+        column_value = data.get('column_value')
+        total_individual_sample_count = data.get('total_individual_sample_count')
+        total_pool_sample_count = data.get('total_pool_sample_count')
+        multiple_of_five_value = data.get('multiple_of_five_value')
+        entered_ind_samples = data.get('entered_ind_samples')
+        entered_pool_samples = data.get('entered_pool_samples')
+
+        print(data)
+
+        # {"total_phc_samples": this.indTotalSamplePhc, "lab_direct": this.indladDirect, "priority": this.indpriority, "retest": this.indretest, "de_Pool": this.inddepool}
+        # {"total_phc_samples": this.poolTotalSamplePhc, "lab_direct": this.poolladDirect, "priority": this.poolpriority, "retest": this.poolretest, "de_Pool": this.pooldepool}
+
+        check_user_details = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+        all_patient_details = []
+        patient_ids = []
+        
+
+        if int(entered_ind_samples.get('total_phc_samples')) > 0:
+
+            phc_samples_patient_details = Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(lab_master_id= check_user_details.testing_lab_master_id)).values()[:int(entered_ind_samples.get('total_phc_samples'))]
+            
+
+            for i in phc_samples_patient_details:
+                print(i)
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_ind_samples.get('lab_direct')) > 0:
+
+            lab_direct_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id__in= Testing_Lab_Facility.objects.filter(testing_lab_master_id= check_user_details.testing_lab_master_id).values_list('user_id', flat=True))).values()[:int(entered_ind_samples.get('lab_direct'))]
+            
+
+            for i in lab_direct_samples_patient_details:
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_ind_samples.get('priority')) > 0:
+
+            priority_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(priority= 1)).values()[:int(entered_ind_samples.get('priority'))]
+
+            for i in priority_samples_patient_details:
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_ind_samples.get('retest')) > 0:
+            pass
+            # priority_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(priority= 1)).values()[:int(entered_ind_samples.get('retest'))]
+
+            # for i in priority_samples_patient_details:
+                    
+            #     master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+            #     lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+            #     split_gen_lab_id = ''
+            #     if master_lab_data.last_genearte_individual_lab_id:
+            #         # print("CHECK LAB ID PRESENT")
+            #         split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+            #     else:
+            #         # print("CHECK LAB ID NOT")
+            #         len_of_cap = str(master_lab_data.max_capacity)
+            #         split_gen_lab_id = '0000'
+
+
+            #     if int(split_gen_lab_id) == lab_max_cap:
+
+            #         patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+            #         Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+            #         # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                
+            #     else:
+                    
+            #         update_lab_id_data = int(split_gen_lab_id) + 1
+
+            #         last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+            #         # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+            #         patient_data_update = Patient.objects.filter(id= i).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1)
+            #         Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+            #         test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+            #         # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+
+        elif int(entered_ind_samples.get('de_Pool')) > 0:
+        
+            # de_pool_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = False) & Q(group_samples= 1) & Q(pool_samples= 1) & Q(group_samples_result= 0) & Q(pool_samples_result = 1) & Q(submit_for_individual_testing= 1) & Q(group_samples_result= 0)).values()[:int(entered_ind_samples.get('de_Pool'))]
+            de_pool_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = False) & Q(de_pool= 1)).values()[:int(entered_ind_samples.get('de_Pool'))]
+
+            print(de_pool_samples_patient_details, "KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKk")
+            
+            for i in de_pool_samples_patient_details:
+                    
+                master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                split_gen_lab_id = ''
+                if master_lab_data.last_genearte_individual_lab_id:
+                    # print("CHECK LAB ID PRESENT")
+                    split_gen_lab_id = master_lab_data.last_genearte_individual_lab_id[1:]
+                else:
+                    # print("CHECK LAB ID NOT")
+                    len_of_cap = str(master_lab_data.max_capacity)
+                    split_gen_lab_id = '0000'
+
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1, de_pool= 2)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= 'A0001')
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                    patient_data_update_data = Patient.objects.filter(id= i['id']).values()
+                    print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ",patient_data_update_data)
+                else:
+                    
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+
+                    last_lab_id = 'A'+str(update_lab_id_data).zfill(4)
+
+                    # patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= master_lab_data.last_genearte_individual_lab_id, lab_ops_received_datetime= asdatetime.now())
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= last_lab_id, lab_ops_received_datetime= asdatetime.now(), group_samples= 1, de_pool= 2)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_individual_lab_id= last_lab_id)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_individual_lab_id= last_lab_id)
+
+                    # GroupSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'])
+                    patient_data_update_data = Patient.objects.filter(id= i['id']).values()
+                    print("JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ",patient_data_update_data)
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+        
+        if int(entered_pool_samples.get('total_phc_samples')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(test_lab_id__isnull = True) & Q(lab_master_id= check_user_details.testing_lab_master_id)).values()[:int(entered_pool_samples.get('total_phc_samples'))]
+
+            for i in phc_samples_patient_details:
+                
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('lab_direct')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id__in= Testing_Lab_Facility.objects.filter(testing_lab_master_id= check_user_details.testing_lab_master_id).values_list('user_id', flat=True))).values()[:int(entered_ind_samples.get('lab_direct'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('priority')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id) & Q(priority= 1)).values()[:int(entered_ind_samples.get('priority'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+                
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('retest')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id)).values()[:int(entered_ind_samples.get('retest'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        elif int(entered_pool_samples.get('de_Pool')):
+
+            iter_count =0
+            laste_lab_id = ''
+            split_gen_lab_id = ''
+            lab_max_cap = 0
+
+            # phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = True) & Q(added_by_id= user_id)).values()[:int(entered_ind_samples.get('de_Pool'))]
+            phc_samples_patient_details = Patient.objects.filter(Q(lab_master_id= check_user_details.testing_lab_master_id) & Q(test_lab_id__isnull = False) & Q(de_pool= 1)).values()[:int(entered_ind_samples.get('de_Pool'))]
+
+            for i in phc_samples_patient_details:
+
+                if iter_count == 0:
+                    master_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id)
+
+                    lab_max_cap= int(master_lab_data.max_capacity) - 1
+
+                    if master_lab_data.last_genearte_pool_lab_id:
+                        split_gen_lab_id = master_lab_data.last_genearte_pool_lab_id[1:]
+                    else:
+                        len_of_cap = str(master_lab_data.max_capacity)
+                        split_gen_lab_id = '0000'
+
+                    update_lab_id_data = int(split_gen_lab_id) + 1
+                    last_lab_id = 'P'+str(update_lab_id_data).zfill(4)
+                    
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= last_lab_id)
+
+                if int(split_gen_lab_id) == lab_max_cap:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1, de_pool= 2)
+                    Master_Labs.objects.filter(id= check_user_details.testing_lab_master_id).update(last_genearte_pool_lab_id= 'P0001')
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                
+                else:
+
+                    get_mas_lab_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+                    
+                    patient_data_update = Patient.objects.filter(id= i['id']).update(lab_master_id= check_user_details.testing_lab_master_id, test_lab_id= get_mas_lab_data.last_genearte_pool_lab_id, lab_ops_received_datetime= asdatetime.now(), pool_samples= 1, de_pool= 2)
+                    test_data = Master_Labs.objects.get(id= check_user_details.testing_lab_master_id) #.update(last_genearte_pool_lab_id= last_lab_id)
+
+                    # PoolSamples.objects.create(test_lab_id= check_user_details.id, master_lab_id= check_user_details.testing_lab_master_id, plate_id= create_plate.id, patient_id= i['id'], pool_id= get_mas_lab_data.last_genearte_pool_lab_id,)
+                iter_count += 1
+                if iter_count == 5:
+                    iter_count = 0
+                
+                all_patient_details.append(list(Patient.objects.filter(id= i['id']).values('id', 'srf_id', 'patient_name', 'test_lab_id', 'lab_master__lab_id', 'lab_accepted_datetime', 'lab_ops_received_datetime'))[0])
+                patient_ids.append(i['id'])
+
+        print(all_patient_details)
+        print(patient_ids)
+        return Response({'result': all_patient_details, 'patient_ids': patient_ids}, status= status.HTTP_200_OK)
+"""
+
+
 
 class GenerateLabIdsForCategorizedSamples(APIView):
     authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
@@ -5497,6 +6000,9 @@ class GenerateLabIdsForCategorizedSamples(APIView):
         print(all_patient_details)
         print(patient_ids)
         return Response({'result': all_patient_details, 'patient_ids': patient_ids}, status= status.HTTP_200_OK)
+
+
+
 
 
 
