@@ -665,6 +665,7 @@ class Patient_Testing(models.Model):
     comments                        =   models.CharField(max_length=150, blank=True, null=True)
     create_timestamp                =   models.DateTimeField(auto_now_add=True,verbose_name="Create_TimeStamp",blank=True,null=True)
     last_update_timestamp           =   models.DateTimeField(auto_now_add=False,verbose_name="Last_Update_TimeStamp",blank=True,null=True)
+    icmr_added = models.IntegerField(default= 0, blank= True, null= True)
 
     
 
