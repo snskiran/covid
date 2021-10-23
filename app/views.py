@@ -15663,7 +15663,7 @@ class ICMRAddPatientRecord(APIView):
     # authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def get(self, request):
 
         # data = request.data
 
