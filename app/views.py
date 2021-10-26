@@ -4681,11 +4681,11 @@ class GetPHCUserPackageList(APIView):
         data = request.data
 
         user_id = data.get('user_id')
-        page_no = data.get('page_no')
+        # page_no = data.get('page_no')
 
-        selected_page_no = 1
-        if page_no:
-            selected_page_no = int(page_no)
+        # selected_page_no = 1
+        # if page_no:
+            # selected_page_no = int(page_no)
 
         check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
         check_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id)
