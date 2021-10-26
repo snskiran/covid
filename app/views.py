@@ -15641,9 +15641,10 @@ class ICMRGetAccessToken(APIView):
 
         username = icmr_auth_token_username
         password = icmr_auth_token_password
+        grant_type = icmr_auth_token_grant_type
 
         if username and password:
-            json_body = json.dumps({'username': username, 'password': password})
+            json_body = json.dumps({'username': username, 'password': password, 'grant_type': grant_type})
 
             url = icmr_access_token_url
 
