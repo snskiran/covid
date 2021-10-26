@@ -15506,13 +15506,16 @@ class ICMRGetAccessToken(APIView):
 
         data = request.data
 
-        username = data.get('username')
-        password = data.get('password')
+        # username = data.get('username')
+        # password = data.get('password')
+        username = icmr_auth_token_username
+        password = icmr_auth_token_password
 
         if username and password:
             json_body = json.dumps({'username': username, 'password': password})
 
-            url = 'https://cvstatus.icmr.gov.in/api/nic/icmr_api/index.php/login'
+            # url = 'https://cvstatus.icmr.gov.in/api/nic/icmr_api/index.php/login'
+            url = icmr_access_token_url
 
             response = requests.post(url, data= json_body)
 
@@ -15665,12 +15668,7 @@ class ICMRAddPatientRecord(APIView):
 
     def get(self, request):
 
-        # data = request.data
-
-        # print(data)
-        # auth_token = data.get('token')
-
-        url = 'https://cvstatus.icmr.gov.in/api/nic/icmr_api/index.php/add-record'
+        url = icmr_add_record_url
 
         auth_token = ICMRGetAccessToken.post(self, request)
 
