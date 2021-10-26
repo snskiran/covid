@@ -17,7 +17,7 @@ test_result_sms_url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/
 positive_test_result_line_list_url = 'https://www.covidwar.karnataka.gov.in/service19_test/api/Values/FnSwab_InsertPositiveTestResult'
 
 
-
+icmr_auth_token_grant_type = 'password'
 icmr_auth_token_username = 'covid_warroom'
 icmr_auth_token_password = '0dd48689f46e6618bd52debc40bad478'
 icmr_access_token_url = 'https://covidresults.kar.nic.in/covidapi/token'
