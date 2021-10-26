@@ -15653,7 +15653,7 @@ class ICMRGetAccessToken(APIView):
             res_json = response.json()
 
             # return Response({'result': res_json, 'token':res_json['token']})
-            return res_json['token']
+            return res_json['access_token']
 
 
         else:
