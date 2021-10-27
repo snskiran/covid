@@ -1593,7 +1593,7 @@ class ContectTestingOffline(APIView):
             
             cnt += 1
 
-        return Response({'result': cnt,'message':"Data Uploaded Sucessfully"}, status= status.HTTP_200_OK)
+        return Response({'result': cnt,'message':"Data Uploaded Sucessfully 1"}, status= status.HTTP_200_OK)
 
 
     
@@ -1978,7 +1978,7 @@ class ContectTestingOfflineAddPatient(APIView):
             
             cnt += 1
 
-        return Response({'result': cnt,'message':"Data Uploaded Sucessfully"}, status= status.HTTP_200_OK)
+        return Response({'result': cnt,'message':"Data Uploaded Sucessfully 1"}, status= status.HTTP_200_OK)
 """
 
 
@@ -2427,7 +2427,7 @@ class ContectTestingOfflineAddPatient(APIView):
 
             cnt += 1
 
-        return Response({'result': cnt,'message':"Data Uploaded Sucessfully"}, status= status.HTTP_200_OK)
+        return Response({'result': cnt,'message':"Data Uploaded Sucessfully 2"}, status= status.HTTP_200_OK)
 
 
 
@@ -17535,3 +17535,2034 @@ class GetPatientDetails(APIView):
 
 
 
+UserDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        get_phcm_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+        get_phc_user_details = Swab_Collection_Centre.objects.filter(swab_collection_centre_name= get_phcm_user_data.swab_collection_centre_name).values()
+
+        user_details = []
+
+        for i in get_phc_user_details:
+            if i['role_id'] != 6:
+                user_name = User.objects.get(id= i['user_id'])
+                check_role = Roles.objects.get(id= i['role_id'])
+                mob_no = User_Role_Ref.objects.get(user_id= i['user_id'])
+
+                res_data = {'id': user_name.id,'username': user_name.username, 'password': user_name.password, 'name': user_name.first_name, 'userrole': check_role.role_name, 'mobile_number': mob_no.mobile_number, 'suspend':mob_no.suspend}
+                user_details.append(res_data)
+
+
+        return Response(user_details)
+
+
+
+
+
+
+#########################          GET PHC LOGIN DASHBOARD DETAILS          #########################
+class GetPHCDashboardDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id      = data.get('user_id')
+        start_date = data.get('from_date')
+        end_date = data.get('to_date')
+
+        print(data)
+
+        
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+
+        if check_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+            check_user_roles  = Roles.objects.get(id= check_user_data.role_id)
+            if check_user_roles.role_name == 'PHCMO':
+
+                # all_phcm_data = []
+                # check_all_slab_collector = Swab_Collection_Centre.objects.filter(swab_collection_centre_name= check_user_data.swab_collection_centre_name).values()
+                # for i in check_all_slab_collector:
+                #     patient_details = Patient.objects.filter(Q(added_by=i['user_id']) & Q(test_type_id = 2) & Q(swab_collection_status= 0) & Q(package_sampling_id__isnull = True)).values()
+                #     for pd in patient_details:
+                #         patient_type_data =  Patient_Type_Ref.objects.get(id= pd['patient_type_id'])
+                #         patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= pd['specimen_type_id'])
+                #         patient_test_type_data = Test_Type_Ref.objects.get(id= pd['test_type_id'])
+                #         pd['patient_type_name'] = patient_type_data.patient_type_name
+                #         pd['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                #         pd['test_type_name']= patient_test_type_data.test_type_name
+                #     all_phcm_data.append(patient_details)
+
+                # check_roles  = Roles.objects.get(role_name= 'PHCM')
+
+
+                if start_date and end_date:
+
+                    start_data_split = start_date.split('-')
+                    end_date_split = end_date.split('-')
+                    
+                    total_samples_collected = 0
+                    total_rat_result_published = 0
+                    check_all_slab_collector = Swab_Collection_Centre.objects.filter(swab_collection_centre_name= check_user_data.swab_collection_centre_name).values()
+                    for i in check_all_slab_collector:
+                        
+                        patient_details = Patient.objects.filter(Q(added_by=i['user_id']) & Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2])))).values()
+                        for pd in patient_details:
+                            total_samples_collected += 1
+                            if int(pd['test_type_id']) == 1:
+                                total_rat_result_published += 1                
+
+
+                    check_phc_target_data = PHCTargetAssignment.objects.filter(Q(phc_id= check_user_data.phc_master_id) & Q(created_datetime__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(created_datetime__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))))
+                    total_target_today = 0
+                    if check_phc_target_data:
+                        check_phc_target_details = PHCTargetAssignment.objects.filter(Q(phc_id= check_user_data.phc_master_id) & Q(created_datetime__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(created_datetime__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2])))).values()
+                        check_all_count = 0
+                        for i in check_phc_target_details:
+                            check_all_count += int(i['phc_target'])
+                        # total_target_today = check_phc_target_details.phc_target
+                        total_target_today = check_all_count
+
+                    today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(assigned_date__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) & Q(assigned_msc_user__isnull= False))
+                    today_contact_tracing_ass = 0
+                    if today_contact_tracing:
+                        today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(assigned_date__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) & Q(assigned_msc_user__isnull= False)).values()
+                        cnt_data = 0
+                        for i in today_contact_tracing_details:
+                            cnt_data += 1
+                        # today_contact_tracing_ass = today_contact_tracing_details
+                        today_contact_tracing_ass = cnt_data
+
+
+                    today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(assigned_date__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) & Q(sample_collected= 1))
+                    today_total_sam_collected_cnt = 0
+                    if today_total_sam_collected:
+                        today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(assigned_date__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) & Q(sample_collected= 1)).values()
+                        cnt_smp_coll = 0
+                        for i in today_sam_collected_details:
+                            cnt_smp_coll+= 1
+                        # today_total_sam_collected_cnt = today_sam_collected_details
+                        today_total_sam_collected_cnt = cnt_smp_coll
+
+
+                    short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(assigned_date__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) & Q(assigned_msc_user__isnull= True))
+                    short_fall_cnt = 0
+                    if short_fall:
+                        short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(assigned_date__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) & Q(assigned_msc_user__isnull= True)).values()
+                        # short_fall_cnt = short_fall_cnt_details
+
+                        cnt_shrt_fall = 0
+                        for i in short_fall_cnt_details:
+                            cnt_shrt_fall += 1
+
+                        short_fall_cnt = cnt_shrt_fall
+
+                    no_of_mobile_team = check_all_slab_collector = Swab_Collection_Centre.objects.filter(Q(swab_collection_centre_name= check_user_data.swab_collection_centre_name) & Q(role_id= 8)).count()
+                    no_of_swab_collector = check_all_slab_collector = Swab_Collection_Centre.objects.filter(Q(swab_collection_centre_name= check_user_data.swab_collection_centre_name) & Q(role_id= 7)).count()
+
+                # total_samples_collected = Patient.objects.filter(swab_collection_id= check_user_data.id).count()
+                # total_rat_result_published = Patient.objects.filter(Q(swab_collection_id= check_user_data.id) & Q(test_type_id= 1)).count()
+
+                # return Response({'total_patient_added':patient_count,'patient_symptomatic_count': patient_symptomatic_count,'patient_asymptomatic_count':patient_asymptomatic_count, 'total_samples_collected':patient_count})
+                    # return Response({'no_of_mobile_team': no_of_mobile_team,'no_of_swab_collector': no_of_swab_collector,'total_samples_collected':total_samples_collected, 'total_rat_result_published':total_rat_result_published,}, status= status.HTTP_200_OK)
+                    
+                    print("DDDDDDDDDDDDDDDDDDDDDDDDDDD")
+                    print({'no_of_mobile_team': no_of_mobile_team,
+                                        'no_of_swab_collector': no_of_swab_collector,
+                                        'total_samples_collected':total_samples_collected, 
+                                        'total_rat_result_published':total_rat_result_published,
+                                        'total_target_tersting_today':total_target_today, 'total_testing_assigned_today': today_contact_tracing_ass,
+                                        'total_testing_collected':today_total_sam_collected_cnt, 'short_fall':short_fall_cnt})
+                    
+                    return Response({'no_of_mobile_team': no_of_mobile_team,
+                                        'no_of_swab_collector': no_of_swab_collector,
+                                        'total_samples_collected':total_samples_collected, 
+                                        'total_rat_result_published':total_rat_result_published,
+                                        'total_target_tersting_today':total_target_today, 'total_testing_assigned_today': today_contact_tracing_ass,
+                                        'total_testing_collected':today_total_sam_collected_cnt, 'short_fall':short_fall_cnt}, status= status.HTTP_200_OK)
+
+                else:
+
+                    
+                    total_samples_collected = 0
+                    total_rat_result_published = 0
+                    check_all_slab_collector = Swab_Collection_Centre.objects.filter(swab_collection_centre_name= check_user_data.swab_collection_centre_name).values()
+                    for i in check_all_slab_collector:
+                        
+                        patient_details = Patient.objects.filter(Q(added_by=i['user_id']) & Q(create_timestamp__date= asdatetime.now().date())).values()
+                        for pd in patient_details:
+                            total_samples_collected += 1
+                            if int(pd['test_type_id']) == 1:
+                                total_rat_result_published += 1
+
+
+
+                    check_phc_target_data = PHCTargetAssignment.objects.filter(Q(phc_id= check_user_data.phc_master_id) & Q(created_datetime__date= asdatetime.now().date()))
+                    total_target_today = 0
+                    if check_phc_target_data:
+                        check_phc_target_details = PHCTargetAssignment.objects.get(Q(phc_id= check_user_data.phc_master_id) & Q(created_datetime__date= asdatetime.now().date()))
+                        total_target_today = check_phc_target_details.phc_target
+
+                    today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False))
+                    today_contact_tracing_ass = 0
+                    if today_contact_tracing:
+                        today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).count()
+                        today_contact_tracing_ass = today_contact_tracing_details
+
+
+                    today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1))
+                    today_total_sam_collected_cnt = 0
+                    if today_total_sam_collected:
+                        today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
+                        today_total_sam_collected_cnt = today_sam_collected_details
+
+
+                    short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True))
+                    short_fall_cnt = 0
+                    if short_fall:
+                        short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= check_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).count()
+                        short_fall_cnt = short_fall_cnt_details
+
+
+                    no_of_mobile_team = check_all_slab_collector = Swab_Collection_Centre.objects.filter(Q(swab_collection_centre_name= check_user_data.swab_collection_centre_name) & Q(role_id= 8)).count()
+                    no_of_swab_collector = check_all_slab_collector = Swab_Collection_Centre.objects.filter(Q(swab_collection_centre_name= check_user_data.swab_collection_centre_name) & Q(role_id= 7)).count()
+
+                    return Response({'no_of_mobile_team': no_of_mobile_team,
+                                        'no_of_swab_collector': no_of_swab_collector,
+                                        'total_samples_collected':total_samples_collected, 
+                                        'total_rat_result_published':total_rat_result_published,
+                                        'total_target_tersting_today':total_target_today, 'total_testing_assigned_today': today_contact_tracing_ass,
+                                        'total_testing_collected':today_total_sam_collected_cnt, 'short_fall':short_fall_cnt}, status= status.HTTP_200_OK)
+
+            if check_user_roles.role_name == 'PHCS':
+
+                print("FFFFFFFFFFFFFFFFFFFFFFFFFFFF")
+                print(data)
+
+                check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+                if start_date  and end_date :
+                    start_data_split = start_date.split('-')
+                    end_date_split = end_date.split('-')
+                    patient_count = Patient.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) & Q(added_by=user_id)).count()
+                    patient_symptomatic_count = Patient.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) &Q(added_by=user_id) & Q(patient_status= 'Symptomatic')).count()
+                    patient_asymptomatic_count = Patient.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) &Q(added_by=user_id) & Q(patient_status= 'Asymptomatic')).count()
+
+                    package_count = Package_Sampling.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) &Q(user_id= user_id)).count()
+
+                    return Response({'total_patient_added':patient_count,'patient_symptomatic_count': patient_symptomatic_count,'patient_asymptomatic_count':patient_asymptomatic_count, 'total_samples_collected':patient_count, 'package_count': package_count}, status= status.HTTP_200_OK)
+
+                else:
+                    patient_count = Patient.objects.filter(Q(added_by=user_id) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                    patient_symptomatic_count = Patient.objects.filter(Q(added_by=user_id) & Q(patient_status= 'Symptomatic') & Q(create_timestamp__date= asdatetime.now().date())).count()
+                    patient_asymptomatic_count = Patient.objects.filter(Q(added_by=user_id) & Q(patient_status= 'Asymptomatic') & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                    package_count = Package_Sampling.objects.filter(Q(user_id= user_id) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                # for i in patient_details:
+                #     patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                #     patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                #     patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                #     i['patient_type_name'] = patient_type_data.patient_type_name
+                #     i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                #     i['test_type_name']= patient_test_type_data.test_type_name
+
+                    return Response({'total_patient_added':patient_count,'patient_symptomatic_count': patient_symptomatic_count,'patient_asymptomatic_count':patient_asymptomatic_count, 'total_samples_collected':patient_count, 'package_count': package_count}, status= status.HTTP_200_OK)
+
+            if check_user_roles.role_name == 'PHCM':
+
+                check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+                # patient_count = Patient.objects.filter(Q(added_by=user_id)).count()
+                # patient_symptomatic_count = Patient.objects.filter(Q(added_by=user_id) & Q(patient_status= 'Symptomatic')).count()
+                # patient_asymptomatic_count = Patient.objects.filter(Q(added_by=user_id) & Q(patient_status= 'Asymptomatic')).count()
+
+                # package_count = Package_Sampling.objects.filter(user_id= user_id).count()
+                if start_date and end_date :  
+                    start_data_split = start_date.split('-')
+                    end_date_split = end_date.split('-')
+                    contact_testing_pending = Contact_Tracing.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) &Q(assigned_msc_user_id= user_id) & Q(sample_collected= 0)).count()
+                    ili_count_pending = ILI.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) &Q(assigned_msc_user_id= user_id) & Q(sample_collected= 0)).count()
+                    target_assigned = TargetAssignToUser.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) &Q(user_id= user_id) ).count()
+                    total_swab_collected = New_Entry_Contact_Tracing.objects.filter(Q(create_timestamp__date__gte= dt(int(start_data_split[0]), int(start_data_split[1]), int(start_data_split[2]))) & Q(create_timestamp__date__lte= dt(int(end_date_split[0]), int(end_date_split[1]), int(end_date_split[2]))) &Q(user_id= user_id) ).count()
+
+                    return Response({'contact_testing_pending':contact_testing_pending,'ili_count_pending': ili_count_pending,'target_assigned':target_assigned, 'total_swab_collected':total_swab_collected}, status= status.HTTP_200_OK) 
+
+                else:
+                    contact_testing_pending = Contact_Tracing.objects.filter(Q(assigned_msc_user_id= user_id) & Q(sample_collected= 0) & Q()).count()
+                    ili_count_pending = ILI.objects.filter(Q(assigned_msc_user_id= user_id) & Q(sample_collected= 0)).count()
+                    target_assigned = TargetAssignToUser.objects.filter(Q(user_id= user_id) & Q(created_datetime__date= asdatetime.now().date())).count()
+                    total_swab_collected = New_Entry_Contact_Tracing.objects.filter(create_timestamp__date = asdatetime.now().date()).count()
+
+                # for i in patient_details:
+                #     patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                #     patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                #     patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                #     i['patient_type_name'] = patient_type_data.patient_type_name
+                #     i['specimen_type_name']= patient_specimen_type_data.specimen_type_name
+                #     i['test_type_name']= patient_test_type_data.test_type_name
+
+                    return Response({'contact_testing_pending':contact_testing_pending,'ili_count_pending': ili_count_pending,'target_assigned':target_assigned, 'total_swab_collected':total_swab_collected}, status= status.HTTP_200_OK) 
+        
+        else:
+            return Response({'result': 'successfull'})
+
+
+
+
+#########################          GET THO DSO SSU DASHBOARD DETAILS          #########################
+class GetThoDsoSsuDashboardDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+
+        print(data)
+
+        tho_data = THO.objects.filter(user_id= user_id)
+        dso_data = DSO.objects.filter(user_id= user_id)
+        ssu_data = SSU.objects.filter(user_id= user_id)
+
+
+        if tho_data:
+            from_date = data.get('from_date')
+            to_date = data.get('to_date')
+
+            if from_date and to_date:
+                tho_data_get = THO.objects.get(user_id= user_id)
+
+                no_of_swab_collector = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).count()
+                phc_user_ids = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values_list('user_id', flat=True)
+
+                no_of_packages = 0
+                no_of_samples = 0
+                no_of_lab_allocation_req = 0
+                no_of_package_for_dispatch = 0
+                no_of_package_dispatch_to_lab = 0
+
+                today_contact_tracing_assigned = 0
+                today_total_sam_collected_cnt = 0
+                short_fall_cnt = 0
+                """
+
+                for i in phc_user_ids:
+                    phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
+                    phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+                    no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                    no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                    no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                    no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
+                    no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 2) & (Q(package_type_action= 12) | Q(package_type_status= 5)) & Q(package_type_action= 15)).count()
+
+                    today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                    if today_contact_tracing:
+                        today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                        cnt_data = 0
+                        for i in today_contact_tracing_details:
+                            cnt_data += 1
+                        today_contact_tracing_assigned += cnt_data
+
+
+                    today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
+                    if today_total_sam_collected:
+                        today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
+                        cnt_smp_coll = 0
+                        for i in today_sam_collected_details:
+                            cnt_smp_coll+= 1
+                        # today_total_sam_collected_cnt = today_sam_collected_details
+                        today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                    short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
+                    if short_fall:
+                        short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
+                        # short_fall_cnt = short_fall_cnt_details
+
+                        cnt_shrt_fall = 0
+                        for i in short_fall_cnt_details:
+                            cnt_shrt_fall += 1
+
+                        short_fall_cnt += cnt_shrt_fall
+                
+                """
+
+
+
+                # for i in phc_user_ids:
+                phc_mo_user_data = Swab_Collection_Centre.objects.filter(Q(user_id__in= phc_user_ids) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
+                phc_all_user_ids = Swab_Collection_Centre.objects.filter(Q(phc_master_id__in= phc_mo_user_data)).values_list('user_id', flat=True)
+                
+                no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(package_type_status= 1)).count()
+                
+                # no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & (Q(package_type_status= 2) & Q(package_type_action= 12)) | (Q(package_type_status= 5) & Q(package_type_action= 15))).count()
+                no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).filter((Q(package_type_status= 2) & Q(package_type_action= 12)) | (Q(package_type_status= 5) & Q(package_type_action= 15))).filter(lab_master__isnull= False).count()
+
+                # today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                # if today_contact_tracing:
+                #     today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                #     cnt_data = 0
+                #     for i in today_contact_tracing_details:
+                #         cnt_data += 1
+                #     today_contact_tracing_assigned += cnt_data
+                
+
+                today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False))
+                today_contact_tracing_assigned += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).count()
+                # if today_contact_tracing:
+                #     today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= False)).values()
+                #     cnt_data = 0
+                #     for i in today_contact_tracing_details:
+                #         cnt_data += 1
+                #     today_contact_tracing_assigned += cnt_data
+
+
+                today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1))
+                today_total_sam_collected_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).count()
+                # if today_total_sam_collected:
+                #     today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(sample_collected= 1)).values()
+                #     cnt_smp_coll = 0
+                #     for i in today_sam_collected_details:
+                #         cnt_smp_coll+= 1
+                #     # today_total_sam_collected_cnt = today_sam_collected_details
+                #     today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                short_fall = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True))
+                short_fall_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).count()
+                # if short_fall:
+                #     short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(assigned_date__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d')) & Q(assigned_msc_user__isnull= True)).values()
+                #     # short_fall_cnt = short_fall_cnt_details
+
+                #     cnt_shrt_fall = 0
+                #     for i in short_fall_cnt_details:
+                #         cnt_shrt_fall += 1
+
+                #     short_fall_cnt += cnt_shrt_fall
+
+
+
+
+                # swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values()
+                # if swab_collectios_details:
+                #     for i in swab_collectios_details:
+                #         print(i)
+                #         # phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id'))
+                #         # print("FFFFFFFFFFFFF",phc_swab_collection_team)
+                #         # for j in phc_swab_collection_team:
+                #         #     ss= Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #         #     print(ss)
+                #         #     no_of_samples += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #         phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id'))
+                      
+                #         ss= Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #         print(ss)
+                #         no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':no_of_lab_allocation_req, 'no_of_packages_for_dispatch':no_of_package_for_dispatch, 'no_of_packages_dispatched_to_lab':no_of_package_dispatch_to_lab, 'today_contact_tracing_assigned':today_contact_tracing_assigned, 'today_total_sam_collected_cnt':today_total_sam_collected_cnt, 'short_fall_cnt':short_fall_cnt},status= status.HTTP_200_OK)
+
+            else:
+
+                tho_data_get = THO.objects.get(user_id= user_id)
+
+                no_of_swab_collector = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).count()
+                
+                phc_user_ids = Swab_Collection_Centre.objects.filter(Q(tho_id= tho_data_get.id) & Q(role_id= 6)).values_list('user_id', flat=True)
+
+                no_of_packages = 0
+                no_of_samples = 0
+                no_of_lab_allocation_req = 0
+                no_of_package_for_dispatch = 0
+                no_of_package_dispatch_to_lab = 0
+
+                today_contact_tracing_assigned = 0
+                today_total_sam_collected_cnt = 0 
+                short_fall_cnt = 0
+
+                # for i in phc_user_ids:
+                #     phc_mo_user_data = Swab_Collection_Centre.objects.get(Q(user_id= i) & Q(role_id= 6))
+                #     phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id= phc_mo_user_data.phc_master_id)).values_list('user_id'))
+                #     no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                #     no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                #     no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                #     no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 1)).count()
+                #     no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 2) & Q(package_type_action= 12) | Q(package_type_status= 5) & Q(package_type_action= 15)).count()
+                
+                
+                #     today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False))
+                #     if today_contact_tracing:
+                #         today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).values()
+                #         cnt_data = 0
+                #         for i in today_contact_tracing_details:
+                #             cnt_data += 1
+                #         today_contact_tracing_assigned += cnt_data
+
+
+                #     today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1))
+                #     if today_total_sam_collected:
+                #         today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).values()
+                #         cnt_smp_coll = 0
+                #         for i in today_sam_collected_details:
+                #             cnt_smp_coll+= 1
+                #         today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                #     short_fall = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True))
+                #     if short_fall:
+                #         short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).values()
+                #         cnt_shrt_fall = 0
+                #         for i in short_fall_cnt_details:
+                #             cnt_shrt_fall += 1
+                #         short_fall_cnt += cnt_shrt_fall
+
+
+                phc_mo_user_data = Swab_Collection_Centre.objects.filter(Q(user_id__in= phc_user_ids) & Q(role_id= 6)).values_list('phc_master_id', flat=True)
+                phc_all_user_ids = list(Swab_Collection_Centre.objects.filter(Q(phc_master_id__in= phc_mo_user_data)).values_list('user_id'))
+                no_of_packages += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                no_of_samples += Patient.objects.filter(Q(added_by_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).count()
+
+                no_of_lab_allocation_req += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 9) | Q(package_type_status= 10)).count()
+                no_of_package_for_dispatch += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date()) & Q(package_type_status= 1)).count()
+                no_of_package_dispatch_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_all_user_ids) & Q(create_timestamp__date= asdatetime.now().date())).filter((Q(package_type_status= 2) & Q(package_type_action= 12)) | (Q(package_type_status= 5) & Q(package_type_action= 15))).filter(lab_master__isnull= False).count()
+            
+            
+                today_contact_tracing = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False))
+                today_contact_tracing_assigned += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).count()
+                # if today_contact_tracing:
+                #     today_contact_tracing_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= False)).values()
+                #     cnt_data = 0
+                #     for i in today_contact_tracing_details:
+                #         cnt_data += 1
+                #     today_contact_tracing_assigned += cnt_data
+
+
+                today_total_sam_collected = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1))
+                today_total_sam_collected_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
+                # if today_total_sam_collected:
+                #     today_sam_collected_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).values()
+                #     cnt_smp_coll = 0
+                #     for i in today_sam_collected_details:
+                #         cnt_smp_coll+= 1
+                #     today_total_sam_collected_cnt += cnt_smp_coll
+
+
+                short_fall = Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True))
+                short_fall_cnt += Contact_Tracing.objects.filter(Q(assigned_phc__in= phc_mo_user_data) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).count()
+                # if short_fall:
+                #     short_fall_cnt_details = Contact_Tracing.objects.filter(Q(assigned_phc= phc_mo_user_data.phc_master_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(assigned_msc_user__isnull= True)).values()
+                #     cnt_shrt_fall = 0
+                #     for i in short_fall_cnt_details:
+                #         cnt_shrt_fall += 1
+                #     short_fall_cnt += cnt_shrt_fall
+            
+                return Response({'no_of_swab_collector':no_of_swab_collector, 'no_of_packages':no_of_packages, 'no_of_samples':no_of_samples, 'no_of_lab_allocation_request':no_of_lab_allocation_req, 'no_of_packages_for_dispatch':no_of_package_for_dispatch, 'no_of_packages_dispatched_to_lab':no_of_package_dispatch_to_lab, 'today_contact_tracing_assigned':today_contact_tracing_assigned, 'today_total_sam_collected_cnt':today_total_sam_collected_cnt, 'short_fall_cnt':short_fall_cnt},status= status.HTTP_200_OK)
+
+
+        if dso_data:
+
+            from_date = data.get('from_date')
+            to_date = data.get('to_date')
+
+            if from_date and to_date:
+                
+                dso_data_get = DSO.objects.get(user_id= user_id)
+
+                tho_data_get = THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat= True)
+
+                no_of_swab_collector_team = 0
+                total_samples_collected = 0
+                rat_result_published = 0
+                packeges_dispatched_to_lab = 0
+                request_for_lab_allocation = 0
+
+                """
+                for th in tho_data_get:
+                    no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+
+                    swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                    if swab_collectios_details:
+                        for i in swab_collectios_details:
+                            phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                            # for j in phc_swab_collection_team:
+                            #     total_samples_collected += Patient.objects.filter(added_by_id__in= j['user_id']).count()
+                            #     rat_result_published += Patient.objects.filter(Q(added_by_id__in= j['user_id']) & Q(test_type_id= 1)).count()
+
+                            #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= j['user_id']) & Q(test_lab__isnull= False)).count()
+
+                            #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+                           
+                            total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            
+                            request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                """
+                
+                no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(role_id= 6)).count()
+
+
+                # phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+
+                phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get)).values_list('user_id', flat=True)
+               
+                total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                
+                request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+
+                # for th in tho_data_get:
+                #     no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+
+                #     swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                #     if swab_collectios_details:
+                #         for i in swab_collectios_details:
+                #             phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                #             # for j in phc_swab_collection_team:
+                #             #     total_samples_collected += Patient.objects.filter(added_by_id__in= j['user_id']).count()
+                #             #     rat_result_published += Patient.objects.filter(Q(added_by_id__in= j['user_id']) & Q(test_type_id= 1)).count()
+
+                #             #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= j['user_id']) & Q(test_lab__isnull= False)).count()
+
+                #             #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+                           
+                #             total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                #             packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                            
+                #             request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+
+            else:
+
+                dso_data_get = DSO.objects.get(user_id= user_id)
+
+                tho_data_get = THO.objects.filter(dso_id= dso_data_get.id).values_list('id', flat=True)
+
+                no_of_swab_collector_team = 0
+                total_samples_collected = 0
+                rat_result_published = 0
+                packeges_dispatched_to_lab = 0
+                request_for_lab_allocation = 0
+
+                """
+                for th in tho_data_get:
+                    no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).count()
+
+                    swab_collectios_details = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(role_id= 6)).values()
+                    if swab_collectios_details:
+                        for i in swab_collectios_details:
+                            # phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values()
+                            # for j in phc_swab_collection_team:
+
+                            #     total_samples_collected += Patient.objects.filter(added_by_id= j['user_id']).count()
+                            #     rat_result_published += Patient.objects.filter(Q(added_by_id= j['user_id']) & Q(test_type_id= 1)).count()
+
+                            #     packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id= j['user_id']) & Q(test_lab__isnull= False)).count()
+
+                            #     request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= user_id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0)).count()
+
+                            phc_swab_collection_team = list(Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+
+                            total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                            rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                            packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                            request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                """
+
+                no_of_swab_collector_team += Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get) & Q(role_id= 6)).count()
+
+                # phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id= th['id']) & Q(phc_master_id= i['phc_master_id'])).values_list('user_id', flat=True))
+                phc_swab_collection_team = Swab_Collection_Centre.objects.filter(Q(tho_id__in= tho_data_get)).values_list('user_id', flat=True)
+
+                total_samples_collected += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(create_timestamp__date= asdatetime.now().date())).count()
+                rat_result_published += Patient.objects.filter(Q(added_by_id__in= phc_swab_collection_team) & Q(test_type_id= 1) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                packeges_dispatched_to_lab += Package_Sampling.objects.filter(Q(user_id__in= phc_swab_collection_team) & Q(test_lab__isnull= False) & Q(create_timestamp__date=asdatetime.now().date())).count()
+                request_for_lab_allocation += Package_Sampling.objects.filter(Q(dso_id= dso_data_get.id) & Q(test_lab__isnull= True) & ~Q(reference_tlab = 0) & Q(create_timestamp__date=asdatetime.now().date())).count()
+
+            return Response({'no_of_swab_collector_team':no_of_swab_collector_team, 'total_samples_collected':total_samples_collected, 'rat_result_published':rat_result_published, 'packeges_dispatched_to_lab':packeges_dispatched_to_lab, 'request_for_lab_allocation':request_for_lab_allocation},status= status.HTTP_200_OK)
+
+
+        if ssu_data:
+            ssu_data_get = SSU.objects.get(user_id= user_id)
+
+            no_of_lab_requests = 0
+
+            from_date = data.get('from_date')
+            to_date = data.get('to_date')
+
+            print(from_date)
+            print(to_date)
+
+            if from_date and to_date:
+
+                no_of_samples_collected = Patient.objects.filter(Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                print(no_of_samples_collected)
+                no_of_packages_at_lab = Package_Sampling.objects.filter(Q(package_type_status= 5) & Q(package_type_action= 15)).count()
+
+                return Response({'no_of_lab_requests':no_of_lab_requests, 'no_of_samples_collected':no_of_samples_collected, 'no_of_packages_at_lab':no_of_packages_at_lab},status= status.HTTP_200_OK)
+
+            else:
+
+                no_of_samples_collected = Patient.objects.filter(create_timestamp__date= asdatetime.now().date()).count()
+
+                no_of_packages_at_lab = Package_Sampling.objects.filter(Q(package_type_status= 5) & Q(package_type_action= 15)).count()
+
+                return Response({'no_of_lab_requests':no_of_lab_requests, 'no_of_samples_collected':no_of_samples_collected, 'no_of_packages_at_lab':no_of_packages_at_lab},status= status.HTTP_200_OK)
+            
+
+        else:
+            return Response({'message':'Something went wrong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
+
+#########################          GET TLAB TLAB OPS DASHBOARD DETAILS          #########################
+class GetTlabTlapOPSDashboardDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        user_id = data.get('user_id')
+
+        check_user = User_Role_Ref.objects.filter(user_id= user_id)
+
+        if check_user:
+            check_user_get = User_Role_Ref.objects.get(user_id= user_id)
+            get_user_lab = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+            if check_user_get.role.role_name == 'TLAB':
+                # get_user_lab = Testing_Lab_Facility.objects.get(user_id= user_id)
+
+                from_date = data.get('from_date')
+                to_date = data.get('to_date')
+
+                if from_date and to_date:
+                    resp_data = {}
+                    resp_data['no_of_packages_arrived'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 8) | Q(package_type_action= 18)) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                    resp_data['no_of_packages_received'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 5) | Q(package_type_action= 15)) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+
+                    return Response({'result': resp_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+                else:
+                    resp_data = {}
+                    resp_data['no_of_packages_arrived'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 8) | Q(package_type_action= 18)) & Q(lab_received_datetime__date= asdatetime.now().date())).count()
+                    resp_data['no_of_packages_received'] = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & (Q(package_type_status= 5) | Q(package_type_action= 15)) & Q(lab_received_datetime__date= asdatetime.now().date())).count()
+                
+                    return Response({'result': resp_data, 'message':'Sucess'}, status= status.HTTP_200_OK)
+
+            if check_user_get.role.role_name == 'LABOP':
+                from_date = data.get('from_date')
+                to_date = data.get('to_date')
+
+                if from_date and to_date:
+
+                    samples_received_total_count = Package_Sampling.objects.filter(Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).aggregate(total_samples= Sum('samples_count'))
+                    print(samples_received_total_count)
+                    if samples_received_total_count['total_samples']:
+                        pass
+                    else:
+                        samples_received_total_count['total_samples'] = 0
+
+                    individual_testing = Package_Sampling.objects.filter(Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_received_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).values_list('id', flat=True)
+                    
+                    check_patients = Patient.objects.filter(Q(package_sampling_id__in= individual_testing) & Q(lab_accepted_datetime__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(lab_accepted_datetime__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).values()
+                    
+                    individual_testing_under_testing = 0
+                    pool_testing_under_testing = 0
+                    result_not_declared = 0
+                    result_declared = 0
+                    total_c_positive = 0
+                    total_inconclusive = 0
+                    total_rejected_samples = 0 
+                    for i in check_patients:
+
+                        result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                        if i['group_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            individual_testing_under_testing += 1
+
+                        # if i['group_samples'] == '1' and i['group_samples_result'] == '1':
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+
+                        if i['pool_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            pool_testing_under_testing += 1
+
+
+                        # if i['pool_samples'] == '1' and i['pool_samples_result'] == '1':
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+                        # result_declared += Patient_Testing.objects.filter(patient_id= i['id']).count()
+                        total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                        total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                        total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(samples_rejected= 1)).count()
+                    
+                    return Response({'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+
+                else:
+                    samples_received_total_count = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date= asdatetime.now().date())).aggregate(total_samples= Sum('samples_count'))
+                    
+                    if samples_received_total_count['total_samples']:
+                        pass
+                    else:
+                        samples_received_total_count['total_samples'] = 0
+
+                    individual_testing = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date= asdatetime.now().date())).values_list('id', flat=True)
+                    check_patients = Patient.objects.filter(package_sampling_id__in= individual_testing).values()
+                    individual_testing_under_testing = 0
+                    pool_testing_under_testing = 0
+                    result_not_declared = 0
+                    result_declared = 0
+                    total_c_positive = 0
+                    total_inconclusive = 0
+                    total_rejected_samples = 0
+                    for i in check_patients:
+                        # if i['group_samples'] == 1 and i['group_samples_result'] == 0:
+                        #     individual_testing_under_testing += 1
+
+                        # if i['group_samples'] == 1 and i['group_samples_result'] == 1:
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+
+                        # if i['pool_samples'] == 1 and i['pool_samples_result'] == 0:
+                        #     pool_testing_under_testing += 1
+
+                        # if i['pool_samples'] == 1 and i['pool_samples_result'] == 1:
+                        #     result_declared += 1
+                        # else:
+                        #     result_not_declared += 1
+
+                        result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                        if i['group_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            individual_testing_under_testing += 1
+
+                        if i['pool_samples'] == 1 and result_declared_check:
+                            result_declared += 1
+                        else:
+                            pool_testing_under_testing += 1
+                        
+                        total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                        total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                        total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(samples_rejected= 1)).count()
+
+                        
+                        
+                    
+                    # return Response({'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':result_not_declared, 'result_declared':result_declared})
+                    return Response({'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+            else:
+                return Response({'result':[], 'message':'Something went Wrong'}, status= status.HTTP_400_BAD_REQUEST)
+        else:   
+            return Response({'result':[], 'message':'Something Went Wong'}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
+#########################          GET TLAB TLAB OPS DASHBOARD MO THO DSO DETAILS          #########################
+class LabOpsDashboardGetThoDsoPhcData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        # selected_type = data.get('type')
+        check_testing_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id).values_list('testing_lab_master_id', flat=True)
+        if check_testing_lab_user:
+            check_packegs = list(set(Package_Sampling.objects.filter(lab_master_id= check_testing_lab_user[0]).values_list('user_id', flat=True)))
+            
+            dso_details = [] 
+            tho_details = []
+            tho_data_alrdy_present = []
+            mo_details = []
+
+            for i in check_packegs:
+                check_swb_col_user = Swab_Collection_Centre.objects.filter(user_id= i).values_list('phc_master_id', flat=True)
+                check_lab_user = Testing_Lab_Facility.objects.filter(user_id= i)
+
+
+                
+                if check_swb_col_user:
+                    check_master_phc = Master_PHC.objects.get(id= check_swb_col_user[0])
+
+                    # check_dso_data_present = [True for elem in dso_details if check_master_phc.district_code not in elem.values()]
+                    check_dso_data_present = any(check_master_phc.district_code in ele.values() for ele in dso_details)
+
+                    if not check_dso_data_present:
+                        check_master_dist_data = list(Master_District.objects.filter(district_code= check_master_phc.district_code).values('district_code', 'district_name_eng'))
+                        dso_details.append({'code':check_master_dist_data[0]['district_code'], 'name':check_master_dist_data[0]['district_name_eng']})
+                    
+
+                    # check_tho_data_present = [True for elem in tho_details if check_master_phc.block_code in elem.values()]
+                    # check_tho_data_present = any(str(check_master_phc.block_code) in ele.values() for ele in tho_details)
+                    # if not check_tho_data_present:
+
+                    if check_master_phc.block_code not in [str(block_id['code']) for block_id in tho_details]:
+                        check_master_block_data = list(Master_Block.objects.filter(block_code= check_master_phc.block_code).values('block_code', 'block_name_eng'))
+                        tho_details.append({'code':check_master_block_data[0]['block_code'], 'name':check_master_block_data[0]['block_name_eng']})
+                    
+
+                    # check_mo_data_present = [True for elem in mo_details if check_master_phc.phc_code in elem.values()]
+                    check_mo_data_present = any(check_master_phc.phc_code in ele.values() for ele in mo_details)
+                    if not check_mo_data_present:
+                        mo_details.append({'code':check_master_phc.phc_code, 'name':check_master_phc.phc_name})
+
+                    
+                elif check_lab_user:
+                    pass
+
+
+            return Response({'dso_details': dso_details, 'tho_details': tho_details, 'mo_details': mo_details}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+#########################          GET TLAB TLAB OPS DASHBOARD MO THO DSO DETAILS          #########################
+class LabOpsDashboardGetSelectedTypeDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        selected_code = data.get('selected_code')
+        selected_type = data.get('selected_type')
+
+        check_testing_lab_user = Testing_Lab_Facility.objects.filter(user_id= user_id).values_list('testing_lab_master_id', flat=True)
+
+        if check_testing_lab_user:
+
+            master_phc_data = Master_PHC.objects.none()
+
+
+            if selected_type == 'DSO':
+                master_phc_data = Master_PHC.objects.filter(district_code= selected_code).values_list('id', flat=True)
+            elif selected_type == 'THO':
+                master_phc_data = Master_PHC.objects.filter(block_code= selected_code).values_list('id', flat=True)
+            elif selected_type == 'MO':
+                master_phc_data = Master_PHC.objects.filter(phc_code= selected_code).values_list('id', flat=True)
+
+            phc_users = Swab_Collection_Centre.objects.filter(phc_master_id__in= master_phc_data).values_list('user_id', flat=True)
+
+            check_packegs = Package_Sampling.objects.filter(Q(lab_master_id= check_testing_lab_user[0]) & Q(user_id__in= phc_users)).values_list('id', flat=True)
+            
+
+            # individual_testing = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id)).values_list('id', flat=True)
+            
+            check_patients = Patient.objects.filter(package_sampling_id__in= check_packegs).values()
+
+            # samples_received_total_count = Package_Sampling.objects.filter(Q(test_lab_id=get_user_lab.id) & Q(lab_master_id= get_user_lab.testing_lab_master_id) & Q(lab_received_datetime__date= asdatetime.now().date())).aggregate(total_samples= Sum('samples_count'))
+            samples_received_total_count = Package_Sampling.objects.filter(Q(lab_master_id= check_testing_lab_user[0]) & Q(user_id__in= phc_users)).aggregate(total_samples= Sum('samples_count'))
+                    
+            if samples_received_total_count['total_samples']:
+                pass
+            else:
+                samples_received_total_count['total_samples'] = 0
+
+            individual_testing_under_testing = 0
+            pool_testing_under_testing = 0
+            result_not_declared = 0
+            result_declared = 0
+            total_c_positive = 0
+            total_inconclusive = 0
+            total_rejected_samples = 0
+            for i in check_patients:
+                result_declared_check = Patient_Testing.objects.filter(patient_id= i['id'])
+
+                if i['group_samples'] == 1 and result_declared_check:
+                    result_declared += 1
+                else:
+                    individual_testing_under_testing += 1
+
+                if i['pool_samples'] == 1 and result_declared_check:
+                    result_declared += 1
+                else:
+                    pool_testing_under_testing += 1
+                
+                total_c_positive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & (Q(testing_status= 3) | Q(testing_status= 1))).count()
+                total_inconclusive += Patient_Testing.objects.filter(Q(patient_id= i['id']) & Q(testing_status= 5)).count()
+                total_rejected_samples += Patient.objects.filter(Q(id= i['id']) & Q(lab_master_id= check_testing_lab_user[0]) & Q(samples_rejected= 1)).count()
+
+            return Response({'samples_received_total_count': samples_received_total_count['total_samples'],'individual_testing_under_testing':individual_testing_under_testing, 'pool_testing_under_testing':pool_testing_under_testing, 'result_not_declared':samples_received_total_count['total_samples'] - result_declared, 'result_declared':result_declared, 'total_c_positive':total_c_positive, 'total_inconclusive':total_inconclusive, 'total_rejected_samples':total_rejected_samples})
+
+        else:
+            return Response({'result':'Something went wrong'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+#########################          GET ACTIVATED PHC TEST KITS DETAILS          #########################
+class GetAvailableMOTestKits(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        print(data)
+        user_id  = data.get('user_id')
+
+        get_swab_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        swab_collected = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1))
+
+        if swab_collected:
+            swab_collected_data = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1)).values()
+            for i in swab_collected_data:
+                test_kit_data = Testing_Kit_Barcode.objects.get(id= i['test_kit_id'])
+                i['test_kit_name']= test_kit_data.testing_kit_barcode_name
+
+            return Response({'result':swab_collected_data, 'kit_available':True,'message':'Sucessfull'},status= status.HTTP_200_OK) 
+        else:
+            
+            test_kit_barcode = Testing_Kit_Barcode.objects.filter(active=1).values()
+            return Response({'result':test_kit_barcode, 'kit_available':False,'message':'Sucessfull'},status= status.HTTP_200_OK) 
+
+
+        # test_kit_ids = []
+        # for i in swab_collected:
+        #     if i.capacity > 0:
+        #         test_kit_ids.append(i.test_kit_id)
+        #     elif(i.capacity == 0):
+        #         swab_collected_delete = Phc_Id_Test_Kit_Id.objects.filter(Q(id__in= test_kit_ids) & Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1)).delete()
+
+        # get_test_kit_details = Testing_Kit_Barcode.objects.filter(Q(id__in= test_kit_ids) & Q(active=1)).values()
+
+
+
+        # class TestingKitBarcode(APIView):
+        #     def get(self, request):
+        #         test_kit_barcode = Testing_Kit_Barcode.objects.filter(active=1).values()
+        #         return Response({'result': test_kit_barcode,'message':'Sucessfull'})
+
+        # get_test_kit_details = Testing_Kit_Barcode.objects.filter(Q(id__in= test_kit_ids)).values()
+        # return Response({'result': get_test_kit_details, 'message':'Sucessfully'})
+
+
+
+#########################          GET ASSIGNED PHC MSC USER TEST KITS DETAILS          #########################
+class GetAvailableMSCTestKits(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+
+        user_id  = data.get('user_id')
+
+        get_swab_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        mobile_swab_collector = Swab_Collection_Centre.objects.filter(Q(phc_master_id= get_swab_detail.phc_master_id) & Q(role__role_name= 'PHCM')).values()
+
+        response_list = []
+        for i in mobile_swab_collector:
+            res={}
+            res['user_name'] = User.objects.get(id= i['user_id']).first_name
+            res['msc_user_id'] = i['user_id']
+            total_test_kit_assigned = Phc_MSC_Id_Test_Kit_Id.objects.filter(user_id= i['user_id']).aggregate(total_capacity= Sum('capacity'))
+            if total_test_kit_assigned['total_capacity']:
+                res['capacity'] = total_test_kit_assigned['total_capacity']
+            else:
+                res['capacity'] =  0
+
+            response_list.append(res)
+
+        return Response({'result':response_list,}, status= status.HTTP_200_OK)
+
+
+
+#########################          GET ASSIGNED PHC MSC USER TEST KITS DETAILS          #########################
+class AssignMSCUserTestKits(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        
+        user_id  = data.get('user_id')
+        msc_user_id = data.get('selected_user')
+        test_kit_id  = data.get('test_kit_id')
+        capacity  = data.get('capacity')
+
+        get_swab_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        Phc_MSC_Id_Test_Kit_Id.objects.create(user_id= msc_user_id, phc_id= get_swab_detail.phc_master_id, test_kit_id= test_kit_id, capacity= capacity)
+       
+        return Response({'result': 'Test kit Assigned Sucessfully',}, status= status.HTTP_200_OK)
+
+
+
+#########################          GET TESTING KIT DETAILS          #########################
+class GetTestingKitDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        print(data)
+        user_id  = data.get('user_id')
+
+        get_swab_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        swab_collected = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1))
+
+        test_kit_ids = []
+        for i in swab_collected:
+            if i.capacity > 0:
+                test_kit_ids.append(i.test_kit_id)
+            elif(i.capacity == 0):
+                swab_collected_delete = Phc_Id_Test_Kit_Id.objects.filter(Q(id__in= test_kit_ids) & Q(phc_id=get_swab_detail.phc_master_id) & Q(active= 1)).delete()
+
+        get_test_kit_details = Testing_Kit_Barcode.objects.filter(Q(id__in= test_kit_ids) & Q(active=1)).values()
+
+        # get_test_kit_details = Testing_Kit_Barcode.objects.filter(Q(id__in= test_kit_ids)).values()
+        return Response({'result': get_test_kit_details, 'message':'Sucessfully'})
+
+
+
+
+#########################          GET ASSIGNED CONTACT TRACING DETAILS          #########################
+class MSCAssignedData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+        print(data)
+
+        user_id = data.get('user_id')
+
+        contact_tracing = Contact_Tracing.objects.filter(Q(assigned_msc_user_id= user_id) & Q(sample_collected= 0)).values()
+
+        return Response(contact_tracing)
+
+
+
+
+#########################          GET ASSIGNED COMPLETED PENDING MSC COUNT          #########################
+class GetAssignedCompletedPendingMscCounts(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+        user_id = data.get('user_id')
+
+        print(data)
+
+        total_assigned = Contact_Tracing.objects.filter(Q(assigned_msc_user_id= user_id) & Q(assigned_date__date= asdatetime.now().date())).count()
+        completed = Contact_Tracing.objects.filter(Q(assigned_msc_user_id= user_id) & Q(assigned_date__date= asdatetime.now().date()) & Q(sample_collected= 1)).count()
+
+        pending = total_assigned - completed
+
+        print({'total_assigned': total_assigned, 'completed': completed, 'pending': pending})
+
+        return Response({'total_assigned': total_assigned, 'completed': completed, 'pending': pending}, status= status.HTTP_200_OK)
+
+
+
+#########################          SAVE CONTACT TRACING          #########################
+class SaveContactTracing(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        pass
+
+
+
+#########################          Accept Package          #########################
+class AcceptPackage(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        package_id      = data.get('package_id')
+        user_id         = data.get('user_id')
+
+        last_package_data = Package_Sampling.objects.filter(id= package_id).update(package_type_status= 7, package_type_action=17)
+        return Response({'result': 'Updated Sucessfully'}, status= status.HTTP_200_OK)
+
+
+
+
+#########################          GET CONTACTEE PATIENT DETAILS          #########################
+class GetContacteePatientDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        id = data.get('id')
+
+        contactee_details = Contact_Tracing.objects.filter(id= id).values()
+
+        for i in contactee_details:
+            dist_data = Master_District.objects.filter(district_code= i['district'])
+            if dist_data:
+                dist_data_get = Master_District.objects.filter(district_code= i['district']).values()
+                i['district_details'] = dist_data_get
+                # i['district_details'] = dist_data
+            else:
+                i['district_details'] = []
+
+
+            ward_data = Master_Ward.objects.filter(Q(district_code= i['district']) & Q(new_town_code= i['town']) & Q(ward_no= i['ward']))
+            if ward_data:
+                ward_data_get = Master_Ward.objects.filter(Q(district_code= i['district']) & Q(new_town_code= i['town']) & Q(ward_no= i['ward'])).values()
+                i['ward_details'] = ward_data_get
+            else:
+                i['ward_details'] = []
+                #i['ward_details'] = ward_data
+
+
+            village_data = Master_Village.objects.filter(Q(district_code= i['district']) & Q(block_code= i['taluk']) & Q(panchayat_code= i['panchayat']) & Q(village_code= i['village'])).values()
+            if village_data:
+                for j in village_data:
+                    block_data_get = Master_Block.objects.get(block_code=j['block_code'])
+                    i['block_name_eng'] = block_data_get.block_name_eng
+                    panchayat_data_get = Master_Panchayat.objects.get(panchayat_code=j['panchayat_code'])
+                    i['panchayat_name_eng'] = panchayat_data_get.panchayat_name_eng
+                    district_data_get = Master_District.objects.get(district_code=j['district_code'])
+                    i['district_name_eng'] = district_data_get.district_name_eng
+
+                i['location_detail'] =  village_data
+            else:
+                i['location_detail'] = []
+                
+
+            
+        print(contactee_details)
+        return Response(contactee_details)
+
+
+
+#########################          CREATE DYNAMIC PHC USERNAME          #########################
+class CreatePHCUserNames(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        dist_code = data.get('dist_code')
+
+        dist_filter = Master_PHC.objects.filter(district_code= dist_code).values('district_code', 'district_name_eng').distinct()
+
+        data = []
+    
+        for i in dist_filter:
+            data = {}
+            print("New DSO Login")
+            print("DSO USERNAME : ", str((i['district_name_eng'].lower()).strip()).replace(' ', '.')+'_dso')
+            print("DSO Password : ", str((i['district_name_eng'].lower()).strip()).replace(' ', '')+'@123')
+
+            data['dso_username'] = str((i['district_name_eng'].lower()).strip()).replace(' ', '.')+'_dso'
+            data['dso_password'] = str((i['district_name_eng'].lower()).strip()).replace(' ', '')+'@123'
+            data['tho_logins'] = []
+            data['phc_logins'] = []
+
+            check_master_dist = Master_District.objects.get(district_code= i['district_code'])
+
+            create_dso_user = User.objects.create_user(username= str((i['district_name_eng'].lower()).strip()).replace(' ', '.')+'_dso', password= str((i['district_name_eng'].lower()).strip()).replace(' ', '')+'@123')
+            create_dso_user_ref = User_Role_Ref.objects.create(user_id= create_dso_user.id, role_id= 2, user_role_name= 'DSO', user_role_desc='DSO')
+            create_dso_details = DSO.objects.create(user_id= create_dso_user.id, role_id= 2, dso_name= str((i['district_name_eng'].lower()).strip()).replace(' ', '.')+' dso', district_id= check_master_dist.id)
+
+            if i['district_code']:
+
+                taluk_data = Master_PHC.objects.filter(district_code= dist_code).values('block_name_eng', 'block_code').distinct()
+
+                for j in taluk_data:
+                    print("New THO Login")
+                    print("THO USERNAME : ", str((j['block_name_eng'].lower()).strip()).replace(' ', '.')+'_tho')
+                    print("THO Password : ", str((j['block_name_eng'].lower()).strip()).replace(' ', '')+'@123')
+
+                    data['tho_logins'].append({'tho_username': str((j['block_name_eng'].lower()).strip()).replace(' ', '.')+'_tho', 'tho_password': str((j['block_name_eng'].lower()).strip()).replace(' ', '')+'@123'})
+                    
+                    check_master_taluk = Master_Block.objects.get(Q(district_code= i['district_code']) & Q(block_code= j['block_code']))
+
+                    create_tho_user = User.objects.create_user(username= str((j['block_name_eng'].lower()).strip()).replace(' ', '.')+'_tho', password= str((j['block_name_eng'].lower()).strip()).replace(' ', '')+'@123')
+                    create_tho_user_ref = User_Role_Ref.objects.create(user_id= create_tho_user.id, role_id= 3, user_role_name= 'THO', user_role_desc='THO')
+                    create_tho_details = THO.objects.create(user_id= create_tho_user.id, role_id= 3, tho_name= str((j['block_name_eng'].lower()).strip()).replace(' ', '.')+' tho', district_id= check_master_dist.id, city_id= check_master_taluk.id)
+
+
+                    phc_data = Master_PHC.objects.filter(district_code= dist_code).values('phc_name', 'phc_code').distinct()
+
+                    lab_ids = [6,7,8,9,10]
+                    cnd_lab = 0
+                    
+                    for k in phc_data:
+                        print(k['phc_code'])
+                        print("New PHC Loging RE Enter")
+                        print("PHC MO USERNAME : "+ str((k['phc_name']).lower().strip()).replace(' ', '.')+'_'+str((k['phc_code']).strip())+'_MO-1')
+                        print("PHC MO USERNAME : "+ str((k['phc_name']).lower().strip()).replace(' ', '')+'@123')
+
+                        data['phc_logins'].append({'phc_username': str((k['phc_name']).lower().strip()).replace(' ', '.')+'_'+str((k['phc_code']).strip())+'_MO-1', 'phc_password': str((k['phc_name']).lower().strip()).replace(' ', '')+'@123'})
+
+                        create_phc_user = User.objects.create_user(username= str((k['phc_name']).lower().strip()).replace(' ', '.')+'_'+str((k['phc_code']).strip())+'_MO-1', password= str((k['phc_name']).lower().strip()).replace(' ', '')+'@123')
+                        create_phc_user_ref = User_Role_Ref.objects.create(user_id= create_phc_user.id, role_id= 6, user_role_name= 'PHCMO', user_role_desc='PHCMO')
+                        create_phc_details = Swab_Collection_Centre.objects.create(user_id= create_phc_user.id, role_id= 6, swab_collection_centre_name= str((k['phc_name']).lower().strip()).replace(' ', '.'), district_id= check_master_dist.id, city_id= check_master_taluk.id)
+                        if cnd_lab == 4:
+                            cnd_lab = 0
+                        else: 
+                            cnd_lab += 1
+        return Response(data)
+
+
+
+
+def haversine(lat1, lon1, lat2, lon2):
+
+    #   R = 3959.87433 # this is in miles.  For Earth radius in kilometers use 6372.8 km
+    
+    R = 6372.8 # this is in miles.  For Earth radius in kilometers use 6372.8 km
+    # print(lat1)
+    # print(lat2)
+    # print(lon1)
+    # print(lon2)
+
+    # print(type(lat1))
+    # print(type(lat2))
+    # print(type(lon1))
+    # print(type(lon2))
+
+    dLat = radians(lat2 - lat1)
+    dLon = radians(lon2 - lon1)
+    lat1 = radians(lat1)
+    lat2 = radians(lat2)
+
+    a = sin(dLat/2)**2 + cos(lat1)*cos(lat2)*sin(dLon/2)**2
+    c = 2*asin(sqrt(a))
+
+    return R * c
+
+# # Usage
+# lon1 = 13.3368016
+# lat1 = 77.1017528
+# lon2 = 13.014204
+# lat2 = 77.555803
+
+# print(haversine(lat1, lon1, lat2, lon2))
+
+
+
+
+#########################          FILTER TESTING LABS          #########################
+class FilterDSOLabsBasedLocation(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        print(data)
+
+        user_id = data.get('user_id')
+
+        dso_data = DSO.objects.filter(user_id= user_id)
+
+        dist_inside_hundr = []
+        dist_inside_twohund = []
+        dist_inside_threehund = []
+
+        if dso_data:
+            dso_data_get = DSO.objects.get(user_id= user_id)
+
+            dist_data = Master_District.objects.filter(id= dso_data_get.district_id)
+            dist_lat = 0.0
+            dist_lon = 0.0
+            if dist_data:
+                dist_data = Master_District.objects.get(id= dso_data_get.district_id)
+                dist_lat = dist_data.district_lat
+                dist_lon = dist_data.district_lon
+
+            lab_data = Master_Labs.objects.all().values()
+
+            # print(dist_lat)
+            # print(dist_lon)
+
+            for i in lab_data:
+                if i['gps_lat'] and i['gps_lon']:
+                    if dist_lat and dist_lon != 0:
+                        dist_cal = haversine(float(dist_lat), float(dist_lon), float(i['gps_lat']), float(i['gps_lon']))
+                        # print(dist_cal)
+
+                        if dist_cal < 100:
+                            # if int(i['closing_balance']) >=10:
+                            if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
+                                # if int(i['closing_balance']) == 10 and int(i['closing_balance']) > 0:
+                                dist_inside_hundr.append(i)
+                        if dist_cal > 100 and dist_cal < 200:
+                            # if int(i['closing_balance']) >= 10:
+                            if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
+                                # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
+                                dist_inside_twohund.append(i)
+                        if dist_cal > 200 and dist_cal < 300:
+                            # if int(i['closing_balance']) >= 10:
+                            if (int(i['closing_balance'])*100/int(i['max_capacity'])) < 80:
+                                # if int(i['closing_balance']) <= 20 and int(i['closing_balance']) > 0:
+                                dist_inside_threehund.append(i)
+
+        # print(dist_inside_hundr)
+        # print(dist_inside_twohund)
+        # print(dist_inside_threehund)
+
+        if dist_inside_hundr:
+            return Response({'result': dist_inside_hundr, 'message':'Labs within 100km range'})
+        if dist_inside_twohund:
+            return Response({'result': dist_inside_twohund, 'message':'Labs within 200km range'})
+        if dist_inside_threehund:
+            return Response({'result': dist_inside_threehund, 'message':'Labs within 300km range'})
+        else:
+            return Response({'result': [], 'message':'No labs Avalilable'})
+
+
+
+#########################          GET CONTACT TRACING DATA          #########################
+class GetContactTracingDetails(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        mobile_number = data.get('mobile_number')
+
+        if mobile_number:
+            contact_tracing_data = Contact_Tracing.objects.filter(Q(mobile_number= mobile_number)).values()
+
+            for i in contact_tracing_data:
+
+                dist_data = Master_District.objects.filter(district_code= i['district'])
+                if dist_data:
+                    # dist_data_get = Master_District.objects.get(district_code= i['district'])
+                    # i['district_details'] = dist_data_get.district_name_eng
+                    i['district_details'] = dist_data
+
+                ward_data = Master_Ward.objects.filter(Q(district_code= i['district']) & Q(new_town_code= i['town']) & Q(ward_no= i['ward']))
+                if ward_data:
+                    # ward_data_get = Master_Ward.objects.get(Q(district_code= i['district']) & Q(new_town_code= i['town']) & Q(ward_no= i['ward']))
+                    # i['ward_details'] = ward_data_get.ward_data_get
+                    i['ward_details'] = ward_data
+
+            return Response({'result':contact_tracing_data}, status= status.HTTP_200_OK)
+
+        # elif srf_id and mobile_number == '':
+        #     check_already_tested_patient = Patient.objects.filter(Q(srf_id= srf_id)).values()
+        #     return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+
+        # elif srf_id == '' and mobile_number:
+        #     check_already_tested_patient = Patient.objects.filter(Q(mobile_number= mobile_number)).values()
+        #     return Response({'result':check_already_tested_patient}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':'Did not match any records'}, status= status.HTTP_406_NOT_ACCEPTABLE)
+
+
+
+
+
+
+
+
+
+
+#########################          MASTER         LAB          #########################
+#!-------------------------------------------------------------------------------------------------------------------------------------          
+#!-------------------------------------------------------------------------------------------------------------------------------------          
+
+class Posttaluk(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):  
+        data = request.data
+        print(data)
+
+        district_code              = data.get('district_code')
+        user_id                    = data.get('user_id')
+
+        get_taluk = Master_Block.objects.filter(Q(district_code=district_code)).values()
+
+        return Response({
+                'taluks':   get_taluk,
+                'result':   'get Taluk Sucessfully'}) 
+
+#!-------------------------------------------------------------------------------------------------------------------------------------          
+#!-------------------------------------------------------------------------------------------------------------------------------------          
+
+
+
+#########################          CREATE LABS          #########################
+class Postlabs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+
+        lab_name                = data.get('lab_name')
+        district_name           = data.get('district_name')
+        district_code = data.get('district_code')
+        lab_type                = data.get('lab_type')
+        lab_id = data.get('lab_id')
+        karnataka_districts_id = data.get('karnataka_districts_id')
+        karnataka_blocks_id = data.get('karnataka_blocks_id')
+        lab_type_id = data.get('lab_type_id')
+        address                 = data.get('address')
+        pincode                 = data.get('pincode')
+        latitude                = data.get('latitude')
+        longitude               = data.get('longitude')
+        max_capacity            = data.get('max_capacity')
+        phone                   = data.get('phone')
+        test_type = data.get('test_type')
+        closing_balance = data.get('closing_balance')
+
+        lab_create = Master_Labs.objects.create(
+            lab_name =lab_name,
+            district_code = district_code, 
+            district_name = district_name,
+            lab_type = lab_type,
+            lab_id = lab_id,
+            karnataka_districts_id = karnataka_districts_id,
+            karnataka_blocks_id = karnataka_blocks_id,
+            lab_type_id = lab_type_id,
+            address = address,
+            pincode = pincode,
+            gps_lat = latitude,
+            gps_lon = longitude,
+            max_capacity = max_capacity,
+            phone = phone,
+            test_type = test_type,
+            lab_classification_id = lab_classification_id,
+            closing_balance = closing_balance,)
+
+
+        return Response({'result': 'Labs added Sucessfully'})
+
+
+
+
+#########################          EDIT LABS          #########################
+class GetEditLabs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        user_id = data.get('user_id')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_dso = DSO.objects.filter(user_id= user_id)
+        check_ssu = SSU.objects.filter(user_id= user_id)
+
+        if check_dso:
+            
+            check_master_labs_details = Master_Labs.objects.none()
+            lab_counts = Master_Labs.objects.none().count()
+            for i in check_dso:
+                check_master_labs_details = Master_Labs.objects.filter(Q(active= 1) & Q(district_code= i.district.district_code) | Q(karnataka_districts_id= i.district.district_code)).values()
+                lab_counts = Master_Labs.objects.filter(Q(active= 1) & Q(district_code= i.district.district_code) | Q(karnataka_districts_id= i.district.district_code)).count()
+
+                check_master_labs = paginatorCreation(check_master_labs_details, selected_page_no)
+
+                # paginator = Paginator(check_master_labs_details, 10)
+                # try:
+                #     check_master_labs = paginator.page(selected_page_no)
+                # except PageNotAnInteger:
+                #     check_master_labs = paginator.page(1)
+                # except EmptyPage:
+                #     check_master_labs = paginator.page(paginator.num_pages)
+
+            for i in check_master_labs:
+                check_dist = Master_District.objects.filter(district_code= i['karnataka_districts_id']).values_list('district_name_eng', flat= True)
+                check_block = Master_Block.objects.filter(block_code= i['karnataka_blocks_id']).values_list('block_name_eng', flat= True)
+
+                if check_dist:
+                    i['district_name'] = check_dist[0]
+                else:
+                    i['district_name'] = '-'
+
+                if check_block:
+                    i['taluk_name'] = check_block[0]
+                else:
+                    i['taluk_name'] = '-'
+            
+            return Response({'result': list(check_master_labs), 'total_lab_count': lab_counts}, status= status.HTTP_200_OK)
+
+        elif check_ssu:
+            
+            all_labs_details = Master_Labs.objects.filter(active= 1).values()
+            lab_counts = Master_Labs.objects.filter(active= 1).count()
+
+            all_labs_data = paginatorCreation(all_labs_details, selected_page_no)
+
+            # paginator = Paginator(all_labs_details, 10)
+            # try:
+            #     all_labs_data = paginator.page(selected_page_no)
+            # except PageNotAnInteger:
+            #     all_labs_data = paginator.page(1)
+            # except EmptyPage:
+            #     all_labs_data = paginator.page(paginator.num_pages)
+
+            for i in all_labs_data:
+                check_dist = Master_District.objects.filter(district_code= i['karnataka_districts_id']).values_list('district_name_eng', flat= True)
+                check_block = Master_Block.objects.filter(block_code= i['karnataka_blocks_id']).values_list('block_name_eng', flat= True)
+
+                if check_dist:
+                    i['district_name'] = check_dist[0]
+                else:
+                    i['district_name'] = '-'
+
+                if check_block:
+                    i['taluk_name'] = check_block[0]
+                else:
+                    i['taluk_name'] = '-'
+
+            return Response({'result': list(all_labs_data), 'total_lab_count': lab_counts}, status= status.HTTP_200_OK)
+
+        else:
+            return Response({'result':[]}, status= status.HTTP_400_BAD_REQUEST)
+
+
+
+#########################          EDIT UPDATE LABS          #########################
+class EditUpdateLabs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+
+        data = request.data
+
+        id = data.get('id')
+        max_capacity= data.get('max_capacity')
+
+        check_master_labs = Master_Labs.objects.filter(id= id).update(max_capacity= max_capacity)
+            
+        return Response({'result':'Updated Sucessfully'}, status= status.HTTP_200_OK)
+
+    
+
+
+class get_all_labs(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        
+        master_lab =   Master_Labs.objects.filter(active= 1).values()
+        
+        for i in master_lab:
+            
+            taluk_name              =   Master_Block.objects.filter(Q(block_code = i['karnataka_blocks_id'])).values()
+
+
+            if taluk_name:
+                taluk_name              =   Master_Block.objects.get(Q(block_code = i['karnataka_blocks_id']))
+                i['taluk_name']    = taluk_name.block_name_eng
+            else:
+                i['taluk_name'] = 'NA'
+
+            # taluk_name              =   Master_Block.objects.get(Q(district_code = i['karnataka_districts_id']) & Q(block_code = i['karnataka_blocks_id']))
+            
+            district_name           =   Master_District.objects.filter(district_code = i['karnataka_districts_id'])
+            if district_name:
+
+                district_name           =   Master_District.objects.get(district_code = i['karnataka_districts_id'])
+            
+                i['district_name']          = district_name.district_name_eng
+            else:
+                i['district_name'] = 'NA'
+            
+
+        return Response({
+                'Lab_data'  :   master_lab,
+                'result'    :   'Sucessfully'})  
+
+    
+    
+
+
+class Postdelete(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        print(data)
+        id  = data.get('id')
+
+        group_data = Master_Labs.objects.filter(id = id).update(active=0)
+
+        return Response({'result':'Deleted Sucessfully'})
+
+
+
+class Posttestkit(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        print(data)
+        test_kit_name  = data.get('test_kit_name')
+
+        group_data = Testing_Kit_Barcode.objects.create(testing_kit_barcode_name = test_kit_name)
+
+        return Response({'result':'Testing Kit Added Sucessfully'})
+
+
+
+class All_testkit(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+       
+        master_testkit =   Testing_Kit_Barcode.objects.filter().values()
+
+        return Response({
+                'testkit_data'  :   master_testkit,
+                'result'    :   'Sucessfully'})  
+
+
+
+class get_all_patients(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+
+        all_patient = Patient.objects.all().values()
+        for i in all_patient:
+            specimen_name = Specimen_Type_Ref.objects.filter(Q(id = i['specimen_type_id']))
+
+            if specimen_name:
+                specimen_name = Specimen_Type_Ref.objects.get(Q(id = i['specimen_type_id']))
+                i['specimen_name'] = specimen_name.specimen_type_name
+            else:
+                i['specimen_name'] = 'NA'
+            
+            test_name = Test_Type_Ref.objects.filter(id = i['test_type_id'])
+            if test_name:
+                test_type = Test_Type_Ref.objects.get(id = i['test_type_id'])
+                i['test_type'] = test_type.test_type_name
+            else:
+                i['test_type'] = 'NA'
+
+            i['create_timestamp'] = str(i['create_timestamp'])
+            i['last_update_timestamp'] = str(i['last_update_timestamp'])
+            i['specimen_collection_date'] = str(i['specimen_collection_date'])
+
+
+        return Response({'Lab_data':all_patient, 'result':'Sucessfully'})
+
+
+
+class get_all_contact_testing(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+
+        page_no = self.request.query_params.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        all_contact_tracing = Contact_Tracing.objects.all().values()
+        all_contact_tracing_count = Contact_Tracing.objects.all().count()
+
+        all_contact_tracing_details = paginatorCreation(all_contact_tracing, selected_page_no)
+
+        for i in all_contact_tracing_details:
+
+            if i['assigned_msc_user_id'] == None:
+                i['status'] = 0
+                i['msc_name'] = 'N/A'
+            else:
+                i['status'] = 1
+                check_user_name = User.objects.get(id= i['assigned_msc_user_id'])
+                i['msc_name'] = check_user_name.first_name
+
+        return Response({'result':list(all_contact_tracing_details), 'total_pg_count':all_contact_tracing_count}, status= status.HTTP_200_OK)
+
+
+
+#!! (D) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#?-----------------       ALL USERS               -----------------------------------------------------------------------------------
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+class get_all_user(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+   
+    def get(self,request):
+
+        all_users = User_Role_Ref.objects.filter(role_id= 1).values('user_id').distinct()
+        for i in all_users:
+            tho_user = THO.objects.filter(dso_id=i[user_id]).values('user_id').distinct()
+            for j in tho_user:
+                swab_coll_team = Swab_Collection_Centre.objects.filter(tho_id= tho_loop_tho_id).count()
+
+        
+        return Response({'result':all_users}, status= status.HTTP_200_OK)
+
+
+
+#!! (E) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#?-----------------       GENERATE PACKAGE LIST               -----------------------------------------------------------------------------------
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+
+
+class get_all_generated_package(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        
+        package_details = Package_Sampling.objects.all().values()
+        for pd in package_details:
+    
+            check_lab = Testing_Lab_Facility.objects.filter(id=  pd['test_lab_id'])
+
+            if check_lab:
+                check_lab_data = Testing_Lab_Facility.objects.get(id=  pd['test_lab_id'])
+                lab_master_data = Master_Labs.objects.get(id= check_lab_data.testing_lab_master_id)
+                pd['lab_name'] = lab_master_data.lab_name
+            else:
+                pd['lab_name'] = '-'
+
+            pd['create_timestamp']           = str(pd['create_timestamp'])
+            pd['last_update_timestamp']      = str(pd['last_update_timestamp'])
+
+        return Response({
+                    'Lab_data'  :   package_details,
+                    'result'    :   'Sucessfully'})
+
+
+
+#!! (F) !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#?-----------------       LAB ALLOCATION               -----------------------------------------------------------------------------------
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+
+class get_all_lab_allocation(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request):
+
+        page_no = self.request.query_params.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+        
+        all_lab_allocation_details = Package_Sampling.objects.all().values()
+        all_lab_allocation_count = Package_Sampling.objects.all().count()
+
+        all_lab_allocation = paginatorCreation(all_lab_allocation_details, selected_page_no)
+
+        # paginator = Paginator(all_lab_allocation_details, 10)
+        # try:
+        #     all_lab_allocation = paginator.page(selected_page_no)
+        # except PageNotAnInteger:
+        #     all_lab_allocation = paginator.page(1)
+        # except EmptyPage:
+        #     all_lab_allocation = paginator.page(paginator.num_pages)
+
+        for i in all_lab_allocation:
+            
+            lab_name               =   Testing_Lab_Facility.objects.filter(Q(id = i['test_lab_id'])).values()
+            if lab_name:
+                lab_name_data           =   Testing_Lab_Facility.objects.get(Q(id = i['test_lab_id']))
+                i['lab_name']      =   lab_name_data.testing_lab_facility_name
+            else:
+                i['lab_name'] = '-'
+            
+            i['create_timestamp']           = str(i['create_timestamp'])
+            i['last_update_timestamp']      = str(i['last_update_timestamp'])
+
+        return Response({'Lab_data':list(all_lab_allocation), 'all_lab_allocation_count':all_lab_allocation_count,'result':'Sucessfully'}) 
+
+
+
+
+
+
+#########################          ASSIGN TEST KIT TO PHC           #########################
+class AssignTestKitToPhc(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        print(data)
+        user_id     = data.get('user_id')
+        testkit_id  = data.get('phc_test_kit_name')
+        capacity  = data.get('capacity')
+        get_phc_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        add_test_phc = Phc_Id_Test_Kit_Id.objects.create(phc_id = get_phc_detail.phc_master_id,test_kit_id=testkit_id, capacity= capacity)
+
+        return Response({'result':'Added Sucessfully'})
+
+
+
+#########################          DELETE PHC TEST KIT         #########################
+class DeletePHCTestKit(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self,request):
+        data = request.data
+        print(data)
+        user_id  = data.get('user_id')
+        testkit_id  = data.get('testkit_id')
+
+        get_phc_detail = Swab_Collection_Centre.objects.get(user_id=user_id)
+        active_test_phc = Phc_Id_Test_Kit_Id.objects.filter(Q(phc_id = get_phc_detail.phc_master_id) & Q(test_kit_id=testkit_id)).update(active=0)
+
+        return Response({
+            'result'  :   active_test_phc,
+            'message':   'Deleted Sucessfully'})
+
+
+
+#########################      TESTING KIT BARCODE               #########################
+class TestingKitBarcode(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        test_kit_barcode = Testing_Kit_Barcode.objects.filter(active=1).values()
+        return Response({'result': test_kit_barcode,'message':'Sucessfull'})
+
+
+
+
+#########################      USER TARGET ASSIGNED COUNTS               #########################
+class UserTargetAssignedCounts(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    
+    def post(self, request):
+
+        data = request.data
+        print(data)
+
+        assigned_user   = data.get('user_id')
+
+        target_assigned    =   TargetAssignToUser.objects.filter(Q(user_id=user_id) & Q(created_datetime__date=asdatetime.now().date()))
+
+        return Response({
+            'result' : target_assigned,
+            'message' :'Sucessfull'
+        })
+
+
+
+
+
+
+
+####################################################################            REPORT             #####################################################################
+
+
+#########################          PHC ADDED PATIENTS REPORT          #########################
+class GetPHCUseraddedPatientsReport(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        
+        data = request.data
+        user_id      = data.get('user_id')
+        from_date      = data.get('startdate')
+        to_date      = data.get('endDate')
+        page_no = data.get('page_no')
+
+        selected_page_no = 1
+        if page_no:
+            selected_page_no = int(page_no)
+
+        check_user = Swab_Collection_Centre.objects.filter(user_id= user_id).values()
+
+        if check_user:
+            check_user_data = Swab_Collection_Centre.objects.get(user_id= user_id)
+
+            if from_date and to_date:
+
+                patient_data = Patient.objects.filter(Q(added_by=user_id) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).values().order_by('-id',)
+                patient_data_count = Patient.objects.filter(Q(added_by=user_id) & Q(create_timestamp__date__gte= asdatetime.strptime(from_date,'%Y-%m-%d')) & Q(create_timestamp__date__lte= asdatetime.strptime(to_date,'%Y-%m-%d'))).count()
+                
+                patient_details = paginatorCreation(patient_data, selected_page_no)
+
+                for i in patient_details:
+                    
+                    patient_type_data =  Patient_Type_Ref.objects.get(id= i['patient_type_id'])
+                    patient_specimen_type_data = Specimen_Type_Ref.objects.get(id= i['specimen_type_id'])
+                    patient_test_type_data = Test_Type_Ref.objects.get(id= i['test_type_id'])
+                    i['patient_type_name'] = p
